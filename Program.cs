@@ -16,6 +16,12 @@ if (args[0] == "read")
 }
 else if (args[0] == "cheep")
 {
-    string cheep = args[1];
-    
+    string cheep = "";
+    for (int i = 1; i < args.Length; i++)
+    {
+        cheep += " " + args[i];
+    }
+    string author = Environment.UserName;
+    string timestamp = ("" + DateTime.Now);
+    Console.WriteLine(cheep + " " + author + " " + timestamp);
 }
