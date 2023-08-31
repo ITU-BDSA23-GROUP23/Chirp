@@ -1,37 +1,16 @@
-﻿foreach (var arg in args)
-{  
-    Console.WriteLine(arg);
-}
+﻿using System.Numerics;
+using System.Text.RegularExpressions;
 
-/*
-Random r = new Random();
-if (args.Length < 3)
+if (args[0] == "read")
 {
-    Console.WriteLine("Welcome to the magic eight ball \n What is your question?");
-    string question = Console.ReadLine();
-    int ans = r.Next(3);
-    string answer;
-    if(ans == 0)
+    var lines = File.ReadLines("chirp_cli_db.csv");
+    foreach (var line in lines)
     {
-        answer = "Nuh uh";
-    }
-    else
-    {
-        answer = "Yup";
-    }
-    Console.WriteLine($"The answer to your question: {question}, is: {answer}");
+        string[] toRead = line.Split(",");
+        string author = toRead[0];
+        string message = toRead[1];
+        string timestamp = toRead[2];
+        Console.WriteLine($"{author} @ {timestamp}: {message}");
 
-}
-else
-{
-    var message = args[1];
-    var amount = int.Parse(args[2]);
-    foreach (int i in Enumerable.Range(1, amount))
-    {
-        var wait = r.Next(100, 1000);
-        await Task.Delay(wait);
-        Console.Write(message + " " + i + " ");
-        
     }
 }
-*/
