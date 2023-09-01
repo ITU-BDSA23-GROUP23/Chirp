@@ -16,7 +16,10 @@ if (args[0] == "read")
         string author = match.Groups["username"].Value;
         string message = match.Groups["message"].Value;
         string timestamp = match.Groups["time"].Value;
-        Console.WriteLine($"{author} @ {timestamp}: {message}");
+        // Converts unix time to DateTime
+        DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        dateTime = dateTime.AddSeconds(long.Parse(timestamp)).ToLocalTime();
+        Console.WriteLine($"{author} @ {dateTime}: {message}");
         }
     }
 }
