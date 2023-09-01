@@ -22,14 +22,14 @@ else if (args[0] == "cheep")
     //Enables cheeps with spaces
     for (int i = 1; i < args.Length; i++)
     {
-        cheep += " " + args[i];
+        cheep += args[i];
     }
     //Takes username from computer
     string author = Environment.UserName;
 
     string timestamp = ("" + DateTime.Now); //To-do: Format like csv file example
-    Console.WriteLine(cheep + " " + author + " " + timestamp); // Change format to work with RegEx
+    Console.WriteLine(author + ",\"" + cheep + "\"," + timestamp); // Change format to work with RegEx
     sw.WriteLine("");
-    sw.Write(cheep + " " + author + " " + timestamp); // Change format to work with RegEx
+    sw.Write(author + ",\"" + cheep + "\"," + timestamp); // Change format to work with RegEx
     sw.Close();
 }
