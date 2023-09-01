@@ -7,12 +7,17 @@ if (args[0] == "read")
     foreach (var line in lines)
     {
         //Should format and prints all cheeps, but splits incorrectly i.e. in the cheep itself
-        string[] toRead = line.Split(",");
-        string author = toRead[0];
-        string message = toRead[1];
-        string timestamp = toRead[2];
-        Console.WriteLine($"{author} @ {timestamp}: {message}");
+        Regex regex = new Regex("(?<username>.+?),\"(?<message>.+)\",(?<time>[0-9]{10})");
 
+        Match match = regex.Match(line);
+
+        if (match.Success)
+        {
+        string author = match.Groups["username"].Value;
+        string message = match.Groups["message"].Value;
+        string timestamp = match.Groups["time"].Value;
+        Console.WriteLine($"{author} @ {timestamp}: {message}");
+        }
     }
 }
 else if (args[0] == "cheep")
