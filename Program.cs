@@ -27,7 +27,7 @@ else if (args[0] == "cheep")
     //Takes username from computer
     string author = Environment.UserName;
 
-    string timestamp = ("" + DateTime.Now); //To-do: Format like csv file example
+    long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
     Console.WriteLine(author + ",\"" + cheep + "\"," + timestamp); // Change format to work with RegEx
     sw.WriteLine("");
     sw.Write(author + ",\"" + cheep + "\"," + timestamp); // Change format to work with RegEx
