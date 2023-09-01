@@ -17,6 +17,7 @@ if (args[0] == "read")
 }
 else if (args[0] == "cheep")
 {
+    StreamWriter sw = new StreamWriter("chirp_cli_db.csv", true); // Chech whether encodeing language needs to be specified.
     string cheep = "";
     //Enables cheeps with spaces
     for (int i = 1; i < args.Length; i++)
@@ -25,7 +26,10 @@ else if (args[0] == "cheep")
     }
     //Takes username from computer
     string author = Environment.UserName;
-    
+
     string timestamp = ("" + DateTime.Now); //To-do: Format like csv file example
-    Console.WriteLine(cheep + " " + author + " " + timestamp);
+    Console.WriteLine(cheep + " " + author + " " + timestamp); // Change format to work with RegEx
+    sw.WriteLine("");
+    sw.Write(cheep + " " + author + " " + timestamp); // Change format to work with RegEx
+    sw.Close();
 }
