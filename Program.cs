@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using System.Text.RegularExpressions;
+using System.Collections;
 
 if (args[0] == "read")
 {
@@ -18,18 +19,22 @@ if (args[0] == "read")
 else if (args[0] == "cheep")
 {
     StreamWriter sw = new StreamWriter("chirp_cli_db.csv", true); // Chech whether encodeing language needs to be specified.
-    string cheep = "";
+    ArrayList cheepList = new ArrayList();
+    string cheepString;
+    string author;
+    long timestamp;
     //Enables cheeps with spaces
     for (int i = 1; i < args.Length; i++)
     {
-        cheep += args[i];
+        cheepList.Add(args[i]);
     }
     //Takes username from computer
-    string author = Environment.UserName;
-
-    long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-    Console.WriteLine(author + ",\"" + cheep + "\"," + timestamp); // Change format to work with RegEx
+    author = Environment.UserName;
+    Console.WriteLine(cheepList);
+    cheepString = string.Join(" ", cheepList.ToArray());
+    timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+    Console.WriteLine(author + ",\"" + cheepString + "\"," + timestamp); // For testing
     sw.WriteLine("");
-    sw.Write(author + ",\"" + cheep + "\"," + timestamp); // Change format to work with RegEx
+    sw.Write(author + ",\"" + cheepString + "\"," + timestamp);
     sw.Close();
 }
