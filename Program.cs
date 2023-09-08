@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using System.Collections;
 
+static void Main(string[] args){
 if (args[0] == "read")
 {
     var lines = File.ReadLines("chirp_cli_db.csv");
@@ -45,4 +46,5 @@ else if (args[0] == "cheep")
     sw.WriteLine("");
     sw.Write(author + ",\"" + cheepString + "\"," + timestamp);
     sw.Close();
+}
 }
