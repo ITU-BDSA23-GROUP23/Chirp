@@ -2,16 +2,17 @@
 using System.Text.RegularExpressions;
 using System.Collections;
 
+
 static void Main(string[] args){
 if (args[0] == "read")
 {
-    var lines = File.ReadLines("chirp_cli_db.csv");
-    foreach (var line in lines)
+    var cheeps = File.ReadLines("chirp_cli_db.csv");
+    foreach (var cheep in cheeps)
     {
         //Should format and prints all cheeps, but splits incorrectly i.e. in the cheep itself
         Regex regex = new Regex("(?<username>.+?),\"(?<message>.+)\",(?<time>[0-9]{10})");
 
-        Match match = regex.Match(line);
+        Match match = regex.Match(cheep);
 
         if (match.Success)
         {
@@ -22,6 +23,7 @@ if (args[0] == "read")
         DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
         dateTime = dateTime.AddSeconds(long.Parse(timestamp)).ToLocalTime();
         Console.WriteLine($"{author} @ {dateTime}: {message}");
+        UserInterface.PrintCheeps(cheeps);
         }
     }
 }
