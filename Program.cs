@@ -2,17 +2,17 @@
 using System.Text.RegularExpressions;
 using System.Collections;
 using CommandLine;
-using Microsoft.VisualBasic;
+using System.ComponentModel;
 
 public class Program
 {
     public class Options
     {
-        [Option('r', "read", Required = true, HelpText = "Reads all cheeps")]
-        public bool read { get; set; }
+        [Option('r', "read", Required = false, HelpText = "Reads all cheeps")]
+        public bool Read { get; set; }
 
-        [Option('s', "save", Required = true, HelpText = "Save cheep")]
-        public IEnumerable<string> writeCheep { get; set; }
+        [Option('c', "cheep", Required = false, HelpText = "Save a cheep")]
+        public IEnumerable<string> cheepMessage { get; set; }
     }
 
     static void Main(string[] args)
@@ -20,12 +20,13 @@ public class Program
         Parser.Default.ParseArguments<Options>(args)
             .WithParsed<Options>(o =>
             {
-                if (o.read)
+                if (o.cheepMessage != null)
+                {
+                    SaveCheep(o.cheepMessage);
+                }
+                if (o.Read)
                 {
                     Read();
-                }
-                else if (o.writeCheep != null){
-                    SaveCheep(args);
                 }
             });
         /*
@@ -68,7 +69,7 @@ public class Program
         UserInterface.PrintCheeps(cheeps);
     }
 
-    public static void SaveCheep(String[] args)
+    public static void SaveCheep(IEnumerable<string> args)
     {
         StreamWriter sw = new StreamWriter("chirp_cli_db.csv", true); // Chech whether encodeing language needs to be specified.
         ArrayList cheepList = new ArrayList();
@@ -76,9 +77,9 @@ public class Program
         string author;
         long timestamp;
         //Enables cheeps with spaces
-        for (int i = 1; i < args.Length; i++)
+        foreach (String arg in args)
         {
-            cheepList.Add(args[i]);
+            cheepList.Add(arg);
         }
         //Takes username from computer
         author = Environment.UserName;
