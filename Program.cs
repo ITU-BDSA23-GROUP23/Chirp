@@ -1,19 +1,36 @@
 ﻿using System.Numerics;
 using System.Text.RegularExpressions;
 using System.Collections;
+using CommandLine;
 
 public class Program
 {
+    public class Options
+    {
+        [Option('r', "read", Required = true, HelpText = "Reads all cheeps")]
+        public bool read { get; set; }
+    }
+
     static void Main(string[] args)
     {
-        if (args[0] == "read")
-        {
-            Read();
-        }
-        else if (args[0] == "cheep")
-        {
-            SaveCheep(args);
-        }
+        Parser.Default.ParseArguments<Options>(args)
+            .WithParsed<Options>(o =>
+            {
+                if (o.read)
+                {
+                    Read();
+                }
+            });
+        /*
+    if (args[0] == "read")
+    {
+        Read();
+    }
+    else if (args[0] == "cheep")
+    {
+        SaveCheep(args);
+    }
+    */
     }
 
     public static void Read()
