@@ -8,7 +8,7 @@ public class Program
     {
         if (args[0] == "read")
         {
-           Read();
+            Read();
         }
         else if (args[0] == "cheep")
         {
@@ -16,7 +16,8 @@ public class Program
         }
     }
 
-    public static void Read(){
+    public static void Read()
+    {
         var lines = File.ReadLines("chirp_cli_db.csv");
         int i = 0;
         Cheep[] cheeps = new Cheep[lines.Count()];
@@ -43,25 +44,26 @@ public class Program
         UserInterface.PrintCheeps(cheeps);
     }
 
-    public static void SaveCheep(String[] args){
+    public static void SaveCheep(String[] args)
+    {
         StreamWriter sw = new StreamWriter("chirp_cli_db.csv", true); // Chech whether encodeing language needs to be specified.
-            ArrayList cheepList = new ArrayList();
-            string cheepString;
-            string author;
-            long timestamp;
-            //Enables cheeps with spaces
-            for (int i = 1; i < args.Length; i++)
-            {
-                cheepList.Add(args[i]);
-            }
-            //Takes username from computer
-            author = Environment.UserName;
-            Console.WriteLine(cheepList);
-            cheepString = string.Join(" ", cheepList.ToArray());
-            timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-            Console.WriteLine(author + ",\"" + cheepString + "\"," + timestamp); // For testing
-            sw.WriteLine("");
-            sw.Write(author + ",\"" + cheepString + "\"," + timestamp);
-            sw.Close();
+        ArrayList cheepList = new ArrayList();
+        string cheepString;
+        string author;
+        long timestamp;
+        //Enables cheeps with spaces
+        for (int i = 1; i < args.Length; i++)
+        {
+            cheepList.Add(args[i]);
+        }
+        //Takes username from computer
+        author = Environment.UserName;
+        Console.WriteLine(cheepList);
+        cheepString = string.Join(" ", cheepList.ToArray());
+        timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        Console.WriteLine(author + ",\"" + cheepString + "\"," + timestamp); // For testing
+        sw.WriteLine("");
+        sw.Write(author + ",\"" + cheepString + "\"," + timestamp);
+        sw.Close();
     }
 }
