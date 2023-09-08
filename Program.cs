@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using System.Collections;
 using CommandLine;
+using Microsoft.VisualBasic;
 
 public class Program
 {
@@ -9,6 +10,9 @@ public class Program
     {
         [Option('r', "read", Required = true, HelpText = "Reads all cheeps")]
         public bool read { get; set; }
+
+        [Option('s', "save", Required = true, HelpText = "Save cheep")]
+        public IEnumerable<string> writeCheep { get; set; }
     }
 
     static void Main(string[] args)
@@ -19,6 +23,9 @@ public class Program
                 if (o.read)
                 {
                     Read();
+                }
+                else if (o.writeCheep != null){
+                    SaveCheep(args);
                 }
             });
         /*
