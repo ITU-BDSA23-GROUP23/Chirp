@@ -8,10 +8,10 @@ public class Program
 {
     public class Options
     {
-        [Option('r', "read", Required = false, HelpText = "Reads all cheeps")]
+        [Option("read", Required = false, HelpText = "Reads all cheeps", SetName = "action")]
         public bool Read { get; set; }
 
-        [Option('c', "cheep", Required = false, HelpText = "Save a cheep")]
+        [Option("cheep", Required = false, HelpText = "Save a cheep", SetName = "action")]
         public IEnumerable<string> cheepMessage { get; set; }
     }
 
@@ -20,14 +20,15 @@ public class Program
         Parser.Default.ParseArguments<Options>(args)
             .WithParsed<Options>(o =>
             {
-                if (o.cheepMessage != null)
-                {
-                    SaveCheep(o.cheepMessage);
-                }
                 if (o.Read)
                 {
                     Read();
                 }
+                else if (o.cheepMessage != null) //For some reason, it it is not null even though cheep isn't given as an option. This means that if someone runs the program without any of the legal options, the standard help message won't appear.
+                {
+                    SaveCheep(o.cheepMessage);
+                }
+
             });
         /*
     if (args[0] == "read")
@@ -83,12 +84,19 @@ public class Program
         }
         //Takes username from computer
         author = Environment.UserName;
-        Console.WriteLine(cheepList);
+        //Console.WriteLine(cheepList);
         cheepString = string.Join(" ", cheepList.ToArray());
         timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-        Console.WriteLine(author + ",\"" + cheepString + "\"," + timestamp); // For testing
-        sw.WriteLine("");
-        sw.Write(author + ",\"" + cheepString + "\"," + timestamp);
+        if (cheepString == "")
+        {
+            Console.WriteLine("to input a cheep, write: run --cheep \"<message>\" ");
+        }
+        else
+        {
+            Console.WriteLine(author + ",\"" + cheepString + "\"," + timestamp); // For testing
+            sw.WriteLine("");
+            sw.Write(author + ",\"" + cheepString + "\"," + timestamp);
+        }
         sw.Close();
     }
 }
