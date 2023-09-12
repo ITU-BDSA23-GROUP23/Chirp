@@ -12,7 +12,7 @@ public class Program
         public bool Read { get; set; }
 
         [Option("cheep", Group = "action", Required = false, HelpText = "Save a cheep")]
-        public IEnumerable<string> cheepMessage { get; set; }
+        public IEnumerable<string>? cheepMessage { get; set; }
     }
     //Command line parser, external library: https://github.com/commandlineparser/commandline
 
