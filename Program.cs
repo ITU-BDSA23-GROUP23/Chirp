@@ -6,6 +6,7 @@ using CommandLine;
 using System.ComponentModel;
 using CsvHelper.Configuration;
 using System.Globalization;
+using SimpleDB;
 
 
 
@@ -46,7 +47,6 @@ public class Program
             });
     }
     
-
     public static void Read()
     {
 
