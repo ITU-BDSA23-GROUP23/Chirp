@@ -11,7 +11,7 @@ public class Program
         [Option("read", Group = "action", Required = false, HelpText = "Reads all cheeps")]
         public bool Read { get; set; }
 
-        [Option("cheep", Group = "action", Required = false, HelpText = "Save a cheep")]
+        [Option("cheep", Group = "action", Required = false, HelpText = "To send a cheep, write: run --cheep \"<message>\" ")]
         public IEnumerable<string>? cheepMessage { get; set; }
     }
     //Command line parser, external library: https://github.com/commandlineparser/commandline
@@ -25,22 +25,14 @@ public class Program
                 {
                     Read();
                 }
-                if (o.cheepMessage != null) //For some reason, it it is not null even though cheep isn't given as an option. This means that if someone runs the program without any of the legal options, the standard help message won't appear.
+                if (o.cheepMessage != null && o.cheepMessage.Count() > 0) 
                 {
                     SaveCheep(o.cheepMessage);
+                } else {
+                    args = new[] { "--help"};
                 }
 
             });
-        /*
-    if (args[0] == "read")
-    {
-        Read();
-    }
-    else if (args[0] == "cheep")
-    {
-        SaveCheep(args);
-    }
-    */
     }
 
     public static void Read()
@@ -71,33 +63,27 @@ public class Program
         UserInterface.PrintCheeps(cheeps);
     }
 
-    public static void SaveCheep(IEnumerable<string> args)
+    public static void SaveCheep(IEnumerable<string> message)
     {
-        StreamWriter sw = new StreamWriter("chirp_cli_db.csv", true); // Chech whether encodeing language needs to be specified.
-        ArrayList cheepList = new ArrayList();
+        string author = Environment.UserName; //Takes username from computer
+        long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         string cheepString;
-        string author;
-        long timestamp;
-        //Enables cheeps with spaces
-        foreach (String arg in args)
+        
+        //Enables cheeps without ""
+        ArrayList cheepList = new ArrayList();
+        foreach (String word in message)
         {
-            cheepList.Add(arg);
+            cheepList.Add(word);
         }
-        //Takes username from computer
-        author = Environment.UserName;
-        //Console.WriteLine(cheepList);
         cheepString = string.Join(" ", cheepList.ToArray());
-        timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-        if (cheepString == "")
-        {
-            Console.WriteLine("to input a cheep, write: run --cheep \"<message>\" ");
-        }
-        else
-        {
-            Console.WriteLine(author + ",\"" + cheepString + "\"," + timestamp); // For testing
-            sw.WriteLine("");
-            sw.Write(author + ",\"" + cheepString + "\"," + timestamp);
-        }
+
+        Console.WriteLine(author + ",\"" + cheepString + "\"," + timestamp); // For testing
+
+        StreamWriter sw = new StreamWriter("chirp_cli_db.csv", true); // Chech whether encodeing language needs to be specified.
+        //write new cheep to csv
+        sw.WriteLine("");
+        sw.Write(author + ",\"" + cheepString + "\"," + timestamp);
+
         sw.Close();
     }
 }
