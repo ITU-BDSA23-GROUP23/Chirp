@@ -1,6 +1,8 @@
 using CsvHelper.Configuration.Attributes;
+namespace SimpleDB;
 
-public class Foo
+
+public class Cheep
         {
         [Index(0)]
         public string Id { get; set; }

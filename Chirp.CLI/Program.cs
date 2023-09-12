@@ -8,10 +8,12 @@ using CsvHelper.Configuration;
 using System.Globalization;
 using SimpleDB;
 
+
 public class Program
 {
+    
 
-    ChirpDB db = new ChirpDB();
+    
     public class Options
     {
         [Option("read", Group = "action", Required = false, HelpText = "Reads all cheeps")]
@@ -25,8 +27,6 @@ public class Program
     static void Main(string[] args)
     {
 
-        
-        
         Parser.Default.ParseArguments<Options>(args)
             .WithParsed<Options>(o =>
             {
@@ -46,11 +46,18 @@ public class Program
     
     public static void Read()
     {
-        ChirpDB.Read();
+        var test = new SimpleDB.ChirpDB();
+        var cheep = test.Read(1);
     }
 
     public static void SaveCheep(IEnumerable<string> message)
     {
+        // string author = Environment.UserName; //Takes username from computer
+        // long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        // string cheepString;
+        
+        // ArrayList cheepList = new ArrayList();
+
         string author = Environment.UserName; //Takes username from computer
         long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         string cheepString;
@@ -65,7 +72,11 @@ public class Program
         cheepString = string.Join(" ", cheepList.ToArray());
         Console.WriteLine(author + ",\"" + cheepString + "\"," + timestamp);
 
-        ChirpDB.store(new Cheep {Id = author, Name = cheepString, Time = timestamp})
+        var db  = new SimpleDB.ChirpDB();
+        var Cheep = new SimpleDB.Cheep {Id = author, Name = cheepString, Time = timestamp};
+
+        db.Store(Cheep);
+        
         
     }
 }
