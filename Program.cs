@@ -65,34 +65,33 @@ public class Program
         string author = Environment.UserName; //Takes username from computer
         long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         string cheepString;
+        
         ArrayList cheepList = new ArrayList();
-        cheepString = string.Join(" ", cheepList.ToArray());
+        
+       
         foreach (String word in message)
         {
             cheepList.Add(word);
         }
+        cheepString = string.Join(" ", cheepList.ToArray());
+        Console.WriteLine(author + ",\"" + cheepString + "\"," + timestamp);
+
         var record = new List<Foo>
         {
             new Foo {Id = author, Name = cheepString, Time = timestamp}
         };
-        using (var writer = new StreamWriter("chirp_cli_db.csv"));
-        using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+
+         var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+    {
+        // Don't write the header again.
+        HasHeaderRecord = false,
+    };
+        using var stream = File.Open("chirp_cli_db.csv", FileMode.Append);
+        using var writer = new StreamWriter(stream);
+        using (var csv = new CsvWriter(writer, config))
         {
             csv.WriteRecords(record);
-        }
+        };
         
-
-        //Enables cheeps without ""
-        
-        
-
-        Console.WriteLine(author + ",\"" + cheepString + "\"," + timestamp); // For testing
-
-        StreamWriter sw = new StreamWriter("chirp_cli_db.csv", true); // Chech whether encodeing language needs to be specified.
-        //write new cheep to csv
-        sw.WriteLine("");
-        sw.Write(author + ",\"" + cheepString + "\"," + timestamp);
-
-        sw.Close();
     }
 }
