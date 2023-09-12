@@ -8,9 +8,6 @@ using CsvHelper.Configuration;
 using System.Globalization;
 using SimpleDB;
 
-
-
-
 public class Program
 {
 
