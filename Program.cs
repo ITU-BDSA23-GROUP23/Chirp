@@ -8,12 +8,13 @@ public class Program
 {
     public class Options
     {
-        [Option("read", Required = false, HelpText = "Reads all cheeps", SetName = "action")]
+        [Option("read", Group = "action", Required = false, HelpText = "Reads all cheeps")]
         public bool Read { get; set; }
 
-        [Option("cheep", Required = false, HelpText = "Save a cheep", SetName = "action")]
+        [Option("cheep", Group = "action", Required = false, HelpText = "Save a cheep")]
         public IEnumerable<string> cheepMessage { get; set; }
     }
+    //Command line parser, external library: https://github.com/commandlineparser/commandline
 
     static void Main(string[] args)
     {
@@ -24,7 +25,7 @@ public class Program
                 {
                     Read();
                 }
-                else if (o.cheepMessage != null) //For some reason, it it is not null even though cheep isn't given as an option. This means that if someone runs the program without any of the legal options, the standard help message won't appear.
+                if (o.cheepMessage != null) //For some reason, it it is not null even though cheep isn't given as an option. This means that if someone runs the program without any of the legal options, the standard help message won't appear.
                 {
                     SaveCheep(o.cheepMessage);
                 }
