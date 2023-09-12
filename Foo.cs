@@ -9,5 +9,5 @@ public class Foo
         public string Name { get; set; }
 
         [Index(2)]
-        public string Time{get; set;}
+        public long Time{get; set;}
         }
