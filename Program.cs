@@ -1,11 +1,19 @@
 ﻿using System.Numerics;
 using System.Text.RegularExpressions;
+using CsvHelper;
 using System.Collections;
 using CommandLine;
 using System.ComponentModel;
+using CsvHelper.Configuration;
+using System.Globalization;
+
+
+
 
 public class Program
 {
+
+    
     public class Options
     {
         [Option("read", Group = "action", Required = false, HelpText = "Reads all cheeps")]
@@ -18,6 +26,9 @@ public class Program
 
     static void Main(string[] args)
     {
+
+        
+        
         Parser.Default.ParseArguments<Options>(args)
             .WithParsed<Options>(o =>
             {
@@ -34,34 +45,51 @@ public class Program
 
             });
     }
+    
 
     public static void Read()
     {
-        var lines = File.ReadLines("chirp_cli_db.csv");
-        int i = 0;
-        Cheep[] cheeps = new Cheep[lines.Count()];
-        foreach (var line in lines)
+
+
+        using var reader = new StreamReader("chirp_cli_db.csv");
+        using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+        var records = csv.GetRecords<Foo>();
+        foreach (var record in records) 
         {
-            //Should format and prints all cheeps, but splits incorrectly i.e. in the cheep itself
-            Regex regex = new Regex("(?<username>.+?),\"(?<message>.+)\",(?<time>[0-9]{10})");
-
-            Match match = regex.Match(line);
-
-            if (match.Success)
-            {
-                string author = match.Groups["username"].Value;
-                string message = match.Groups["message"].Value;
-                long timestamp = long.Parse(match.Groups["time"].Value);
-                // Converts unix time to DateTime
-                DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-                dateTime = dateTime.AddSeconds(timestamp).ToLocalTime();
-                Console.WriteLine($"{author} @ {dateTime}: {message}");
-                cheeps[i] = new Cheep(author, message, dateTime.Ticks);
-            }
-            i++;
+            Console.WriteLine($"{record.Id} @ {record.Name}: {record.Time}");
+        } 
+        
+        
         }
-        UserInterface.PrintCheeps(cheeps);
-    }
+
+
+    // public static void Read()
+    // {
+    //     var lines = File.ReadLines("chirp_cli_db.csv");
+    //     int i = 0;
+    //     Cheep[] cheeps = new Cheep[lines.Count()];
+    //     foreach (var line in lines)
+    //     {
+    //         //Should format and prints all cheeps, but splits incorrectly i.e. in the cheep itself
+    //         Regex regex = new Regex("(?<username>.+?),\"(?<message>.+)\",(?<time>[0-9]{10})");
+
+    //         Match match = regex.Match(line);
+
+    //         if (match.Success)
+    //         {
+    //             string author = match.Groups["username"].Value;
+    //             string message = match.Groups["message"].Value;
+    //             long timestamp = long.Parse(match.Groups["time"].Value);
+    //             // Converts unix time to DateTime
+    //             DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+    //             dateTime = dateTime.AddSeconds(timestamp).ToLocalTime();
+    //             Console.WriteLine($"{author} @ {dateTime}: {message}");
+    //             cheeps[i] = new Cheep(author, message, dateTime.Ticks);
+    //         }
+    //         i++;
+    //     }
+    //     UserInterface.PrintCheeps(cheeps);
+    // }
 
     public static void SaveCheep(IEnumerable<string> message)
     {
