@@ -11,7 +11,7 @@ using SimpleDB;
 public class Program
 {
 
-    
+    ChirpDB db = new ChirpDB();
     public class Options
     {
         [Option("read", Group = "action", Required = false, HelpText = "Reads all cheeps")]
@@ -46,15 +46,7 @@ public class Program
     
     public static void Read()
     {
-
-
-        using var reader = new StreamReader("chirp_cli_db.csv");
-        using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
-        var records = csv.GetRecords<Foo>();
-        foreach (var record in records) 
-        {
-            Console.WriteLine($"{record.Id} @ {record.Name}: {record.Time}");
-        } 
+        ChirpDB.Read();
     }
 
     public static void SaveCheep(IEnumerable<string> message)
@@ -73,22 +65,7 @@ public class Program
         cheepString = string.Join(" ", cheepList.ToArray());
         Console.WriteLine(author + ",\"" + cheepString + "\"," + timestamp);
 
-        var record = new List<Foo>
-        {
-            new Foo {Id = author, Name = cheepString, Time = timestamp}
-        };
-
-         var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-    {
-        // Don't write the header again.
-        HasHeaderRecord = false,
-    };
-        using var stream = File.Open("chirp_cli_db.csv", FileMode.Append);
-        using var writer = new StreamWriter(stream);
-        using (var csv = new CsvWriter(writer, config))
-        {
-            csv.WriteRecords(record);
-        };
+        ChirpDB.store(new Cheep {Id = author, Name = cheepString, Time = timestamp})
         
     }
 }
