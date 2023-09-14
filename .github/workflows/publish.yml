@@ -1,0 +1,29 @@
+name: Publish
+
+on:
+  release:
+    types: [published]
+  push:
+    branches: [ "release-workflow" ]
+
+jobs:
+  release:
+    
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build for linux
+      run: dotnet build --no-restore -r linux-x64
+    - name: Build for windows
+      run: dotnet build --no-restore -r win-x64
+    - name: Build for max
+      run: dotnet build --no-restore -r osx-x64
+    - name: test
+      run: dotnet test --no-build --verbosity normal
