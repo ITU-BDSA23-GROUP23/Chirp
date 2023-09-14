@@ -20,7 +20,7 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build for linux
-      run: dotnet publish --no-restore -r linux-x64
+      run: dotnet publish -c Release -r linux-x64
     - name: Build for windows
       run: dotnet publish --no-restore -r win-x64
     - name: Build for max
