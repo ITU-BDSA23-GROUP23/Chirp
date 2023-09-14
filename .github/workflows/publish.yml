@@ -18,7 +18,6 @@ jobs:
       with:
         dotnet-version: 7.0.x
     - name: Build for Linux
-        shell: bash
         run: |
           # Define some variables for things we need
           tag=$(git describe --tags --abbrev=0)
@@ -33,7 +32,6 @@ jobs:
           # Delete output directory
           rm -r "$release_name"
     - name: Build for Windows
-        shell: bash
         run: |
           # Define some variables for things we need
           tag=$(git describe --tags --abbrev=0)
@@ -48,7 +46,6 @@ jobs:
           # Delete output directory
           rm -r "$release_name"
      - name: Build for Mac
-        shell: bash
         run: |
           # Define some variables for things we need
           tag=$(git describe --tags --abbrev=0)
