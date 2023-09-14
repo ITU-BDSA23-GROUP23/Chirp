@@ -16,12 +16,16 @@ public class ChirpDB : IDatabaseRepository<Cheep>
         using var reader = new StreamReader("../SimpleDB/chirp_cli_db.csv");
         using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         var records = csv.GetRecords<Cheep>();
+        var cheeps = new List<Cheep>();
+
+
         foreach (var record in records) 
         {
-            //Chirp.CLI.cheep();
-            Console.WriteLine($"{record.Id} @ {record.Name}: {record.Time}");
+
+            cheeps.Add(record);
+            // Console.WriteLine($"{record.Id} @ {record.Name}: {record.Time}");
         } 
-        return records;
+        return cheeps;
     }
     public void Store(Cheep cheep)
     {
