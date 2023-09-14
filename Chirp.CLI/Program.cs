@@ -1,11 +1,19 @@
 ﻿using System.Numerics;
 using System.Text.RegularExpressions;
+using CsvHelper;
 using System.Collections;
 using CommandLine;
 using System.ComponentModel;
+using CsvHelper.Configuration;
+using System.Globalization;
+using SimpleDB;
+
 
 public class Program
 {
+    
+
+    
     public class Options
     {
         [Option("read", Group = "action", Required = false, HelpText = "Reads all cheeps")]
@@ -18,6 +26,7 @@ public class Program
 
     static void Main(string[] args)
     {
+
         Parser.Default.ParseArguments<Options>(args)
             .WithParsed<Options>(o =>
             {
@@ -34,56 +43,40 @@ public class Program
 
             });
     }
-
+    
     public static void Read()
     {
-        var lines = File.ReadLines("chirp_cli_db.csv");
-        int i = 0;
-        Cheep[] cheeps = new Cheep[lines.Count()];
-        foreach (var line in lines)
-        {
-            //Should format and prints all cheeps, but splits incorrectly i.e. in the cheep itself
-            Regex regex = new Regex("(?<username>.+?),\"(?<message>.+)\",(?<time>[0-9]{10})");
-
-            Match match = regex.Match(line);
-
-            if (match.Success)
-            {
-                string author = match.Groups["username"].Value;
-                string message = match.Groups["message"].Value;
-                long timestamp = long.Parse(match.Groups["time"].Value);
-                // Converts unix time to DateTime
-                DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-                dateTime = dateTime.AddSeconds(timestamp).ToLocalTime();
-                Console.WriteLine($"{author} @ {dateTime}: {message}");
-                cheeps[i] = new Cheep(author, message, dateTime.Ticks);
-            }
-            i++;
-        }
-        UserInterface.PrintCheeps(cheeps);
+        var test = new SimpleDB.ChirpDB();
+        var cheep = test.Read(1);
     }
 
     public static void SaveCheep(IEnumerable<string> message)
     {
+        // string author = Environment.UserName; //Takes username from computer
+        // long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        // string cheepString;
+        
+        // ArrayList cheepList = new ArrayList();
+
         string author = Environment.UserName; //Takes username from computer
         long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         string cheepString;
         
-        //Enables cheeps without ""
         ArrayList cheepList = new ArrayList();
+        
+       
         foreach (String word in message)
         {
             cheepList.Add(word);
         }
         cheepString = string.Join(" ", cheepList.ToArray());
+        Console.WriteLine(author + ",\"" + cheepString + "\"," + timestamp);
 
-        Console.WriteLine(author + ",\"" + cheepString + "\"," + timestamp); // For testing
+        var db  = new SimpleDB.ChirpDB();
+        var Cheep = new SimpleDB.Cheep {Id = author, Name = cheepString, Time = timestamp};
 
-        StreamWriter sw = new StreamWriter("chirp_cli_db.csv", true); // Chech whether encodeing language needs to be specified.
-        //write new cheep to csv
-        sw.WriteLine("");
-        sw.Write(author + ",\"" + cheepString + "\"," + timestamp);
-
-        sw.Close();
+        db.Store(Cheep);
+        
+        
     }
 }
