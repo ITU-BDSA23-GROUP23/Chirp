@@ -20,10 +20,10 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build for linux
-      run: dotnet build --no-restore -r linux-x64
+      run: dotnet publish --no-restore -r linux-x64
     - name: Build for windows
-      run: dotnet build --no-restore -r win-x64
+      run: dotnet publish --no-restore -r win-x64
     - name: Build for max
-      run: dotnet build --no-restore -r osx-x64
+      run: dotnet publish --no-restore -r osx-x64
     - name: test
       run: dotnet test --no-build --verbosity normal
