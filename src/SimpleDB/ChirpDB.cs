@@ -9,7 +9,6 @@ using System.ComponentModel;
 using CsvHelper.Configuration;
 using System.Globalization;
 
-
 public class ChirpDB : IDatabaseRepository<Cheep>
 {
     public IEnumerable<Cheep> Read(int? limit = null)
@@ -19,6 +18,7 @@ public class ChirpDB : IDatabaseRepository<Cheep>
         var records = csv.GetRecords<Cheep>();
         foreach (var record in records) 
         {
+            //Chirp.CLI.cheep();
             Console.WriteLine($"{record.Id} @ {record.Name}: {record.Time}");
         } 
         return records;
