@@ -1,4 +1,4 @@
-name: Publish
+name: Publish on all systems
 
 on:
   release:
