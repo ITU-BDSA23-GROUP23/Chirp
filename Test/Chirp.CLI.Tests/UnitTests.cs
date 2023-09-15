@@ -5,6 +5,7 @@ public class UnitTests
 {
     /*
     Program program;
+    UserInterface userInterface;
     [Fact]
     public void IsDataStoredCorrectTest()
     {
