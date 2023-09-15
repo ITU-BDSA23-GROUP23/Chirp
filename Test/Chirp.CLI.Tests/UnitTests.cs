@@ -4,6 +4,7 @@ namespace Chirp.CLI.Tests;
 public class UnitTests
 {
     Program program;
+    UserInterface userInterface;
     [Fact]
     public void IsDataStoredCorrectTest()
     {
@@ -25,11 +26,20 @@ public class UnitTests
         // Clean up the test database file
         File.Delete(dbPath);
     }
-}
+    [Fact]
+    public void TestTimestampConversion()
+    {
+        // Arrange
+        long unixTimestamp = 1631712052 //This is for examples
+        string expectedFormattedTime = "2021-09-16 09:20:52";
+        userInterface = new UserInterface();
+        /*long unixTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(); //Our method for unixTimestamp in SaveCheep() in Program
+        string expectedFormattedTime = DateTimeOffset.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"); */
 
-[Fact]
-public void Test2()
-{
-    Assert.Equal(1, 1);
-}
+        // Act
+        var formattedTime = userInterface.ConvertFromUnixTime(unixTimestamp);
+
+        // Assert
+        Assert.Equal(expectedFormattedTime, formattedTime);
+    }
 }
