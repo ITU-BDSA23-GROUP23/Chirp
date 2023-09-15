@@ -17,6 +17,9 @@ public class Program
         [Option("read", Group = "action", Required = false, HelpText = "Reads all cheeps")]
         public bool Read { get; set; }
 
+        [Option("lines", Group = "action", Required = false, HelpText = "Specify amount of lines to read")]
+        public int? lines { get; set; }
+
         [Option("cheep", Group = "action", Required = false, HelpText = "To send a cheep, write: run --cheep \"<message>\" ")]
         public string? cheepMessage { get; set; }
     }
@@ -24,12 +27,13 @@ public class Program
 
     static void Main(string[] args)
     {
+        
         Parser.Default.ParseArguments<Options>(args)
             .WithParsed<Options>(o =>
             {
                 if (o.Read)
                 {
-                    Read();
+                    Read(o.lines);
                 }
                 if (o.cheepMessage != null) 
                 {
@@ -41,10 +45,10 @@ public class Program
             });
     }
     
-    public static void Read()
+    public static void Read(int? limit)
     {
 
-        var records = SimpleDB.ChirpDB.Instance.Read(1);
+        var records = SimpleDB.ChirpDB.Instance.Read(limit);
         var cheeps = new List<Cheep>();
         
         foreach (var record in records) 

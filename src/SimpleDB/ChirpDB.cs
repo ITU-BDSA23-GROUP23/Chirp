@@ -21,7 +21,7 @@ public sealed class ChirpDB : IDatabaseRepository<Cheep>
         path = getPath();
     }
     
-    private static ChirpDB instance = null;
+    private static ChirpDB? instance = null;
 
     public static ChirpDB Instance
     {
@@ -45,10 +45,12 @@ public sealed class ChirpDB : IDatabaseRepository<Cheep>
         var records = csv.GetRecords<Cheep>();
         var cheeps = new List<Cheep>();
 
-
-        foreach (var record in records) 
+        var i = 0;
+        foreach (var record in records.Reverse()) 
         {
+            if (limit != null && i >= limit) break;
             cheeps.Add(record);
+            i++;
         } 
         return cheeps;
     }
