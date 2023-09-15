@@ -3,19 +3,40 @@ using System.Numerics;
 using System.Text.RegularExpressions;
 using CsvHelper;
 using System.Collections;
-using CsvHelper;
-using System.Collections;
 using System.ComponentModel;
 using CsvHelper.Configuration;
 using System.Globalization;
 using System.IO;
 
-public class ChirpDB : IDatabaseRepository<Cheep>
+
+
+
+public sealed class ChirpDB : IDatabaseRepository<Cheep>
 {
-    public IEnumerable<Cheep> Read(int? limit = null)
+
+    
+    private static ChirpDB instance = null;
+
+    public static ChirpDB Instance
     {
-        using var reader = new StreamReader(getPath()); 
         
+        
+        get
+        {
+            if (instance == null)
+            {
+                instance = new ChirpDB();
+            }
+            return instance;
+        }
+    }
+
+
+
+    public IEnumerable<Cheep> Read(int? limit = null)
+    {   
+        //this code is mostly from https://joshclose.github.io/CsvHelper/getting-started/
+        using var reader = new StreamReader(getPath()); 
         using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         var records = csv.GetRecords<Cheep>();
         var cheeps = new List<Cheep>();
@@ -23,9 +44,7 @@ public class ChirpDB : IDatabaseRepository<Cheep>
 
         foreach (var record in records) 
         {
-
             cheeps.Add(record);
-            // Console.WriteLine($"{record.Id} @ {record.Name}: {record.Time}");
         } 
         return cheeps;
     }
@@ -37,7 +56,8 @@ public class ChirpDB : IDatabaseRepository<Cheep>
         // Don't write the header again.
         HasHeaderRecord = false,
     };
-        var record = new List<Cheep> {
+        var record = new List<Cheep>
+        {
              cheep
         };
         using var stream = File.Open(getPath(), FileMode.Append);
