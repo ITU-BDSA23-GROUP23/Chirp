@@ -43,8 +43,8 @@ public class Program
     
     public static void Read()
     {
-        var test = new SimpleDB.ChirpDB();
-        var records = test.Read(1);
+
+        var records = SimpleDB.ChirpDB.Instance.Read(1);
         var cheeps = new List<Cheep>();
         
         foreach (var record in records) 
@@ -75,7 +75,7 @@ public class Program
         cheepString = string.Join(" ", cheepList.ToArray());
         Console.WriteLine(author + ",\"" + cheepString + "\"," + timestamp);
 
-        var db  = new SimpleDB.ChirpDB();
+        var db  = SimpleDB.ChirpDB.Instance;
         var Cheep = new SimpleDB.Cheep {Id = author, Name = cheepString, Time = timestamp};
 
         db.Store(Cheep);

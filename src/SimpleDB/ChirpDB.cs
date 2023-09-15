@@ -14,12 +14,19 @@ using System.IO;
 public sealed class ChirpDB : IDatabaseRepository<Cheep>
 {
 
+    private string path;
+
+    private ChirpDB()
+    {
+
+        path = getPath();
+
+    }
     
     private static ChirpDB instance = null;
 
     public static ChirpDB Instance
     {
-        
         
         get
         {
@@ -36,7 +43,7 @@ public sealed class ChirpDB : IDatabaseRepository<Cheep>
     public IEnumerable<Cheep> Read(int? limit = null)
     {   
         //this code is mostly from https://joshclose.github.io/CsvHelper/getting-started/
-        using var reader = new StreamReader(getPath()); 
+        using var reader = new StreamReader(path); 
         using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         var records = csv.GetRecords<Cheep>();
         var cheeps = new List<Cheep>();
@@ -60,7 +67,7 @@ public sealed class ChirpDB : IDatabaseRepository<Cheep>
         {
              cheep
         };
-        using var stream = File.Open(getPath(), FileMode.Append);
+        using var stream = File.Open(path, FileMode.Append);
         using var writer = new StreamWriter(stream);
         using (var csv = new CsvWriter(writer, config))
         {
