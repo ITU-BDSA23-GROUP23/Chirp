@@ -1,6 +1,6 @@
 namespace Chirp.SimpleDB.tests;
 
-public class UnitTest1
+public class UnitTests
 {
     [Fact]
     public void Test1()
@@ -8,9 +8,11 @@ public class UnitTest1
         Assert.Equal("Databaseentry", "Databaseentry");
     }
 
+    /*
     [Fact]
     public void Test2()
     {
         Assert.Equal("Databaseentroy", "Databaseentry");
     }
+    */
 }

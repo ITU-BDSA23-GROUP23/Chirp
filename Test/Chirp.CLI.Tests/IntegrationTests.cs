@@ -1,22 +1,30 @@
 using System.Collections;
+using System;
+using System.IO;
 
 namespace Chirp.CLI.Tests;
 
 public class IntegrationTests
 {
-    Program program;
 
     [Fact]
-    public void ReadWriteIntegrationTest()
+    public void WriteReadIntegrationTest()
     {
+        StringWriter sw = new StringWriter();
+        Console.SetOut(sw);
         //Arrange
-        IEnumerable<string> message = new List<string> { "Ord 1", "Ord 2", "Ord 3" };
-        program = new Program();
+        IEnumerable<string> message = new List<string> { "hej" };
 
         //Act
-        program.SaveCheep(message);
+
+        Program.SaveCheep(message);
+        Program.Read();
 
         //Assert
-        Assert.
+        string expectedOutput = "hej";
+        //"Ord 1 Ord 2 Ord 3";
+        string[] outputLines = sw.ToString().Trim().Split(Environment.NewLine);
+        string lastLine = outputLines[outputLines.Length - 1];
+        Assert.Contains(expectedOutput, lastLine);
     }
 }
