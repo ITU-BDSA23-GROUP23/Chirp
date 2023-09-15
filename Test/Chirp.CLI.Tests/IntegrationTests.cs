@@ -2,19 +2,21 @@ using System.Collections;
 
 namespace Chirp.CLI.Tests;
 
-
-public class ReadWriteIntegrationTest
+public class IntegrationTests
 {
+    Program program;
+
     [Fact]
-    public void Test1()
+    public void ReadWriteIntegrationTest()
     {
         //Arrange
-        IEnumerable<string> message = new List<string> { "Ord1", "Ord 2", "Ord 3" };
+        IEnumerable<string> message = new List<string> { "Ord 1", "Ord 2", "Ord 3" };
+        program = new Program();
 
         //Act
-
+        program.SaveCheep(message);
 
         //Assert
-        Assert.Equal(1, 1);
+        Assert.
     }
 }
