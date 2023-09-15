@@ -19,22 +19,22 @@ public class ChirpDB : IDatabaseRepository<Cheep>
         var cheeps = new List<Cheep>();
 
 
-        foreach (var record in records) 
+        foreach (var record in records)
         {
 
             cheeps.Add(record);
             // Console.WriteLine($"{record.Id} @ {record.Name}: {record.Time}");
-        } 
+        }
         return cheeps;
     }
     public void Store(Cheep cheep)
     {
 
-         var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-    {
-        // Don't write the header again.
-        HasHeaderRecord = false,
-    };
+        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+        {
+            // Don't write the header again.
+            HasHeaderRecord = false,
+        };
         var record = new List<Cheep> {
              cheep
         };
