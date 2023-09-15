@@ -12,9 +12,6 @@ using SimpleDB;
 
 public class Program
 {
-    
-
-    
     public class Options
     {
         [Option("read", Group = "action", Required = false, HelpText = "Reads all cheeps")]
@@ -27,7 +24,6 @@ public class Program
 
     static void Main(string[] args)
     {
-
         Parser.Default.ParseArguments<Options>(args)
             .WithParsed<Options>(o =>
             {
@@ -47,8 +43,8 @@ public class Program
     
     public static void Read()
     {
-        var test = new SimpleDB.ChirpDB();
-        var records = test.Read(1);
+
+        var records = SimpleDB.ChirpDB.Instance.Read(1);
         var cheeps = new List<Cheep>();
         
         foreach (var record in records) 
@@ -64,11 +60,6 @@ public class Program
 
     public static void SaveCheep(IEnumerable<string> message)
     {
-        // string author = Environment.UserName; //Takes username from computer
-        // long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-        // string cheepString;
-        
-        // ArrayList cheepList = new ArrayList();
 
         string author = Environment.UserName; //Takes username from computer
         long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
@@ -84,7 +75,7 @@ public class Program
         cheepString = string.Join(" ", cheepList.ToArray());
         Console.WriteLine(author + ",\"" + cheepString + "\"," + timestamp);
 
-        var db  = new SimpleDB.ChirpDB();
+        var db  = SimpleDB.ChirpDB.Instance;
         var Cheep = new SimpleDB.Cheep {Id = author, Name = cheepString, Time = timestamp};
 
         db.Store(Cheep);
