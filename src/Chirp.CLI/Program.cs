@@ -31,23 +31,25 @@ public class Program
                 {
                     Read();
                 }
-                if (o.cheepMessage != null && o.cheepMessage.Count() > 0) 
+                if (o.cheepMessage != null && o.cheepMessage.Count() > 0)
                 {
                     SaveCheep(o.cheepMessage);
-                } else {
-                    args = new[] { "--help"};
+                }
+                else
+                {
+                    args = new[] { "--help" };
                 }
 
             });
     }
-    
+
     public static void Read()
     {
 
         var records = SimpleDB.ChirpDB.Instance.Read(1);
         var cheeps = new List<Cheep>();
-        
-        foreach (var record in records) 
+
+        foreach (var record in records)
         {
             cheeps.Add(new Cheep(record.Id, record.Name, record.Time));
         }
@@ -64,10 +66,10 @@ public class Program
         string author = Environment.UserName; //Takes username from computer
         long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         string cheepString;
-        
+
         ArrayList cheepList = new ArrayList();
-        
-       
+
+
         foreach (String word in message)
         {
             cheepList.Add(word);
@@ -75,11 +77,11 @@ public class Program
         cheepString = string.Join(" ", cheepList.ToArray());
         Console.WriteLine(author + ",\"" + cheepString + "\"," + timestamp);
 
-        var db  = SimpleDB.ChirpDB.Instance;
-        var Cheep = new SimpleDB.Cheep {Id = author, Name = cheepString, Time = timestamp};
+        var db = SimpleDB.ChirpDB.Instance;
+        var Cheep = new SimpleDB.Cheep { Id = author, Name = cheepString, Time = timestamp };
 
         db.Store(Cheep);
-        
-        
+
+
     }
 }

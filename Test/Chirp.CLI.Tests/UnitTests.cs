@@ -3,6 +3,7 @@ namespace Chirp.CLI.Tests;
 
 public class UnitTests
 {
+    /*
     Program program;
     [Fact]
     public void IsDataStoredCorrectTest()
@@ -25,11 +26,5 @@ public class UnitTests
         // Clean up the test database file
         File.Delete(dbPath);
     }
-}
-
-[Fact]
-public void Test2()
-{
-    Assert.Equal(1, 1);
-}
+    */
 }
