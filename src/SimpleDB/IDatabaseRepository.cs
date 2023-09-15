@@ -3,8 +3,6 @@ using System.Numerics;
 using System.Text.RegularExpressions;
 using CsvHelper;
 using System.Collections;
-using CsvHelper;
-using System.Collections;
 using System.ComponentModel;
 using CsvHelper.Configuration;
 using System.Globalization;
