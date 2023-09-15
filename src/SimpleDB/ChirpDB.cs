@@ -18,16 +18,13 @@ public sealed class ChirpDB : IDatabaseRepository<Cheep>
 
     private ChirpDB()
     {
-
         path = getPath();
-
     }
     
     private static ChirpDB instance = null;
 
     public static ChirpDB Instance
     {
-        
         get
         {
             if (instance == null)
@@ -57,7 +54,6 @@ public sealed class ChirpDB : IDatabaseRepository<Cheep>
     }
     public void Store(Cheep cheep)
     {
-
          var config = new CsvConfiguration(CultureInfo.InvariantCulture)
     {
         // Don't write the header again.

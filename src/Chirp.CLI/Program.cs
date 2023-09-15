@@ -18,7 +18,7 @@ public class Program
         public bool Read { get; set; }
 
         [Option("cheep", Group = "action", Required = false, HelpText = "To send a cheep, write: run --cheep \"<message>\" ")]
-        public IEnumerable<string>? cheepMessage { get; set; }
+        public string? cheepMessage { get; set; }
     }
     //Command line parser, external library: https://github.com/commandlineparser/commandline
 
@@ -31,7 +31,7 @@ public class Program
                 {
                     Read();
                 }
-                if (o.cheepMessage != null && o.cheepMessage.Count() > 0) 
+                if (o.cheepMessage != null) 
                 {
                     SaveCheep(o.cheepMessage);
                 } else {
@@ -49,7 +49,7 @@ public class Program
         
         foreach (var record in records) 
         {
-            cheeps.Add(new Cheep(record.Id, record.Name, record.Time));
+            cheeps.Add(new Cheep(record.Id, record.Message, record.Time));
         }
 
         UserInterface.PrintCheeps(cheeps);
@@ -58,28 +58,16 @@ public class Program
 
     }
 
-    public static void SaveCheep(IEnumerable<string> message)
+    public static void SaveCheep(string message)
     {
-
         string author = Environment.UserName; //Takes username from computer
         long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-        string cheepString;
-        
-        ArrayList cheepList = new ArrayList();
-        
-       
-        foreach (String word in message)
-        {
-            cheepList.Add(word);
-        }
-        cheepString = string.Join(" ", cheepList.ToArray());
-        Console.WriteLine(author + ",\"" + cheepString + "\"," + timestamp);
 
-        var db  = SimpleDB.ChirpDB.Instance;
-        var Cheep = new SimpleDB.Cheep {Id = author, Name = cheepString, Time = timestamp};
+        Console.WriteLine(author + ",\"" + message + "\"," + timestamp);
+
+        var db = SimpleDB.ChirpDB.Instance;
+        var Cheep = new SimpleDB.Cheep {Id = author, Message = message, Time = timestamp};
 
         db.Store(Cheep);
-        
-        
     }
 }

@@ -8,7 +8,7 @@ public class Cheep
         public string Id { get; set; }
 
         [Index(1)]
-        public string Name { get; set; }
+        public string Message { get; set; }
 
         [Index(2)]
         public long Time{get; set;}
