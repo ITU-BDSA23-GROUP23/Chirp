@@ -7,8 +7,29 @@ using System.ComponentModel;
 using CsvHelper.Configuration;
 using System.Globalization;
 
-public class ChirpDB : IDatabaseRepository<Cheep>
+
+
+
+public sealed class ChirpDB : IDatabaseRepository<Cheep>
 {
+
+    
+    private static ChirpDB instance = null;
+
+    public static ChirpDB Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = new ChirpDB();
+            }
+            return instance;
+        }
+    }
+
+
+
     public IEnumerable<Cheep> Read(int? limit = null)
     {   
         //this code is mostly from https://joshclose.github.io/CsvHelper/getting-started/
