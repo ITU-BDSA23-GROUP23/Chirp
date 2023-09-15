@@ -15,14 +15,7 @@ public class ChirpDB : IDatabaseRepository<Cheep>
 {
     public IEnumerable<Cheep> Read(int? limit = null)
     {
-        var path = "chirp_cli_db.csv";
-
-        if (File.Exists("src/SimpleDB/chirp_cli_db.csv"))
-        {
-            path = "src/SimpleDB/chirp_cli_db.csv";
-        }
-
-        using var reader = new StreamReader(path); 
+        using var reader = new StreamReader(getPath()); 
         
         using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         var records = csv.GetRecords<Cheep>();
@@ -43,11 +36,22 @@ public class ChirpDB : IDatabaseRepository<Cheep>
         var record = new List<Cheep> {
              cheep
         };
-        using var stream = File.Open("../SimpleDB/chirp_cli_db.csv", FileMode.Append);
+        using var stream = File.Open(getPath(), FileMode.Append);
         using var writer = new StreamWriter(stream);
         using (var csv = new CsvWriter(writer, config))
         {
             csv.WriteRecords(record);
         };
+    }
+
+    private string getPath() {
+        var path = "chirp_cli_db.csv";
+
+        if (File.Exists("src/SimpleDB/chirp_cli_db.csv"))
+        {
+            path = "src/SimpleDB/chirp_cli_db.csv";
+        }
+
+        return path;
     }
 }
