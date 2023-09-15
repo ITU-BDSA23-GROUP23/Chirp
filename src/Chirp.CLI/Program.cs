@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿namespace Chirp.CLI;
+using System.Numerics;
 using System.Text.RegularExpressions;
 using CsvHelper;
 using System.Collections;
@@ -47,7 +48,18 @@ public class Program
     public static void Read()
     {
         var test = new SimpleDB.ChirpDB();
-        var cheep = test.Read(1);
+        var records = test.Read(1);
+        var cheeps = new List<Cheep>();
+        
+        foreach (var record in records) 
+        {
+            cheeps.Add(new Cheep(record.Id, record.Name, record.Time));
+        }
+
+        UserInterface.PrintCheeps(cheeps);
+
+
+
     }
 
     public static void SaveCheep(IEnumerable<string> message)
