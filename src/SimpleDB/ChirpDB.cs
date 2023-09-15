@@ -12,7 +12,8 @@ using System.Globalization;
 public class ChirpDB : IDatabaseRepository<Cheep>
 {
     public IEnumerable<Cheep> Read(int? limit = null)
-    {
+    {   
+        //this code is mostly from https://joshclose.github.io/CsvHelper/getting-started/
         using var reader = new StreamReader("../SimpleDB/chirp_cli_db.csv");
         using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         var records = csv.GetRecords<Cheep>();
@@ -21,9 +22,7 @@ public class ChirpDB : IDatabaseRepository<Cheep>
 
         foreach (var record in records) 
         {
-
             cheeps.Add(record);
-            // Console.WriteLine($"{record.Id} @ {record.Name}: {record.Time}");
         } 
         return cheeps;
     }
@@ -35,9 +34,12 @@ public class ChirpDB : IDatabaseRepository<Cheep>
         // Don't write the header again.
         HasHeaderRecord = false,
     };
-        var record = new List<Cheep> {
+        var record = new List<Cheep>
+        {
              cheep
         };
+
+        //this code is mostly from https://joshclose.github.io/CsvHelper/getting-started/
         using var stream = File.Open("../SimpleDB/chirp_cli_db.csv", FileMode.Append);
         using var writer = new StreamWriter(stream);
         using (var csv = new CsvWriter(writer, config))

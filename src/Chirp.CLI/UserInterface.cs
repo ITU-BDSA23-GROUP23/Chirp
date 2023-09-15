@@ -6,14 +6,13 @@ using System.Numerics;
 public static class UserInterface
 {
 
-    public static DateTime ConvertFromUnixTime(long Unixtime) {
+    public static DateTime ConvertFromUnixTime(long Unixtime) 
+    {
 
         DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
         dateTime = dateTime.AddSeconds(Unixtime).ToLocalTime();
 
         return dateTime;
-
-
     } 
 
 

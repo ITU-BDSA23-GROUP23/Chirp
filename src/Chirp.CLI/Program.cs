@@ -12,9 +12,6 @@ using SimpleDB;
 
 public class Program
 {
-    
-
-    
     public class Options
     {
         [Option("read", Group = "action", Required = false, HelpText = "Reads all cheeps")]
@@ -27,7 +24,6 @@ public class Program
 
     static void Main(string[] args)
     {
-
         Parser.Default.ParseArguments<Options>(args)
             .WithParsed<Options>(o =>
             {
@@ -64,11 +60,6 @@ public class Program
 
     public static void SaveCheep(IEnumerable<string> message)
     {
-        // string author = Environment.UserName; //Takes username from computer
-        // long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-        // string cheepString;
-        
-        // ArrayList cheepList = new ArrayList();
 
         string author = Environment.UserName; //Takes username from computer
         long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
