@@ -15,7 +15,14 @@ public class ChirpDB : IDatabaseRepository<Cheep>
 {
     public IEnumerable<Cheep> Read(int? limit = null)
     {
-        using var reader = new StreamReader("src/SimpleDB/chirp_cli_db.csv"); 
+        var path = "chirp_cli_db.csv";
+
+        if (File.Exists("src/SimpleDB/chirp_cli_db.csv"))
+        {
+            path = "src/SimpleDB/chirp_cli_db.csv";
+        }
+
+        using var reader = new StreamReader(path); 
         
         using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         var records = csv.GetRecords<Cheep>();
