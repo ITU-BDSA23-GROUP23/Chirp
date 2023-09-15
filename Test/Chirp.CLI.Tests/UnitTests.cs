@@ -1,28 +1,25 @@
 namespace Chirp.CLI.Tests;
+using SimpleDB;
 
 
 public class UnitTests
 {
-    Program program;
-    UserInterface userInterface;
-
     [Fact]
     public void IsDataStoredCorrectTest()
     {
         // Arrange
         IEnumerable<string> message = new List<string> { "test" };
-        var program = new Program();
-
         var dbPath = "test_db.csv";
-        var mockDb = new ChirpDB(dbPath); // Creating a mock database to test
+        var mockDb = SimpleDB.ChirpDB.Instance; // Creating a mock database to test
 
         // Act
-        program.SaveCheep(message, mockDb);
+        Program.SaveCheep(message);
 
         // Assert
         var savedCheep = mockDb.Read();
-        Assert.Single(savedCheep); //This is while we assume we only have 1 cheep for this unit test
-        Assert.Equal(message, savedCheep[0].Name); //we say .Name because we want to compare first Cheep with msg
+        Assert.Single(savedCheep); // We assume we only have 1 cheep for this unit test
+
+        Assert.Equal(message.First(), savedCheep.First().Name); // Extract the message from the saved cheep and compare
 
         File.Delete(dbPath);  // Clean up the test database file
     }
@@ -31,16 +28,16 @@ public class UnitTests
     public void TestTimestampConversion()
     {
         // Arrange
-        long unixTimestamp = 1631712052 //This is for examples
+        long unixTimestamp = 1631712052;
         string expectedFormattedTime = "2021-09-16 09:20:52";
-        userInterface = new UserInterface();
         /*long unixTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(); //Our method for unixTimestamp in SaveCheep() in Program
         string expectedFormattedTime = DateTimeOffset.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"); */
 
         // Act
-        var formattedTime = userInterface.ConvertFromUnixTime(unixTimestamp);
+        DateTime formattedTime = UserInterface.ConvertFromUnixTime(unixTimestamp);
+        string formattedTimeAsString = formattedTime.ToString("yyyy-MM-dd HH:mm:ss");
 
         // Assert
-        Assert.Equal(expectedFormattedTime, formattedTime);
+        Assert.Equal(expectedFormattedTime, formattedTimeAsString);
     }
 }
