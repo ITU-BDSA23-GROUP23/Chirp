@@ -44,7 +44,7 @@ public class ChirpDB : IDatabaseRepository<Cheep>
         };
     }
 
-    //Returns different path when published, due to folder structure changes
+    //Returns different path, due to folder structure changes when publishing
     private string getPath() {
         var path = "chirp_cli_db.csv";
 
