@@ -47,7 +47,7 @@ public class Program
             });
     }
 
-    public static void Read(int? limit)
+    public static void Read(int? limit = 10)
     {
 
         var records = SimpleDB.ChirpDB.Instance.Read(limit);

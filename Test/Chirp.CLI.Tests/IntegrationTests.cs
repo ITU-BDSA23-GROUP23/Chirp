@@ -13,7 +13,7 @@ public class IntegrationTests
         StringWriter sw = new StringWriter();
         Console.SetOut(sw);
         //Arrange
-        IEnumerable<string> message = new List<string> { "hejtest" };
+        string message = "hejtest";
 
         //Act
 

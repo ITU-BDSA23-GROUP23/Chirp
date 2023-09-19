@@ -11,7 +11,7 @@ public class UnitTests
     public void IsDataStoredCorrectTest()
     {
         // Arrange
-        IEnumerable<string> message = new List<string> { "test" };
+        string message = "test";
         var dbPath = "test_db.csv";
         var mockDb = SimpleDB.ChirpDB.Instance; // Creating a mock database to test
 
@@ -22,7 +22,7 @@ public class UnitTests
         var savedCheep = mockDb.Read();
         Assert.Single(savedCheep); // We assume we only have 1 cheep for this unit test
 
-        Assert.Equal(message.First(), savedCheep.First().Name); // Extract the message from the saved cheep and compare
+        Assert.Equal(message, savedCheep.First().Message); // Extract the message from the saved cheep and compare
 
         File.Delete(dbPath);  // Clean up the test database file
     }
