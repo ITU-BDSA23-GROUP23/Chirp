@@ -13,6 +13,8 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 7.0.x
+      - name: test
+        run: dotnet test --no-build --verbosity normal
       - name: Build for Linux
         shell: bash
         run: |
@@ -46,8 +48,6 @@ jobs:
           tar czvf "${release_name}.tar.gz" "$release_name"
           
           rm -r "$release_name"
-      - name: test
-        run: dotnet test --no-build --verbosity normal
       - name: Publish
         uses: softprops/action-gh-release@v1
         with:
