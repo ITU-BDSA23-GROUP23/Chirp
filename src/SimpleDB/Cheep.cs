@@ -3,7 +3,7 @@ namespace SimpleDB;
 
 
 public class Cheep
-        {
+{
         [Index(0)]
         public string Id { get; set; }
 
@@ -11,5 +11,5 @@ public class Cheep
         public string Message { get; set; }
 
         [Index(2)]
-        public long Time{get; set;}
-        }
+        public long Time { get; set; }
+}

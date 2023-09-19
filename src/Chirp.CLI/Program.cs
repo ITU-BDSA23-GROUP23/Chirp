@@ -27,7 +27,7 @@ public class Program
 
     static void Main(string[] args)
     {
-        
+
         Parser.Default.ParseArguments<Options>(args)
             .WithParsed<Options>(o =>
             {
@@ -35,23 +35,25 @@ public class Program
                 {
                     Read(o.lines);
                 }
-                if (o.cheepMessage != null) 
+                if (o.cheepMessage != null)
                 {
                     SaveCheep(o.cheepMessage);
-                } else {
-                    args = new[] { "--help"};
+                }
+                else
+                {
+                    args = new[] { "--help" };
                 }
 
             });
     }
-    
+
     public static void Read(int? limit)
     {
 
         var records = SimpleDB.ChirpDB.Instance.Read(limit);
         var cheeps = new List<Cheep>();
-        
-        foreach (var record in records) 
+
+        foreach (var record in records)
         {
             cheeps.Add(new Cheep(record.Id, record.Message, record.Time));
         }
@@ -70,7 +72,7 @@ public class Program
         Console.WriteLine(author + ",\"" + message + "\"," + timestamp);
 
         var db = SimpleDB.ChirpDB.Instance;
-        var Cheep = new SimpleDB.Cheep {Id = author, Message = message, Time = timestamp};
+        var Cheep = new SimpleDB.Cheep { Id = author, Message = message, Time = timestamp };
 
         db.Store(Cheep);
     }

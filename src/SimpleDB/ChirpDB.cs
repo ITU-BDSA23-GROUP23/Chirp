@@ -20,7 +20,7 @@ public sealed class ChirpDB : IDatabaseRepository<Cheep>
     {
         path = getPath();
     }
-    
+
     private static ChirpDB? instance = null;
 
     public static ChirpDB Instance
@@ -38,29 +38,29 @@ public sealed class ChirpDB : IDatabaseRepository<Cheep>
 
 
     public IEnumerable<Cheep> Read(int? limit = null)
-    {   
+    {
         //this code is mostly from https://joshclose.github.io/CsvHelper/getting-started/
-        using var reader = new StreamReader(path); 
+        using var reader = new StreamReader(path);
         using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         var records = csv.GetRecords<Cheep>();
         var cheeps = new List<Cheep>();
 
         var i = 0;
-        foreach (var record in records.Reverse()) 
+        foreach (var record in records.Reverse())
         {
             if (limit != null && i >= limit) break;
             cheeps.Add(record);
             i++;
-        } 
+        }
         return cheeps;
     }
     public void Store(Cheep cheep)
     {
-         var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-    {
-        // Don't write the header again.
-        HasHeaderRecord = false,
-    };
+        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+        {
+            // Don't write the header again.
+            HasHeaderRecord = false,
+        };
         var record = new List<Cheep>
         {
              cheep
@@ -74,7 +74,8 @@ public sealed class ChirpDB : IDatabaseRepository<Cheep>
     }
 
     //Returns different path, due to folder structure changes when publishing
-    private string getPath() {
+    private string getPath()
+    {
         var path = "chirp_cli_db.csv";
 
         if (File.Exists("src/SimpleDB/chirp_cli_db.csv"))
