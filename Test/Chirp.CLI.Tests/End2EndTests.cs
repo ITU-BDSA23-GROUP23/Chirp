@@ -228,7 +228,7 @@ public class End2EndTests
         writer.Close();
 
         Assert.DoesNotContain(Message + "543527376383", newCheep);
-        //File.Copy(databaseCopyFilePath, databaseFilePath, true);
+        File.Copy(databaseCopyFilePath, databaseFilePath, true);
         File.Delete(databaseCopyFilePath);
     }
 }
