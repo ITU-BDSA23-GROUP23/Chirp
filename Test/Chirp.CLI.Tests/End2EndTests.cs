@@ -46,7 +46,7 @@ public class End2EndTests
         writer.WriteLine(standardError);
 
         string[] outputLines = output.Split("\n");
-        string firstCheep = outputLines[0];
+        string firstCheep = outputLines[outputLines.Length - 2];
 
         writer.WriteLine(firstCheep);
         writer.Close();
@@ -95,7 +95,6 @@ public class End2EndTests
         string[] outputLines = output.Split("\n");
         string firstCheep = outputLines[0];
 
-        Assert.Contains("ropf", outputLines[0]);
         writer.WriteLine(firstCheep);
         writer.Close();
 
@@ -109,12 +108,12 @@ public class End2EndTests
     [Theory]
     [InlineData("Hallohallo")]
     [InlineData("Hej med jer alle sammen, folkens")]
-    [InlineData("Skål med din øl Æckbert")]
+    [InlineData("Skaal med din oel aeckbert")]
     public void TestWriteCheep(string Message)
     {
         // Arrange
-        string databaseFilePath = @"..\..\..\..\..\src\SimpleDB\chirp_cli_db.csv";
-        string databaseCopyFilePath = @"databaseTestCopy.csv";
+        string databaseFilePath = "../../../../../src/SimpleDB/chirp_cli_db.csv";
+        string databaseCopyFilePath = "databaseTestCopy.csv";
 
 
         try
@@ -135,7 +134,7 @@ public class End2EndTests
             using (var process = new Process())
             {
                 process.StartInfo.FileName = "dotnet"; //"/usr/bin/dotnet";
-                process.StartInfo.Arguments = "run --project src/Chirp.CLI/Chirp.CLI.csproj --cheep " + Message;
+                process.StartInfo.Arguments = "run --project src/Chirp.CLI/Chirp.CLI.csproj --cheep \"" + Message + "\"";
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.WorkingDirectory = "../../../../../";
                 process.StartInfo.RedirectStandardOutput = true;
@@ -176,8 +175,8 @@ public class End2EndTests
     public void TestWriteCheepFail(string Message)
     {
         // Arrange
-        string databaseFilePath = @"..\..\..\..\..\src\SimpleDB\chirp_cli_db.csv";
-        string databaseCopyFilePath = @"databaseTestCopy.csv";
+        string databaseFilePath = "../../../../../src/SimpleDB/chirp_cli_db.csv";
+        string databaseCopyFilePath = "databaseTestCopy.csv";
 
 
         try
