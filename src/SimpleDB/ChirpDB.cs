@@ -3,40 +3,69 @@ using System.Numerics;
 using System.Text.RegularExpressions;
 using CsvHelper;
 using System.Collections;
-using CsvHelper;
-using System.Collections;
 using System.ComponentModel;
 using CsvHelper.Configuration;
 using System.Globalization;
 using System.IO;
 
 
-public class ChirpDB : IDatabaseRepository<Cheep>
+
+
+public sealed class ChirpDB : IDatabaseRepository<Cheep>
 {
+
+    private string path;
+
+    private ChirpDB()
+    {
+        path = getPath();
+    }
+
+    private static ChirpDB? instance = null;
+
+    public static ChirpDB Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = new ChirpDB();
+            }
+            return instance;
+        }
+    }
+
+
+
     public IEnumerable<Cheep> Read(int? limit = null)
     {
-        using var reader = new StreamReader(getPath()); 
-        
+        //this code is mostly from https://joshclose.github.io/CsvHelper/getting-started/
+        using var reader = new StreamReader(path);
         using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         var records = csv.GetRecords<Cheep>();
-        foreach (var record in records) 
+        var cheeps = new List<Cheep>();
+
+        var i = 0;
+        foreach (var record in records.Reverse())
         {
-            Console.WriteLine($"{record.Id} @ {record.Name}: {record.Time}");
-        } 
-        return records;
+            if (limit != null && i >= limit) break;
+            cheeps.Add(record);
+            i++;
+        }
+        return cheeps;
     }
     public void Store(Cheep cheep)
     {
-
-         var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-    {
-        // Don't write the header again.
-        HasHeaderRecord = false,
-    };
-        var record = new List<Cheep> {
+        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+        {
+            // Don't write the header again.
+            HasHeaderRecord = false,
+        };
+        var record = new List<Cheep>
+        {
              cheep
         };
-        using var stream = File.Open(getPath(), FileMode.Append);
+        using var stream = File.Open(path, FileMode.Append);
         using var writer = new StreamWriter(stream);
         using (var csv = new CsvWriter(writer, config))
         {
@@ -45,7 +74,8 @@ public class ChirpDB : IDatabaseRepository<Cheep>
     }
 
     //Returns different path, due to folder structure changes when publishing
-    private string getPath() {
+    private string getPath()
+    {
         var path = "chirp_cli_db.csv";
 
         if (File.Exists("src/SimpleDB/chirp_cli_db.csv"))

@@ -3,8 +3,6 @@ name: Publish on all systems
 on:
   release:
     types: [published]
-  push:
-    branches: [ "release-workflow" ]
 
 jobs:
   release:  

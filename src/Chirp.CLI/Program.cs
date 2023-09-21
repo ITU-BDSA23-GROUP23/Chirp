@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿namespace Chirp.CLI;
+using System.Numerics;
 using System.Text.RegularExpressions;
 using CsvHelper;
 using System.Collections;
@@ -8,19 +9,20 @@ using CsvHelper.Configuration;
 using System.Globalization;
 using SimpleDB;
 
+//This is for a test
 
 public class Program
 {
-    
-
-    
     public class Options
     {
         [Option("read", Group = "action", Required = false, HelpText = "Reads all cheeps")]
         public bool Read { get; set; }
 
+        [Option("lines", Group = "action", Required = false, HelpText = "Specify amount of lines to read")]
+        public int? lines { get; set; }
+
         [Option("cheep", Group = "action", Required = false, HelpText = "To send a cheep, write: run --cheep \"<message>\" ")]
-        public IEnumerable<string>? cheepMessage { get; set; }
+        public string? cheepMessage { get; set; }
     }
     //Command line parser, external library: https://github.com/commandlineparser/commandline
 
@@ -32,51 +34,47 @@ public class Program
             {
                 if (o.Read)
                 {
-                    Read();
+                    Read(o.lines);
                 }
-                if (o.cheepMessage != null && o.cheepMessage.Count() > 0) 
+                if (o.cheepMessage != null)
                 {
                     SaveCheep(o.cheepMessage);
-                } else {
-                    args = new[] { "--help"};
+                }
+                else
+                {
+                    args = new[] { "--help" };
                 }
 
             });
     }
-    
-    public static void Read()
+
+    public static void Read(int? limit = 10)
     {
-        var test = new SimpleDB.ChirpDB();
-        var cheep = test.Read(1);
+
+        var records = SimpleDB.ChirpDB.Instance.Read(limit);
+        var cheeps = new List<Cheep>();
+
+        foreach (var record in records)
+        {
+            cheeps.Add(new Cheep(record.Id, record.Message, record.Time));
+        }
+
+        UserInterface.PrintCheeps(cheeps);
+
+
+
     }
 
-    public static void SaveCheep(IEnumerable<string> message)
+    public static void SaveCheep(string message)
     {
-        // string author = Environment.UserName; //Takes username from computer
-        // long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-        // string cheepString;
-        
-        // ArrayList cheepList = new ArrayList();
-
         string author = Environment.UserName; //Takes username from computer
         long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-        string cheepString;
-        
-        ArrayList cheepList = new ArrayList();
-        
-       
-        foreach (String word in message)
-        {
-            cheepList.Add(word);
-        }
-        cheepString = string.Join(" ", cheepList.ToArray());
-        Console.WriteLine(author + ",\"" + cheepString + "\"," + timestamp);
 
-        var db  = new SimpleDB.ChirpDB();
-        var Cheep = new SimpleDB.Cheep {Id = author, Name = cheepString, Time = timestamp};
+        Console.WriteLine(author + ",\"" + message + "\"," + timestamp);
+
+        var db = SimpleDB.ChirpDB.Instance;
+        var Cheep = new SimpleDB.Cheep { Id = author, Message = message, Time = timestamp };
 
         db.Store(Cheep);
-        
-        
     }
 }
