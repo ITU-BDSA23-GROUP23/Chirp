@@ -21,9 +21,9 @@ jobs:
           tag=$(git describe --tags --abbrev=0)
           release_name="Chirp-$tag-linux-x64"
 
-          dotnet publish src/Chirp.CLI/Chirp.CLI.csproj --runtime linux-x64 -c Release -o "$release_name"
+          dotnet publish src/Chirp.CLI/Chirp.CLI.csproj --runtime linux-x64 -c Release -o "$release_name" /p:DebugType=None /p:DebugSymbols=false
 
-          tar czvf "${release_name}.tar.gz" "$release_name"
+          zip -r "${release_name}.zip" "$release_name"
           
           rm -r "$release_name"
       - name: Build for Windows
@@ -32,7 +32,7 @@ jobs:
           tag=$(git describe --tags --abbrev=0)
           release_name="Chirp-$tag-win-x64"
 
-          dotnet publish src/Chirp.CLI/Chirp.CLI.csproj --runtime win-x64 -c Release -o "$release_name"
+          dotnet publish src/Chirp.CLI/Chirp.CLI.csproj --runtime win-x64 -c Release -o "$release_name" /p:DebugType=None /p:DebugSymbols=false
 
           7z a -tzip "${release_name}.zip" "./${release_name}/*"
           
@@ -43,9 +43,9 @@ jobs:
           tag=$(git describe --tags --abbrev=0)
           release_name="Chirp-$tag-osx-x64"
 
-          dotnet publish src/Chirp.CLI/Chirp.CLI.csproj --runtime osx-x64 -c Release -o "$release_name"
+          dotnet publish src/Chirp.CLI/Chirp.CLI.csproj --runtime osx-x64 -c Release -o "$release_name" /p:DebugType=None /p:DebugSymbols=false
 
-          tar czvf "${release_name}.tar.gz" "$release_name"
+          zip -r "${release_name}.zip" "$release_name"
           
           rm -r "$release_name"
       - name: Publish
