@@ -23,7 +23,7 @@ jobs:
 
           dotnet publish src/Chirp.CLI/Chirp.CLI.csproj --runtime linux-x64 -c Release -o "$release_name" /p:DebugType=None /p:DebugSymbols=false
 
-          zip "${release_name}.zip" "$release_name"
+          zip -r "${release_name}.zip" "$release_name"
           
           rm -r "$release_name"
       - name: Build for Windows
@@ -45,7 +45,7 @@ jobs:
 
           dotnet publish src/Chirp.CLI/Chirp.CLI.csproj --runtime osx-x64 -c Release -o "$release_name" /p:DebugType=None /p:DebugSymbols=false
 
-          zip "${release_name}.zip" "$release_name"
+          zip -er "${release_name}.zip" "$release_name"
           
           rm -r "$release_name"
       - name: Publish
