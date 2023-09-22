@@ -38,9 +38,9 @@ public class Program
         bool readoption = false;
         bool storeoption = false;
 
-   
+
         Parser.Default.ParseArguments<Options>(args)
-            .WithParsed<Options> ( o =>
+            .WithParsed<Options>(o =>
             {
                 if (o.Read)
                 {
@@ -59,11 +59,13 @@ public class Program
 
             });
 
-        if(readoption) {
+        if (readoption)
+        {
             await ReadAsync(lines);
         }
-        else if(storeoption) {
-            SaveCheep(cheepMessage);
+        else if (storeoption)
+        {
+            await SaveCheepAsync(cheepMessage);
 
         }
 
@@ -80,7 +82,7 @@ public class Program
         List<Cheep> records = await client.GetFromJsonAsync<List<Cheep>>("Cheeps");
 
         var cheeps = new List<Cheep>();
-        
+
 
         foreach (var record in records)
         {
@@ -105,11 +107,8 @@ public class Program
         client.DefaultRequestHeaders.Accept.Clear();
         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         client.BaseAddress = new Uri(baseURL);
-        var db = SimpleDB.ChirpDB.Instance;
-        var cheep = new SimpleDB.Cheep { Id = author, Message = message, Time = timestamp };
+        var cheep = new Cheep(author, message, timestamp);
         var response = await client.PostAsJsonAsync("Cheep", cheep);
-        Console.WriteLine(author + ",\"" + message + "\"," + timestamp + "YAAAY!"); //For debugging
-
-        //db.Store(cheep);
+        // Console.WriteLine(author + ",\"" + message + "\"," + timestamp + "YAAAY!"); //For debugging
     }
 }
