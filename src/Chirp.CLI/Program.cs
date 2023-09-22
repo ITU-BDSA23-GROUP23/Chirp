@@ -39,7 +39,12 @@ public class Program
         client.DefaultRequestHeaders.Accept.Clear();
         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         client.BaseAddress = new Uri(baseURL);
-        List<Cheep> cheeps = await client.GetFromJsonAsync<Cheep>("Cheeps");
+        List<Cheep> cheeps = await client.GetFromJsonAsync<List<Cheep>>("Cheeps");
+        foreach (var record in cheeps) {
+
+            Console.WriteLine(record);
+        }
+        
 
 
         Parser.Default.ParseArguments<Options>(args)
