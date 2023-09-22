@@ -33,30 +33,24 @@ public class Program
 
     static async Task Main(string[] args)
     {
-        // port: 5248
-        var baseURL = "http://localhost:5248";
-        using HttpClient client = new();
-        client.DefaultRequestHeaders.Accept.Clear();
-        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-        client.BaseAddress = new Uri(baseURL);
-        List<Cheep> cheeps = await client.GetFromJsonAsync<List<Cheep>>("Cheeps");
-        foreach (var record in cheeps) {
+        int? lines = null;
+        var cheepMessage = "";
+        bool readoption = false;
+        bool storeoption = false;
 
-            Console.WriteLine(record);
-        }
-        
-
-
+   
         Parser.Default.ParseArguments<Options>(args)
-            .WithParsed<Options>(o =>
+            .WithParsed<Options> ( o =>
             {
                 if (o.Read)
                 {
-                    Read(o.lines);
+                    readoption = true;
+                    lines = o.lines;
                 }
                 if (o.cheepMessage != null)
                 {
-                    SaveCheep(o.cheepMessage);
+                    storeoption = true;
+                    cheepMessage = o.cheepMessage;
                 }
                 else
                 {
@@ -64,17 +58,33 @@ public class Program
                 }
 
             });
+
+        if(readoption) {
+            await ReadAsync(lines);
+        }
+        else if(storeoption) {
+            SaveCheep(cheepMessage);
+
+        }
+
     }
 
-    public static void Read(int? limit = 10)
+    public static async Task ReadAsync(int? limit = 10)
     {
+        // port: 5248
+        var baseURL = "http://localhost:5248";
+        using HttpClient client = new();
+        client.DefaultRequestHeaders.Accept.Clear();
+        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        client.BaseAddress = new Uri(baseURL);
+        List<Cheep> records = await client.GetFromJsonAsync<List<Cheep>>("Cheeps");
 
-        var records = SimpleDB.ChirpDB.Instance.Read(limit);
         var cheeps = new List<Cheep>();
+        
 
         foreach (var record in records)
         {
-            cheeps.Add(new Cheep(record.Id, record.Message, record.Time));
+            cheeps.Add(new Cheep(record.Author, record.Message, record.Timestamp));
         }
 
         UserInterface.PrintCheeps(cheeps);

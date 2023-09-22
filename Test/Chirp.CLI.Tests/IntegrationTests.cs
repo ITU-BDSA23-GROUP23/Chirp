@@ -49,7 +49,7 @@ public class IntegrationTests
             try
             {
                 Program.SaveCheep(message);
-                Program.Read();
+                Program.ReadAsync();
             }
             catch (Exception e)
             {
