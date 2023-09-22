@@ -8,6 +8,11 @@ using System.ComponentModel;
 using CsvHelper.Configuration;
 using System.Globalization;
 using SimpleDB;
+using System.Net;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
+
 
 //This is for a test
 
@@ -26,8 +31,16 @@ public class Program
     }
     //Command line parser, external library: https://github.com/commandlineparser/commandline
 
-    static void Main(string[] args)
+    static async Task Main(string[] args)
     {
+        // port: 5248
+        var baseURL = "http://localhost:5248";
+        using HttpClient client = new();
+        client.DefaultRequestHeaders.Accept.Clear();
+        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        client.BaseAddress = new Uri(baseURL);
+        List<Cheep> cheeps = await client.GetFromJsonAsync<Cheep>("Cheeps");
+
 
         Parser.Default.ParseArguments<Options>(args)
             .WithParsed<Options>(o =>
