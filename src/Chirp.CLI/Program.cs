@@ -34,14 +34,19 @@ public class Program
     static async Task Main(string[] args)
     {
         // port: 5248
-        /*
+
         var baseURL = "http://localhost:5248";
         using HttpClient client = new();
         client.DefaultRequestHeaders.Accept.Clear();
         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         client.BaseAddress = new Uri(baseURL);
-        var cheeps = await client.GetFromJsonAsync<Cheep>("Cheeps");
-        */
+        List<Cheep> cheeps = await client.GetFromJsonAsync<List<Cheep>>("Cheeps");
+        foreach (var record in cheeps)
+        {
+
+            Console.WriteLine(record);
+        }
+
 
 
         Parser.Default.ParseArguments<Options>(args)
