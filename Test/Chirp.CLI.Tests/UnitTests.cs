@@ -16,7 +16,7 @@ public class UnitTests
         var mockDb = SimpleDB.ChirpDB.Instance; // Creating a mock database to test
 
         // Act
-        Program.SaveCheep(message);
+        Program.SaveCheepAsync(message);
 
         // Assert
         var savedCheep = mockDb.Read();

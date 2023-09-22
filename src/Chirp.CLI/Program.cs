@@ -93,16 +93,23 @@ public class Program
 
     }
 
-    public static void SaveCheep(string message)
+    public static async Task SaveCheepAsync(string message)
     {
         string author = Environment.UserName; //Takes username from computer
         long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
-        Console.WriteLine(author + ",\"" + message + "\"," + timestamp);
+        Console.WriteLine(author + ",\"" + message + "\"," + timestamp); //For debugging
 
+        var baseURL = "http://localhost:5248";
+        using HttpClient client = new();
+        client.DefaultRequestHeaders.Accept.Clear();
+        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        client.BaseAddress = new Uri(baseURL);
         var db = SimpleDB.ChirpDB.Instance;
-        var Cheep = new SimpleDB.Cheep { Id = author, Message = message, Time = timestamp };
+        var cheep = new SimpleDB.Cheep { Id = author, Message = message, Time = timestamp };
+        var response = await client.PostAsJsonAsync("Cheep", cheep);
+        Console.WriteLine(author + ",\"" + message + "\"," + timestamp + "YAAAY!"); //For debugging
 
-        db.Store(Cheep);
+        //db.Store(cheep);
     }
 }
