@@ -48,7 +48,7 @@ public class IntegrationTests
 
             try
             {
-                Program.SaveCheep(message);
+                Program.SaveCheepAsync(message);
                 Program.Read();
             }
             catch (Exception e)
