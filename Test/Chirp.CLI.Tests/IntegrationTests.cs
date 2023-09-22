@@ -1,6 +1,7 @@
 using System.Collections;
 using System;
 using System.IO;
+using Moq;
 
 namespace Chirp.CLI.Tests;
 
@@ -11,7 +12,7 @@ public class IntegrationTests
 {
 
     [Fact]
-    public void WriteReadIntegrationTest()
+    public async Task WriteReadIntegrationTest()
     {
 
         // Arrange
@@ -45,11 +46,12 @@ public class IntegrationTests
             string message = "hejtest";
 
             //Act
+            var httpClientMock = new Mock<HttpClient>();
 
             try
             {
-                Program.SaveCheepAsync(message);
-                Program.ReadAsync();
+                await Program.SaveCheepAsync(message, httpClientMock.Object);
+                await Program.ReadAsync();
             }
             catch (Exception e)
             {

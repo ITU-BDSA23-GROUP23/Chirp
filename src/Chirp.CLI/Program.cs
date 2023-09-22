@@ -65,7 +65,8 @@ public class Program
         }
         else if (storeoption)
         {
-            await SaveCheepAsync(cheepMessage);
+            using HttpClient client = new();
+            await SaveCheepAsync(cheepMessage, client);
 
         }
 
@@ -95,20 +96,27 @@ public class Program
 
     }
 
-    public static async Task SaveCheepAsync(string message)
+    public static async Task SaveCheepAsync(string message, HttpClient httpClient)
     {
-        string author = Environment.UserName; //Takes username from computer
+        string author = Environment.UserName;
         long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
-        Console.WriteLine(author + ",\"" + message + "\"," + timestamp); //For debugging
-
         var baseURL = "http://localhost:5248";
-        using HttpClient client = new();
-        client.DefaultRequestHeaders.Accept.Clear();
-        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-        client.BaseAddress = new Uri(baseURL);
+        httpClient.DefaultRequestHeaders.Accept.Clear();
+        httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        httpClient.BaseAddress = new Uri(baseURL);
+
         var cheep = new Cheep(author, message, timestamp);
-        var response = await client.PostAsJsonAsync("Cheep", cheep);
-        // Console.WriteLine(author + ",\"" + message + "\"," + timestamp + "YAAAY!"); //For debugging
+        var response = await httpClient.PostAsJsonAsync("Cheep", cheep);
+
+        // Check if the request was successful
+        if (response.IsSuccessStatusCode)
+        {
+            Console.WriteLine("Cheep saved successfully!");
+        }
+        else
+        {
+            Console.WriteLine("Failed to save cheep. Status code: " + response.StatusCode);
+        }
     }
 }
