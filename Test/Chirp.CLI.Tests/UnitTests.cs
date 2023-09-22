@@ -2,7 +2,6 @@ namespace Chirp.CLI.Tests;
 
 using System.Runtime.CompilerServices;
 using CsvHelper.Configuration.Attributes;
-using SimpleDB;
 
 
 public class UnitTests

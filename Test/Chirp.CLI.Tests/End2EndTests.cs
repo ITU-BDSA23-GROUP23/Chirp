@@ -4,7 +4,6 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using Xunit;
-using SimpleDB;
 using CommandLine;
 
 [Collection("Filetampering")]
