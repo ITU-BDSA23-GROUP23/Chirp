@@ -46,11 +46,11 @@ public class IntegrationTests
             string message = "hejtest";
 
             //Act
-            var httpClientMock = new Mock<HttpClient>();
 
             try
             {
-                await Program.SaveCheepAsync(message, httpClientMock.Object);
+                using HttpClient client = new();
+                await Program.SaveCheepAsync("hejtest", client);
                 await Program.ReadAsync();
             }
             catch (Exception e)

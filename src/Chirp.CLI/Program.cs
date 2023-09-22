@@ -80,20 +80,13 @@ public class Program
         client.DefaultRequestHeaders.Accept.Clear();
         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         client.BaseAddress = new Uri(baseURL);
-        List<Cheep> records = await client.GetFromJsonAsync<List<Cheep>>("Cheeps");
 
-        var cheeps = new List<Cheep>();
+        var cheeps = await client.GetFromJsonAsync<List<Cheep>>("Cheeps");
 
-
-        foreach (var record in records)
+        foreach (var cheep in cheeps)
         {
-            cheeps.Add(new Cheep(record.Author, record.Message, record.Timestamp));
+            UserInterface.PrintCheeps(cheeps);
         }
-
-        UserInterface.PrintCheeps(cheeps);
-
-
-
     }
 
     public static async Task SaveCheepAsync(string message, HttpClient httpClient)
@@ -107,16 +100,9 @@ public class Program
         httpClient.BaseAddress = new Uri(baseURL);
 
         var cheep = new Cheep(author, message, timestamp);
-        var response = await httpClient.PostAsJsonAsync("Cheep", cheep);
 
-        // Check if the request was successful
-        if (response.IsSuccessStatusCode)
-        {
-            Console.WriteLine("Cheep saved successfully!");
-        }
-        else
-        {
-            Console.WriteLine("Failed to save cheep. Status code: " + response.StatusCode);
-        }
+        var response = await httpClient.PostAsJsonAsync("Cheep", cheep);
+        response.EnsureSuccessStatusCode();
+
     }
 }
