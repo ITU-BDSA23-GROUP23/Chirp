@@ -1,32 +1,42 @@
 namespace Chirp.CLI.Tests;
 
+using Xunit;
 using System.Runtime.CompilerServices;
 using CsvHelper.Configuration.Attributes;
-using SimpleDB;
-
+using Chirp.CLI;
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using CommandLine;
+using System.Net;
+using Moq;
+using System.Net.Http.Json;
 
 public class UnitTests
 {
-    [Fact(Skip = "db file is not accessable for now")]
-    public void IsDataStoredCorrectTest()
+    [Fact(Skip = "Skipped for now because of some error. The test should be COMPLETE")]
+    public async Task IsDataStoredCorrectTest() //Credit: We have used ChatGPT for the use of httpClientMock
     {
         // Arrange
-        string message = "test";
-        var dbPath = "test_db.csv";
-        var mockDb = SimpleDB.ChirpDB.Instance; // Creating a mock database to test
+        string message = "Test message";
+        var expectedCheep = new Cheep("TestAuthor", message, 12345);
+
+        var httpClientMock = new Mock<HttpClient>();
+        httpClientMock.Setup(client =>
+            client.PostAsJsonAsync("Cheep", expectedCheep, default))
+            .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK));
 
         // Act
-        Program.SaveCheep(message);
+        await Program.SaveCheepAsync(message, httpClientMock.Object);
 
         // Assert
-        var savedCheep = mockDb.Read();
-        Assert.Single(savedCheep); // We assume we only have 1 cheep for this unit test
-
-        Assert.Equal(message, savedCheep.First().Message); // Extract the message from the saved cheep and compare
-
-        File.Delete(dbPath);  // Clean up the test database file
+        httpClientMock.Verify(client =>
+    client.PostAsJsonAsync("Cheep", It.IsAny<Cheep>(), default),
+    Times.Once
+        );
     }
-
 
     [Fact(Skip = "Skipped due to timezone or format differences")]
     //[Fact]

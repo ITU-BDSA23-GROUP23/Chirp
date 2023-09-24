@@ -8,6 +8,11 @@ using System.ComponentModel;
 using CsvHelper.Configuration;
 using System.Globalization;
 using SimpleDB;
+using System.Net;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
+
 
 //This is for a test
 
@@ -26,19 +31,26 @@ public class Program
     }
     //Command line parser, external library: https://github.com/commandlineparser/commandline
 
-    static void Main(string[] args)
+    static async Task Main(string[] args)
     {
+        int? lines = null;
+        var cheepMessage = "";
+        bool readoption = false;
+        bool storeoption = false;
+
 
         Parser.Default.ParseArguments<Options>(args)
             .WithParsed<Options>(o =>
             {
                 if (o.Read)
                 {
-                    Read(o.lines);
+                    readoption = true;
+                    lines = o.lines;
                 }
                 if (o.cheepMessage != null)
                 {
-                    SaveCheep(o.cheepMessage);
+                    storeoption = true;
+                    cheepMessage = o.cheepMessage;
                 }
                 else
                 {
@@ -46,35 +58,51 @@ public class Program
                 }
 
             });
-    }
 
-    public static void Read(int? limit = 10)
-    {
-
-        var records = SimpleDB.ChirpDB.Instance.Read(limit);
-        var cheeps = new List<Cheep>();
-
-        foreach (var record in records)
+        if (readoption)
         {
-            cheeps.Add(new Cheep(record.Id, record.Message, record.Time));
+            await ReadAsync(lines);
+        }
+        else if (storeoption)
+        {
+            using HttpClient client = new();
+            await SaveCheepAsync(cheepMessage, client);
+
         }
 
-        UserInterface.PrintCheeps(cheeps);
-
-
-
     }
 
-    public static void SaveCheep(string message)
+    public static async Task ReadAsync(int? limit = 10)
     {
-        string author = Environment.UserName; //Takes username from computer
+        // port: 5248
+        var baseURL = "http://localhost:5248";
+        using HttpClient client = new();
+        client.DefaultRequestHeaders.Accept.Clear();
+        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        client.BaseAddress = new Uri(baseURL);
+
+        var cheeps = await client.GetFromJsonAsync<List<Cheep>>("Cheeps");
+
+        foreach (var cheep in cheeps)
+        {
+            UserInterface.PrintCheeps(cheeps);
+        }
+    }
+
+    public static async Task SaveCheepAsync(string message, HttpClient httpClient)
+    {
+        string author = Environment.UserName;
         long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
-        Console.WriteLine(author + ",\"" + message + "\"," + timestamp);
+        var baseURL = "http://localhost:5248";
+        httpClient.DefaultRequestHeaders.Accept.Clear();
+        httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        httpClient.BaseAddress = new Uri(baseURL);
 
-        var db = SimpleDB.ChirpDB.Instance;
-        var Cheep = new SimpleDB.Cheep { Id = author, Message = message, Time = timestamp };
+        var cheep = new Cheep(author, message, timestamp);
 
-        db.Store(Cheep);
+        var response = await httpClient.PostAsJsonAsync("Cheep", cheep);
+        response.EnsureSuccessStatusCode();
+
     }
 }

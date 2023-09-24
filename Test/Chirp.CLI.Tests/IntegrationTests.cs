@@ -1,6 +1,7 @@
 using System.Collections;
 using System;
 using System.IO;
+using Moq;
 
 namespace Chirp.CLI.Tests;
 
@@ -11,11 +12,11 @@ public class IntegrationTests
 {
 
     [Fact]
-    public void WriteReadIntegrationTest()
+    public async Task WriteReadIntegrationTest()
     {
 
         // Arrange
-        string databaseFilePath = "../../../../../src/SimpleDB/chirp_cli_db.csv";
+        string databaseFilePath = "../../../../../src/Chirp.CSVDBService/chirp_cli_db.csv";
         string databaseCopyFilePath = "databaseTestCopy.csv";
 
 
@@ -35,7 +36,7 @@ public class IntegrationTests
 
         try
         {
-            string simulatedDirectory = Path.Combine(originalWorkingDirectory, "../../../../../src/SimpleDB"); ;
+            string simulatedDirectory = Path.Combine(originalWorkingDirectory, "../../../../../src/Chirp.CSVDBService");
             Directory.SetCurrentDirectory(simulatedDirectory);
 
 
@@ -48,8 +49,9 @@ public class IntegrationTests
 
             try
             {
-                Program.SaveCheep(message);
-                Program.Read();
+                using HttpClient client = new();
+                await Program.SaveCheepAsync("hejtest", client);
+                await Program.ReadAsync();
             }
             catch (Exception e)
             {

@@ -4,7 +4,6 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using Xunit;
-using SimpleDB;
 using CommandLine;
 
 [Collection("Filetampering")]
@@ -114,7 +113,7 @@ public class End2EndTests
     public void TestWriteCheep(string Message)
     {
         // Arrange
-        string databaseFilePath = "../../../../../src/SimpleDB/chirp_cli_db.csv";
+        string databaseFilePath = "../../../../../src/Chirp.CSVDBService/chirp_cli_db.csv";
         string databaseCopyFilePath = "databaseTestCopy.csv";
 
 
@@ -177,7 +176,7 @@ public class End2EndTests
     public void TestWriteCheepFail(string Message)
     {
         // Arrange
-        string databaseFilePath = "../../../../../src/SimpleDB/chirp_cli_db.csv";
+        string databaseFilePath = "../../../../../src/Chirp.CSVDBService/chirp_cli_db.csv";
         string databaseCopyFilePath = "databaseTestCopy.csv";
 
 
@@ -242,7 +241,7 @@ public class End2EndTests
        {
 
            // Arrange
-           string databaseFilePath = "../../../../../src/SimpleDB/chirp_cli_db.csv";
+           string databaseFilePath = "../../../../../src/Chirp.CSVDBService/chirp_cli_db.csv";
            string databaseCopyFilePath = "databaseTestCopy.csv";
 
 
@@ -262,7 +261,7 @@ public class End2EndTests
 
            try
            {
-               string simulatedDirectory = Path.Combine(originalWorkingDirectory, "../../../../../src/SimpleDB"); ;
+               string simulatedDirectory = Path.Combine(originalWorkingDirectory, "../../../../../src/Chirp.CSVDBService");
                Directory.SetCurrentDirectory(simulatedDirectory);
 
 
