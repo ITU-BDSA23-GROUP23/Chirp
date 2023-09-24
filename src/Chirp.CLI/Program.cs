@@ -75,7 +75,7 @@ public class Program
     public static async Task ReadAsync(int? limit = 10)
     {
         // port: 5248
-        var baseURL = "http://localhost:5248";
+        var baseURL = "https://bdsagroup23chirpremotedb.azurewebsites.net/";
         using HttpClient client = new();
         client.DefaultRequestHeaders.Accept.Clear();
         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -94,7 +94,7 @@ public class Program
         string author = Environment.UserName;
         long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
-        var baseURL = "http://localhost:5248";
+        var baseURL = "https://bdsagroup23chirpremotedb.azurewebsites.net/";
         httpClient.DefaultRequestHeaders.Accept.Clear();
         httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         httpClient.BaseAddress = new Uri(baseURL);
