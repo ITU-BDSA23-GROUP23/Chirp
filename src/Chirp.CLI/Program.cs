@@ -83,9 +83,12 @@ public class Program
 
         var cheeps = await client.GetFromJsonAsync<List<Cheep>>("Cheeps");
 
+        var i = 0;
         foreach (var cheep in cheeps)
         {
-            UserInterface.PrintCheeps(cheeps);
+            if (i >= limit) return;
+            UserInterface.PrintCheep(cheep);
+            i++;
         }
     }
 

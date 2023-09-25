@@ -16,12 +16,8 @@ public static class UserInterface
     } 
 
 
-    public static void PrintCheeps(IEnumerable<Cheep> cheeps)
+    public static void PrintCheep(Cheep cheep)
     {
-        foreach (var cheep in cheeps)
-        {
-          
-            Console.WriteLine($"{cheep.Author} @ {ConvertFromUnixTime(cheep.Timestamp)}: {cheep.Message}");
-        }
+        Console.WriteLine($"{cheep.Author} @ {ConvertFromUnixTime(cheep.Timestamp)}: {cheep.Message}");
     }
 }

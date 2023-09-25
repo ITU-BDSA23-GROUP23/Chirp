@@ -15,7 +15,7 @@ public class IntegrationTests
         string message = "TestMessage";
         long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
-        var baseURL = "http://localhost:5248";
+        var baseURL = "https://bdsagroup23chirpremotedb.azurewebsites.net";
         using HttpClient client = new();
         client.DefaultRequestHeaders.Accept.Clear();
         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -41,7 +41,7 @@ public class IntegrationTests
         string message = "TestMessage";
         long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
-        var baseURL = "http://localhost:5248";
+        var baseURL = "https://bdsagroup23chirpremotedb.azurewebsites.net";
         using HttpClient client = new();
         client.DefaultRequestHeaders.Accept.Clear();
         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -69,7 +69,7 @@ public class IntegrationTests
         string message = "TestMessage";
         long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
-        var baseURL = "http://localhost:5248";
+        var baseURL = "https://bdsagroup23chirpremotedb.azurewebsites.net";
         using HttpClient client = new();
         client.DefaultRequestHeaders.Accept.Clear();
         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -91,7 +91,7 @@ public class IntegrationTests
         string message = "TestMessage";
         long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
-        var baseURL = "http://localhost:5248";
+        var baseURL = "https://bdsagroup23chirpremotedb.azurewebsites.net";
         using HttpClient client = new();
         client.DefaultRequestHeaders.Accept.Clear();
         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
