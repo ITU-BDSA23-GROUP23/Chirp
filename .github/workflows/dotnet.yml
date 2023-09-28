@@ -5,9 +5,9 @@ name: .NET Build and test
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "chirp_cli" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "chirp_cli" ]
 
 jobs:
   build:
