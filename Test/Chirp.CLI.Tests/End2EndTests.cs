@@ -10,7 +10,8 @@ using CommandLine;
 
 public class End2EndTests
 {
-    [Fact(Skip = "Skipped for now due to Azure incompatibility")]
+    //[Fact(Skip = "Skipped for now due to Azure incompatibility")]
+    [Fact]
     public void TestReadCheeps()
     {
         // Arrange
@@ -37,7 +38,7 @@ public class End2EndTests
 
 
         // Assert
-        // This is what it looks like on tpep's pc: // ropf @ 01 / 08 / 2023 14.09.20: Hello, BDSA students!
+        // This is what it looks like on tpep's pc: // habr @ 25/09/2023 12.40.21: Hello epic people
         // But we want to make the test work for all pc's and since the date format changes, we found this to be specific enough:
 
         string filePath = "ReadEndToEndTestData.txt";
@@ -51,8 +52,8 @@ public class End2EndTests
         writer.WriteLine(firstCheep);
         writer.Close();
 
-        Assert.StartsWith("ropf", firstCheep);
-        Assert.Contains("Hello, BDSA students!", firstCheep); // Assert.EndsWith("Hello, BDSA students!" For some reason, it doesn't work with assert.Endswith. Error: Assert.EndsWith() Failure:    //Expected:    Hello, BDSA students!  //Actual:   ···ello, BDSA students!
+        Assert.StartsWith("habr", firstCheep);
+        Assert.Contains("Hello epic people", firstCheep); // Assert.EndsWith("Hello epic people" For some reason, it doesn't work with assert.Endswith. Error: Assert.EndsWith() Failure:    //Expected:    Hello, BDSA students!  //Actual:   ···ello, BDSA students!
 
         // Timezone specific: //Assert.Contains("14", firstCheep);
     }
@@ -231,75 +232,4 @@ public class End2EndTests
         File.Copy(databaseCopyFilePath, databaseFilePath, true);
         File.Delete(databaseCopyFilePath);
     }
-
-
-
-    //[Fact(Skip = "This test could ruin other tests, as it changes the directory, and our tests seem to run parallel.")]
-    /*
-       [Fact]
-       public void WriteReadIntegrationTest()
-       {
-
-           // Arrange
-           string databaseFilePath = "../../../../../src/Chirp.CSVDBService/chirp_cli_db.csv";
-           string databaseCopyFilePath = "databaseTestCopy.csv";
-
-
-           try
-           {
-               // Copy the file from the source to the destination
-               File.Copy(databaseFilePath, databaseCopyFilePath, true);
-
-               Console.WriteLine("File copied successfully.");
-           }
-           catch (IOException e)
-           {
-               Console.WriteLine($"An error occurred while copying the file: {e.Message}");
-           }
-
-           string originalWorkingDirectory = Environment.CurrentDirectory;
-
-           try
-           {
-               string simulatedDirectory = Path.Combine(originalWorkingDirectory, "../../../../../src/Chirp.CSVDBService");
-               Directory.SetCurrentDirectory(simulatedDirectory);
-
-
-
-               StringWriter sw = new StringWriter();
-               Console.SetOut(sw);
-               string message = "hejtest";
-
-               //Act
-
-               try
-               {
-                   Program.SaveCheep(message);
-                   Program.Read();
-               }
-               catch (Exception e)
-               {
-                   Assert.Equal("Act failed!", e.Message);
-               }
-
-
-
-               //Assert
-               string expectedOutput = "hejtest";
-               //"Ord 1 Ord 2 Ord 3";
-               string[] outputLines = sw.ToString().Trim().Split("\n");
-               string lastLine = outputLines[0];
-               Assert.Contains(expectedOutput, lastLine);
-           }
-           catch (Exception e)
-           { Assert.Equal("Act failed!", e.Message); }
-           finally
-           {
-               Directory.SetCurrentDirectory(originalWorkingDirectory);
-               File.Copy(databaseCopyFilePath, databaseFilePath, true);
-               File.Delete(databaseCopyFilePath);
-           }
-       }
-       */
-
 }

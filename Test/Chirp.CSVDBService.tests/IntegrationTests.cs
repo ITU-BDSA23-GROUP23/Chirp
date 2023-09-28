@@ -11,9 +11,6 @@ public class IntegrationTests
     public async Task HTTPGetCheepsTest()
     {
         // Arrange
-        string author = "TestAuthor"; //Takes username from computer
-        string message = "TestMessage";
-        long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
         var baseURL = "https://bdsagroup23chirpremotedb.azurewebsites.net";
         using HttpClient client = new();
@@ -22,10 +19,7 @@ public class IntegrationTests
         client.BaseAddress = new Uri(baseURL);
 
         // Act
-        var cheep = new Cheep(author, message, timestamp);
-        //var response = await client.PostAsJsonAsync("Cheep", cheep);
         var response = await client.GetAsync("Cheeps");
-        //response.HttpResponseMessage.Equals(200);
         var cheepList = await response.Content.ReadFromJsonAsync<List<Cheep>>();
 
         // Assert
@@ -37,9 +31,6 @@ public class IntegrationTests
     public async Task HTTPGetCheepsTestFail()
     {
         // Arrange
-        string author = "TestAuthor"; //Takes username from computer
-        string message = "TestMessage";
-        long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
         var baseURL = "https://bdsagroup23chirpremotedb.azurewebsites.net";
         using HttpClient client = new();
@@ -48,14 +39,11 @@ public class IntegrationTests
         client.BaseAddress = new Uri(baseURL);
 
         // Act
-        var cheep = new Cheep(author, message, timestamp);
-        //var response = await client.PostAsJsonAsync("Cheep", cheep);
         var response = await client.GetAsync("Cheeps");
-        //response.HttpResponseMessage.Equals(200);
         var cheepList = await response.Content.ReadFromJsonAsync<List<Cheep>>();
 
         // Assert
-        Assert.False(cheepList is List<String>);
+        Assert.False(cheepList is List<String>); // purposely checks for the wrong type of list.
         Assert.NotEqual(201, (int)response.StatusCode);
     }
 
