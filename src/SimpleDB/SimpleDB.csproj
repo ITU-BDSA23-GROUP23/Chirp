@@ -8,9 +8,9 @@
 
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="30.0.1" />
-    <None Include="*.csv">
+    <!--None Include="*.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </None-->
   </ItemGroup>
 
 
