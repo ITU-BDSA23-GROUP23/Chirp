@@ -2,7 +2,6 @@ public record CheepViewModel(string Author, string Message, string Timestamp);
 
 public interface ICheepService
 {
-
     public List<CheepViewModel> GetCheeps();
     public List<CheepViewModel> GetCheepsFromAuthor(string author);
 }
@@ -10,35 +9,17 @@ public interface ICheepService
 public class CheepService : ICheepService
 {
     // These would normally be loaded from a database for example
-    private readonly string _databasePath;
-    public CheepService(string databasePath)
-    {
-        _databasePath = databasePath;
-    }
+    DBFacade dBFacade;
 
     public List<CheepViewModel> GetCheeps()
     {
-        return GetCheepsFromQuery("SELECT * FROM message");
+        return dBFacade.GetCheeps();
     }
 
     public List<CheepViewModel> GetCheepsFromAuthor(string author)
     {
         // filter by the provided author name
-        string query = $"SELECT * FROM message WHERE author_id = (SELECT user_id FROM user WHERE username = '{author}');";
-        return GetCheepsFromQuery(query);
-    }
-    private List<CheepViewModel> GetCheepsFromQuery(string query)
-    {
-        List<CheepViewModel> cheeps = new List<CheepViewModel>();
-        using (var connection = new SqliteConnection($"Data Source={_databasePath}"))
-        {
-            connection.Open();
-
-            var command = cnnection.CreateCommand();
-            query = @"SELECT * FROM message ORDER by message.pub_date desc";
-            command.CommandText = query;
-        }
-        cheeps.Add(new CheepViewModel(author, message, timestamp));
+        return dBFacade.GetCheepsFromAuthor(author);
     }
 
     private static string UnixTimeStampToDateTimeString(double unixTimeStamp)
