@@ -1,48 +1,44 @@
-using System.Runtime.InteropServices;
-
-public record CheepViewModel(string Author, string Message, long Timestamp);
+public record CheepViewModel(string Author, string Message, string Timestamp);
 
 public interface ICheepService
 {
+
     public List<CheepViewModel> GetCheeps();
     public List<CheepViewModel> GetCheepsFromAuthor(string author);
 }
 
 public class CheepService : ICheepService
 {
-    private static HttpClient? client;
-
-    public CheepService() {
-                // port: 5248
-        var baseURL = "https://bdsagroup23chirpremotedb.azurewebsites.net/";
-        client = new();
-        client.DefaultRequestHeaders.Accept.Clear();
-        //client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-        client.BaseAddress = new Uri(baseURL);
-
-        var CheepTask = new Task(async () => 
-        {
-           List<CheepViewModel>? _nullable_cheeps = await client.GetFromJsonAsync<List<CheepViewModel>>("Cheeps");
-           if (_nullable_cheeps != null) {
-                _cheeps = _nullable_cheeps;
-           }
-        });
-        CheepTask.Start();
-        CheepTask.Wait();
-    }
-
     // These would normally be loaded from a database for example
-    private static List<CheepViewModel> _cheeps = new();
+    private readonly string _databasePath;
+    public CheepService(string databasePath)
+    {
+        _databasePath = databasePath;
+    }
 
     public List<CheepViewModel> GetCheeps()
     {
-        return _cheeps;
+        return GetCheepsFromQuery("SELECT * FROM message");
     }
 
     public List<CheepViewModel> GetCheepsFromAuthor(string author)
     {
         // filter by the provided author name
-        return _cheeps.Where(x => x.Author == author).ToList();
+        string query = $"SELECT * FROM message WHERE author_id = (SELECT user_id FROM user WHERE username = '{author}');";
+        return GetCheepsFromQuery(query);
+    }
+    private List<CheepViewModel> GetCheepsFromQuery(string query)
+    {
+        List<CheepViewModel> cheeps = new List<CheepViewModel>();
+        using (var connection = new SqliteConnection($"Data Source={_databasePath}"))
+        {
+            connection.Open();
+
+            var command = cnnection.CreateCommand();
+            query = @"SELECT * FROM message ORDER by message.pub_date desc";
+            command.CommandText = query;
+        }
+        cheeps.Add(new CheepViewModel(author, message, timestamp));
     }
 
     private static string UnixTimeStampToDateTimeString(double unixTimeStamp)
