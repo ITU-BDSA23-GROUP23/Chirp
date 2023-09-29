@@ -9,7 +9,7 @@ public interface ICheepService
 public class CheepService : ICheepService
 {
     // These would normally be loaded from a database for example
-    DBFacade dBFacade;
+    private readonly DBFacade dBFacade;
 
     public List<CheepViewModel> GetCheeps()
     {
