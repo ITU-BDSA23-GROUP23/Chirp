@@ -1,4 +1,6 @@
-public record CheepViewModel(string Author, string Message, string Timestamp);
+using System.Runtime.InteropServices;
+
+public record CheepViewModel(string Author, string Message, long Timestamp);
 
 public interface ICheepService
 {
@@ -8,12 +10,29 @@ public interface ICheepService
 
 public class CheepService : ICheepService
 {
-    // These would normally be loaded from a database for example
-    private static readonly List<CheepViewModel> _cheeps = new()
+    private static HttpClient? client;
+
+    public CheepService() {
+                // port: 5248
+        var baseURL = "https://bdsagroup23chirpremotedb.azurewebsites.net/";
+        client = new();
+        client.DefaultRequestHeaders.Accept.Clear();
+        //client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        client.BaseAddress = new Uri(baseURL);
+
+        var CheepTask = new Task(async () => 
         {
-            new CheepViewModel("Helge", "Hello, BDSA students!", UnixTimeStampToDateTimeString(1690892208)),
-            new CheepViewModel("Rasmus", "Hej, velkommen til kurset.", UnixTimeStampToDateTimeString(1690895308)),
-        };
+           List<CheepViewModel>? _nullable_cheeps = await client.GetFromJsonAsync<List<CheepViewModel>>("Cheeps");
+           if (_nullable_cheeps != null) {
+                _cheeps = _nullable_cheeps;
+           }
+        });
+        CheepTask.Start();
+        CheepTask.Wait();
+    }
+
+    // These would normally be loaded from a database for example
+    private static List<CheepViewModel> _cheeps = new();
 
     public List<CheepViewModel> GetCheeps()
     {

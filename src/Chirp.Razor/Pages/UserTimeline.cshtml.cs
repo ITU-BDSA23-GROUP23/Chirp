@@ -8,9 +8,10 @@ public class UserTimelineModel : PageModel
     private readonly ICheepService _service;
     public List<CheepViewModel> Cheeps { get; set; }
 
-    public UserTimelineModel(ICheepService service)
+   public UserTimelineModel(ICheepService service)
     {
         _service = service;
+        Cheeps = service.GetCheeps();
     }
 
     public ActionResult OnGet(string author)
