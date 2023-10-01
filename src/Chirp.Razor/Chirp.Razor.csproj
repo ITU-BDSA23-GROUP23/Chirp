@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Chirp.SQLite\Chirp.SQLite.csproj" />
+    <ProjectReference Include="src/Chirp.SQLite/Chirp.SQLite.csproj" />
   </ItemGroup>
 
 </Project>
