@@ -12,4 +12,8 @@
     <EmbeddedResource Include="data/**/*" />
   </ItemGroup>
 
+   <ItemGroup>
+     <ProjectReference Include="src/Chirp.Razor/Chirp.Razor.csproj" />
+   </ItemGroup>
+
 </Project>

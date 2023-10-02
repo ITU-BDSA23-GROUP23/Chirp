@@ -1,25 +1,23 @@
 using Chirp.Razor;
 
-public record CheepViewModel(string Author, string Message, string Timestamp);
-
 public interface ICheepService
 {
-    public List<CheepViewModel> GetCheeps();
-    public List<CheepViewModel> GetCheepsFromAuthor(string author);
+    public List<DBFacade.CheepViewModel> GetCheeps();
+    public List<DBFacade.CheepViewModel> GetCheepsFromAuthor(string author);
 }
 
 public class CheepService : ICheepService
 {
     // These would normally be loaded from a database for example
-    private readonly string CHIRPDBPATH = "/tmp/chirp.db";
-    private readonly DBFacade dBFacade;
+    private static readonly string CHIRPDBPATH = "/tmp/chirp.db";
+    private readonly DBFacade dBFacade = new(CHIRPDBPATH);
 
-    public List<CheepViewModel> GetCheeps()
+    public List<DBFacade.CheepViewModel> GetCheeps()
     {
         return dBFacade.GetCheeps();
     }
 
-    public List<CheepViewModel> GetCheepsFromAuthor(string author)
+    public List<DBFacade.CheepViewModel> GetCheepsFromAuthor(string author)
     {
         // filter by the provided author name
         return dBFacade.GetCheepsFromAuthor(author);

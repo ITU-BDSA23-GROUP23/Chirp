@@ -9,7 +9,14 @@ namespace Chirp.Razor
     public class DBFacade
     {
         public record CheepViewModel(string Author, string Message, string Timestamp);
-        private readonly string _CHIRPDBPATH = "/tmp/chirp.db";
+        private readonly string _CHIRPDBPATH;
+
+        private List<CheepViewModel> cheeps = new();
+
+        public string Author { get; private set; }
+        public string Message { get; private set; }
+        public string Timestamp { get; private set; }
+
         public DBFacade(string CHIRPDBPATH)
         {
             _CHIRPDBPATH = CHIRPDBPATH;
@@ -17,19 +24,20 @@ namespace Chirp.Razor
 
         public List<CheepViewModel> GetCheeps()
         {
-            return GetCheepsFromQuery("SELECT * FROM message");
+            var query = @"SELECT * FROM message ORDER by message.pub_date desc";
+            cheeps = GetCheepsFromQuery(query);
+            return cheeps;
         }
 
         public List<CheepViewModel> GetCheepsFromAuthor(string author)
         {
             // filter by the provided author name
             string query = $"SELECT * FROM message WHERE author_id = (SELECT user_id FROM user WHERE username = '{author}');";
-            return GetCheepsFromQuery(query);
+            cheeps = GetCheepsFromQuery(query);
+            return cheeps;
         }
         private List<CheepViewModel> GetCheepsFromQuery(string query)
         {
-            List<CheepViewModel> cheeps = new List<CheepViewModel>();
-
             using (var connection = new SqliteConnection($"Data Source={_CHIRPDBPATH}"))
             {
                 connection.Open();
