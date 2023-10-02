@@ -11,8 +11,8 @@
     <EmbeddedResource Include="data/**/*" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="src/Chirp.SQLite/Chirp.SQLite.csproj" />
-  </ItemGroup>
+   <ItemGroup>
+     <ProjectReference Include="..\Chirp.SQLite\Chirp.SQLite.csproj" />
+   </ItemGroup>
 
 </Project>
