@@ -17,6 +17,9 @@ namespace Chirp.Razor
             if (!File.Exists(CHIRPDBPATH)) {
                 CHIRPDBPATH = "../Chirp.SQLite/data/chirp.db";
             }
+            if (!File.Exists(CHIRPDBPATH)) {
+                CHIRPDBPATH = "chirp.db";
+            }
         }
 
         public List<CheepViewModel> GetCheeps()

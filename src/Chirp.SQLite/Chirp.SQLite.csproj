@@ -16,4 +16,8 @@
      <ProjectReference Include="src/Chirp.Razor/Chirp.Razor.csproj" />
    </ItemGroup>
 
+       <None Include="*.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+
 </Project>
