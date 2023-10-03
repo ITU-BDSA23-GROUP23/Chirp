@@ -9,23 +9,24 @@ namespace Chirp.Razor
     public class DBFacade
     {
         public record CheepViewModel(string Author, string Message, string Timestamp);
-        private readonly string _CHIRPDBPATH;
+        private static readonly string CHIRPDBPATH = Environment.GetEnvironmentVariable("CHIRPDBPATH") is not null?
+                                                     Environment.GetEnvironmentVariable("CHIRPDBPATH"):
+                                                     "/tmp/chirp.db";
 
         private List<CheepViewModel> cheeps = new();
 
-        public string Author { get; private set; }
-        public string Message { get; private set; }
-        public string Timestamp { get; private set; }
-
-        public DBFacade(string CHIRPDBPATH)
+        public DBFacade()
         {
-            _CHIRPDBPATH = CHIRPDBPATH;
+            if (!File.Exists(CHIRPDBPATH)) {
+                File.Create(CHIRPDBPATH);
+            }
         }
 
         public List<CheepViewModel> GetCheeps()
         {
             var query = @"SELECT * FROM message ORDER by message.pub_date desc";
             cheeps = GetCheepsFromQuery(query);
+            Console.WriteLine("", cheeps.Count);
             return cheeps;
         }
 
@@ -38,17 +39,19 @@ namespace Chirp.Razor
         }
         private List<CheepViewModel> GetCheepsFromQuery(string query)
         {
-            using (var connection = new SqliteConnection($"Data Source={_CHIRPDBPATH}"))
+            using (var connection = new SqliteConnection($"Data Source={CHIRPDBPATH}"))
             {
                 connection.Open();
 
                 var command = connection.CreateCommand();
-                query = @"SELECT * FROM message ORDER by message.pub_date desc";
+                //query = @"SELECT * FROM message ORDER by message.pub_date desc";
                 command.CommandText = query;
                 using var reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    cheeps.Add(new CheepViewModel(Author, Message, Timestamp));
+                    var dataRecord = (IDataRecord)reader;
+                    Console.WriteLine("{0}, {1}, {2}, {3}", dataRecord[0], dataRecord[1], dataRecord[2], dataRecord[3]);
+                    //cheeps.Add(new CheepViewModel(dataRecord[1], Message, Timestamp));
                 }
             }
             return cheeps;

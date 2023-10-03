@@ -8,9 +8,7 @@ public interface ICheepService
 
 public class CheepService : ICheepService
 {
-    // These would normally be loaded from a database for example
-    private static readonly string CHIRPDBPATH = "/tmp/chirp.db";
-    private readonly DBFacade dBFacade = new(CHIRPDBPATH);
+    private readonly DBFacade dBFacade = new();
 
     public List<DBFacade.CheepViewModel> GetCheeps()
     {

@@ -1,4 +1,9 @@
-﻿using System.Data;
+﻿/*
+THIS IS NOT CODE WE RUN, IT IS EXAMPLE CODE FOR REFERENCE
+
+*/
+
+using System.Data;
 using Microsoft.Data.Sqlite;
 
 var sqlDBFilePath = "/tmp/chirp.db";
