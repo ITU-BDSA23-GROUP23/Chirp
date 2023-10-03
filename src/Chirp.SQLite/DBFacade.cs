@@ -9,13 +9,13 @@ namespace Chirp.Razor
     public class DBFacade
     {
         public record CheepViewModel(string Author, string Message, string Timestamp);
-        private static readonly string CHIRPDBPATH = Environment.GetEnvironmentVariable("CHIRPDBPATH") is not null?
+        private static string CHIRPDBPATH = Environment.GetEnvironmentVariable("CHIRPDBPATH") is not null?
                                                      Environment.GetEnvironmentVariable("CHIRPDBPATH"):
                                                      "/tmp/chirp.db";
         public DBFacade()
         {
             if (!File.Exists(CHIRPDBPATH)) {
-                File.Create(CHIRPDBPATH);
+                CHIRPDBPATH = "../Chirp.SQLite/chirp.db";
             }
         }
 
