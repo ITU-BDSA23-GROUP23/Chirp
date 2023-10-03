@@ -10,6 +10,9 @@ on:
       - development
   workflow_dispatch:
 
+env:
+  AZURE_WEBAPP_PACKAGE_PATH: './src/Chirp.Razor'
+
 jobs:
   build:
     runs-on: ubuntu-latest
