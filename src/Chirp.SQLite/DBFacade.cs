@@ -12,9 +12,6 @@ namespace Chirp.Razor
         private static readonly string CHIRPDBPATH = Environment.GetEnvironmentVariable("CHIRPDBPATH") is not null?
                                                      Environment.GetEnvironmentVariable("CHIRPDBPATH"):
                                                      "/tmp/chirp.db";
-
-        private List<CheepViewModel> cheeps = new();
-
         public DBFacade()
         {
             if (!File.Exists(CHIRPDBPATH)) {
@@ -25,8 +22,7 @@ namespace Chirp.Razor
         public List<CheepViewModel> GetCheeps()
         {
             var query = @"SELECT * FROM message ORDER by message.pub_date desc";
-            cheeps = GetCheepsFromQuery(query);
-            Console.WriteLine("", cheeps.Count);
+            var cheeps = GetCheepsFromQuery(query);
             return cheeps;
         }
 
@@ -34,11 +30,13 @@ namespace Chirp.Razor
         {
             // filter by the provided author name
             string query = $"SELECT * FROM message WHERE author_id = (SELECT user_id FROM user WHERE username = '{author}');";
-            cheeps = GetCheepsFromQuery(query);
+            var cheeps = GetCheepsFromQuery(query);
             return cheeps;
         }
         private List<CheepViewModel> GetCheepsFromQuery(string query)
         {
+            List<CheepViewModel> cheeps = new();
+
             using (var connection = new SqliteConnection($"Data Source={CHIRPDBPATH}"))
             {
                 connection.Open();
@@ -51,7 +49,7 @@ namespace Chirp.Razor
                 {
                     var dataRecord = (IDataRecord)reader;
                     Console.WriteLine("{0}, {1}, {2}, {3}", dataRecord[0], dataRecord[1], dataRecord[2], dataRecord[3]);
-                    //cheeps.Add(new CheepViewModel(dataRecord[1], Message, Timestamp));
+                    cheeps.Add(new CheepViewModel(String.Format("{0}", dataRecord[1]), String.Format("{0}", dataRecord[2]), String.Format("{0}", dataRecord[3])));
                 }
             }
             return cheeps;
