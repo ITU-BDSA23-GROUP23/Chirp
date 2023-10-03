@@ -15,7 +15,7 @@ namespace Chirp.Razor
         public DBFacade()
         {
             if (!File.Exists(CHIRPDBPATH)) {
-                CHIRPDBPATH = "../Chirp.SQLite/chirp.db";
+                CHIRPDBPATH = "../Chirp.SQLite/data/chirp.db";
             }
         }
 
