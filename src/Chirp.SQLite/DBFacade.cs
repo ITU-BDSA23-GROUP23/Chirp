@@ -29,7 +29,8 @@ namespace Chirp.Razor
         public List<CheepViewModel> GetCheepsFromAuthor(string author)
         {
             // filter by the provided author name
-            string query = $"SELECT * FROM message WHERE author_id = (SELECT user_id FROM user WHERE username = '{author}');";
+            //string query = $"SELECT * FROM message WHERE author_id = (SELECT user_id FROM user WHERE username = '{author}');";
+            string query = $"SELECT * FROM message WHERE author_id = {author} ORDER by message.pub_date desc";
             var cheeps = GetCheepsFromQuery(query);
             return cheeps;
         }
@@ -48,7 +49,7 @@ namespace Chirp.Razor
                 while (reader.Read())
                 {
                     var dataRecord = (IDataRecord)reader;
-                    Console.WriteLine("{0}, {1}, {2}, {3}", dataRecord[0], dataRecord[1], dataRecord[2], dataRecord[3]);
+                    //Console.WriteLine("{0}, {1}, {2}, {3}", dataRecord[0], dataRecord[1], dataRecord[2], dataRecord[3]);
                     cheeps.Add(new CheepViewModel(String.Format("{0}", dataRecord[1]), String.Format("{0}", dataRecord[2]), String.Format("{0}", dataRecord[3])));
                 }
             }
