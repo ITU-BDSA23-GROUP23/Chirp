@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleDB", "src\SimpleDB\Si
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chirp.SQLite", "src\Chirp.SQLite\Chirp.SQLite.csproj", "{A2474790-21A0-4BEA-9BA6-36276F4401C6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chirp.Razor.Tests", "Test\Chirp.Razor.Tests\Chirp.Razor.Tests.csproj", "{69BD49F3-D6B4-40BB-8A10-76F8FEF0C710}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{A2474790-21A0-4BEA-9BA6-36276F4401C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2474790-21A0-4BEA-9BA6-36276F4401C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2474790-21A0-4BEA-9BA6-36276F4401C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69BD49F3-D6B4-40BB-8A10-76F8FEF0C710}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69BD49F3-D6B4-40BB-8A10-76F8FEF0C710}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69BD49F3-D6B4-40BB-8A10-76F8FEF0C710}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69BD49F3-D6B4-40BB-8A10-76F8FEF0C710}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +80,7 @@ Global
 		{3EF03AD2-6763-4B6F-A4E9-DA112460E317} = {4D6B7DE4-28B4-4824-8EC1-085B49CEB8F9}
 		{DA826601-F2A2-4880-AFB2-DD0F22EF4B99} = {4D6B7DE4-28B4-4824-8EC1-085B49CEB8F9}
 		{A2474790-21A0-4BEA-9BA6-36276F4401C6} = {4D6B7DE4-28B4-4824-8EC1-085B49CEB8F9}
+		{69BD49F3-D6B4-40BB-8A10-76F8FEF0C710} = {626515A7-1E55-47A2-A67B-0D7F3CBFFDF6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6244B08D-7579-435A-B577-FB6D4A998F79}
