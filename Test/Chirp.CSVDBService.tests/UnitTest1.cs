@@ -1,1 +1,0 @@
-namespace Chirp.CSVDBService.tests;
