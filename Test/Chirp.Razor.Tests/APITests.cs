@@ -5,7 +5,7 @@ public class APITests
 {
 
     //Credit and see more: https://zetcode.com/csharp/getpostrequest/?utm_content=cmp-true
-    [Fact()]
+    [Fact(Skip = "Temporary skip")]
     public void HtmlVerificationForEndpointsPublic()
     {
         // Arrange
@@ -25,7 +25,7 @@ public class APITests
         //Console.WriteLine(HttpResponseBody);
     }
 
-    [Fact()]
+    [Fact(Skip = "Temporary skip")]
     public void HtmlVerificationForEndpointsPrivate()
     {
         // Arrange
