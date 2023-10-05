@@ -1,25 +1,39 @@
 using Chirp.Razor;
+using Chirp.Razor.Models;
+
 
 public interface ICheepService
 {
-    public List<DBFacade.CheepViewModel> GetCheeps();
-    public List<DBFacade.CheepViewModel> GetCheepsFromAuthor(string author);
+    public List<Cheep> GetCheeps();
+    // public List<DBFacade.CheepViewModel> GetCheepsFromAuthor(string author);
 }
 
 public class CheepService : ICheepService
 {
-    private readonly DBFacade dBFacade = new();
-
-    public List<DBFacade.CheepViewModel> GetCheeps()
+    private ChirpDBContext context;
+    public CheepService() {
+        context = new();
+    }
+    public List<Cheep> GetCheeps()
     {
-        return dBFacade.GetCheeps();
+        context.Add(new Cheep{
+            Author = new Author{
+            Name = "TesterGuy",
+            Email = "TesterGuy@TestMail.test"},
+            Message = "Virkelig sej ting",
+            TimeStamp = DateTime.Now,
+        });
+        context.SaveChanges();
+
+
+        return context.Cheeps.ToList();
     }
 
-    public List<DBFacade.CheepViewModel> GetCheepsFromAuthor(string author)
-    {
-        // filter by the provided author name
-        return dBFacade.GetCheepsFromAuthor(author);
-    }
+    // public List<DBFacade.CheepViewModel> GetCheepsFromAuthor(string author)
+    // {
+    //     // filter by the provided author name
+    //     return dBFacade.GetCheepsFromAuthor(author);
+    // }
 
     private static string UnixTimeStampToDateTimeString(double unixTimeStamp)
     {
