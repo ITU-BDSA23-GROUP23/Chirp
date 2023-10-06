@@ -1,26 +1,25 @@
 using Chirp.Razor;
 using Chirp.Razor.Models;
+using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositories;
 
 
-public interface ICheepService
-{
-    public List<Cheep> GetCheeps();
-    // public List<DBFacade.CheepViewModel> GetCheepsFromAuthor(string author);
-}
-
-public class CheepService : ICheepService
+public class CheepService : ICheepRepository
 {
     private readonly ChirpDBContext context;
-    public CheepService(ChirpDBContext context) {
+    public CheepService(ChirpDBContext context)
+    {
         this.context = context;
         //context = new();
     }
     public List<Cheep> GetCheeps()
     {
-        context.Add(new Cheep{
-            Author = new Author{
-            Name = "TesterGuy",
-            Email = "TesterGuy@TestMail.test"},
+        context.Add(new Cheep
+        {
+            Author = new Author
+            {
+                Name = "TesterGuy",
+                Email = "TesterGuy@TestMail.test"
+            },
             Message = "Virkelig sej ting",
             TimeStamp = DateTime.Now,
         });
@@ -44,4 +43,8 @@ public class CheepService : ICheepService
         return dateTime.ToString("MM/dd/yy H:mm:ss");
     }
 
+    public void Dispose()
+    {
+        throw new NotImplementedException();
+    }
 }
