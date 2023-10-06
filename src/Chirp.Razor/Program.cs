@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Chirp.Razor;
 using Chirp.Razor.data;
 using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositories;
+using Chirp.Razor.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,7 @@ builder.Services.AddDbContext<ChirpDBContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("ChirpDBSource")));
 
 
-builder.Services.AddScoped<ICheepRepository, CheepService>();
+builder.Services.AddScoped<CheepService, CheepService>();
 
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();

@@ -3,7 +3,13 @@ using Chirp.Razor.Models;
 using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositories;
 
 
-public class CheepService : ICheepRepository
+public interface ICheepService
+{
+    public List<Cheep> GetCheeps();
+    // public List<DBFacade.CheepViewModel> GetCheepsFromAuthor(string author);
+}
+
+public class CheepService : ICheepService
 {
     private readonly ChirpDBContext context;
     public CheepService(ChirpDBContext context)
