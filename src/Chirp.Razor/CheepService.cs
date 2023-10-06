@@ -10,9 +10,10 @@ public interface ICheepService
 
 public class CheepService : ICheepService
 {
-    private ChirpDBContext context;
-    public CheepService() {
-        context = new();
+    private readonly ChirpDBContext context;
+    public CheepService(ChirpDBContext context) {
+        this.context = context;
+        //context = new();
     }
     public List<Cheep> GetCheeps()
     {
