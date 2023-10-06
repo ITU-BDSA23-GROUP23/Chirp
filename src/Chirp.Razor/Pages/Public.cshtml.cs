@@ -12,12 +12,13 @@ public class PublicModel : PageModel
     public PublicModel(ICheepService service)
     {
         _service = service;
-        Cheeps = service.GetCheeps();
+        //Cheeps = service.GetCheeps(null);
     }
 
-    public ActionResult OnGet()
-    {
-        Cheeps = _service.GetCheeps();
+    public ActionResult OnGet([FromQuery] int page)
+    {   
+
+        Cheeps = _service.GetCheeps(page);
         return Page();
     }
 }
