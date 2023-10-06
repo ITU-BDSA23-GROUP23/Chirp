@@ -7,7 +7,7 @@ using NuGet.Packaging.Signing;
 
 public interface ICheepService
 {
-    public List<Cheep> GetCheeps(int page);
+    public List<Cheep> GetCheeps(int? page);
     // public List<DBFacade.CheepViewModel> GetCheepsFromAuthor(string author);
     public List<Cheep> GetCheepsFromAuthor(int test);
 }
@@ -20,7 +20,7 @@ public class CheepService : ICheepService
         this.context = context;
         //context = new();
     }
-    public List<Cheep> GetCheeps(int page)
+    public List<Cheep> GetCheeps(int? page)
     {
         var skip = 0;
         // context.Add(new Cheep{
@@ -31,10 +31,10 @@ public class CheepService : ICheepService
         //     TimeStamp = DateTime.Now,
         // });
         // context.SaveChanges();
+        if(page != null) 
+            skip = (int)((page - 1) * 8);
 
-        skip = (page - 1) * 32;
-
-        var cheeps = context.Cheeps.OrderByDescending(t => t.TimeStamp).Skip(skip).Take(32);
+        var cheeps = context.Cheeps.OrderByDescending(t => t.TimeStamp).Skip(skip).Take(8);
 
         return cheeps.ToList();
     }

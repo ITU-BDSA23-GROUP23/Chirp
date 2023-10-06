@@ -9,15 +9,16 @@ public class UserTimelineModel : PageModel
     private readonly ICheepService _service;
     public List<Cheep> Cheeps { get; set; }
 
-   public UserTimelineModel(ICheepService service, int page)
+   public UserTimelineModel(ICheepService service)
     {
         _service = service;
-        Cheeps = service.GetCheeps(page);
+        Cheeps = service.GetCheeps(null);
     }
 
     public ActionResult OnGet(int author)
     {
-        Cheeps = _service.GetCheepsFromAuthor(author);
+        //Cheeps = _service.GetCheeps(author);
+       // Cheeps = _service.GetCheepsFromAuthor(author);
         return Page();
     }
 }

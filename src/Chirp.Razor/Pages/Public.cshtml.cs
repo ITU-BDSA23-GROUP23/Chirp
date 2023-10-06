@@ -9,14 +9,15 @@ public class PublicModel : PageModel
     private readonly ICheepService _service;
     public List<Cheep> Cheeps { get; set; }
 
-    public PublicModel(ICheepService service, int page)
+    public PublicModel(ICheepService service)
     {
         _service = service;
-        Cheeps = service.GetCheeps(page);
+        //Cheeps = service.GetCheeps(null);
     }
 
-    public ActionResult OnGet(int page)
-    {
+    public ActionResult OnGet([FromQuery] int page)
+    {   
+
         Cheeps = _service.GetCheeps(page);
         return Page();
     }
