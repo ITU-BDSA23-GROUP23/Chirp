@@ -28,7 +28,6 @@ public class CheepService : ICheepService
         // });
         // context.SaveChanges();
 
-
         return context.Cheeps.ToList();
     }
 
