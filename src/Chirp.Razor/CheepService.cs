@@ -1,5 +1,6 @@
 using Chirp.Razor;
 using Chirp.Razor.Models;
+using Microsoft.EntityFrameworkCore;
 
 
 public interface ICheepService
@@ -27,7 +28,7 @@ public class CheepService : ICheepService
         context.SaveChanges();
 
 
-        return context.Cheeps.ToList();
+        return context.Cheeps.Include(c => c.Author).ToList();
     }
 
     // public List<DBFacade.CheepViewModel> GetCheepsFromAuthor(string author)
