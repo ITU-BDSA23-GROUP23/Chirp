@@ -1,11 +1,13 @@
 using Chirp.Razor;
 using Chirp.Razor.Models;
+using Microsoft.Identity.Client;
 
 
 public interface ICheepService
 {
-    public List<Cheep> GetCheeps();
+    public List<Cheep> GetCheeps(int? page);
     // public List<DBFacade.CheepViewModel> GetCheepsFromAuthor(string author);
+    public List<Cheep> GetCheepsFromAuthor(int test);
 }
 
 public class CheepService : ICheepService
@@ -15,20 +17,32 @@ public class CheepService : ICheepService
         this.context = context;
         //context = new();
     }
-    public List<Cheep> GetCheeps()
+    public List<Cheep> GetCheeps(int? page)
     {
-        context.Add(new Cheep{
-            Author = new Author{
-            Name = "TesterGuy",
-            Email = "TesterGuy@TestMail.test"},
-            Message = "Virkelig sej ting",
-            TimeStamp = DateTime.Now,
-        });
-        context.SaveChanges();
+        // context.Add(new Cheep{
+        //     Author = new Author{
+        //     Name = "TesterGuy",
+        //     Email = "TesterGuy@TestMail.test"},
+        //     Message = "Virkelig sej ting",
+        //     TimeStamp = DateTime.Now,
+        // });
+        // context.SaveChanges();
 
 
         return context.Cheeps.ToList();
     }
+
+
+
+    public List<Cheep> GetCheepsFromAuthor(int test) {
+
+       
+
+        return context.Cheeps.Where(r => r.Id == test).ToList();
+        
+        
+    }
+    
 
     // public List<DBFacade.CheepViewModel> GetCheepsFromAuthor(string author)
     // {
