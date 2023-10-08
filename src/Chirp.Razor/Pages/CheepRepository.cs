@@ -2,7 +2,7 @@ using Chirp.Razor;
 using Chirp.Razor.Models;
 using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositories;
 
-public class CheepRepository<Cheep> : ICheepRepository<Cheep> where Cheep : class
+public class CheepRepository : ICheepRepository<Cheep>
 {
     private readonly ChirpDBContext _dbContext;
 
@@ -11,7 +11,7 @@ public class CheepRepository<Cheep> : ICheepRepository<Cheep> where Cheep : clas
         _dbContext = dbContext;
     }
 
-    public Cheep GetById(int id)
+    public Cheep? GetById(int id)
     {
         return _dbContext.Set<Cheep>().Find(id);
     }
