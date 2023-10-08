@@ -3,6 +3,7 @@ using Chirp.Razor;
 using Chirp.Razor.data;
 using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositories;
 using Chirp.Razor.Models;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,7 +50,6 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
 app.MapRazorPages();
 
 app.Run();

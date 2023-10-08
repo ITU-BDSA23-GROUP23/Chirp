@@ -1,39 +1,56 @@
 using Chirp.Razor;
 using Chirp.Razor.Models;
 using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 
 public interface ICheepService
 {
-    public List<Cheep> GetCheeps();
+    public List<Cheep> GetCheeps(int? page);
     // public List<DBFacade.CheepViewModel> GetCheepsFromAuthor(string author);
+    public List<Cheep> GetCheepsFromAuthor(int test);
 }
 
 public class CheepService : ICheepService
 {
+    private readonly int PageLimit = 2;
     private readonly ChirpDBContext context;
     public CheepService(ChirpDBContext context)
     {
         this.context = context;
         //context = new();
     }
-    public List<Cheep> GetCheeps()
+    public List<Cheep> GetCheeps(int? page)
     {
-        context.Add(new Cheep
-        {
-            Author = new Author
-            {
-                Name = "TesterGuy",
-                Email = "TesterGuy@TestMail.test"
-            },
-            Message = "Virkelig sej ting",
-            TimeStamp = DateTime.Now,
-        });
-        context.SaveChanges();
+        var skip = 0;
+        // context.Add(new Cheep{
+        //     Author = new Author{
+        //     Name = "TesterGuy",
+        //     Email = "TesterGuy@TestMail.test"},
+        //     Message = "Virkelig sej ting",
+        //     TimeStamp = DateTime.Now,
+        // });
+        // context.SaveChanges();
+        if (page != null)
+            skip = (int)((page - 1) * PageLimit);
 
+        var cheeps = context.Cheeps.OrderByDescending(t => t.TimeStamp).Skip(skip).Take(PageLimit).Include(c => c.Author);
 
-        return context.Cheeps.ToList();
+        return cheeps.ToList();
     }
+
+
+
+    public List<Cheep> GetCheepsFromAuthor(int test)
+    {
+
+
+
+        return context.Cheeps.Where(r => r.Id == test).ToList();
+
+
+    }
+
 
     // public List<DBFacade.CheepViewModel> GetCheepsFromAuthor(string author)
     // {
