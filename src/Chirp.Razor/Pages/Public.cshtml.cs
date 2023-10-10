@@ -17,7 +17,7 @@ public class PublicModel : PageModel
     }
 
     public ActionResult OnGet([FromQuery] int page)
-    {   
+    {
 
         Cheeps = _service.GetCheeps(page);
         return Page();
