@@ -31,6 +31,11 @@ namespace Chirp.Razor.data
                 new Cheep{Author = cheepAuthor, Message = "Test besked 3", TimeStamp = DateTime.Now},
                 new Cheep{Author = cheepAuthor, Message = "Test besked 4", TimeStamp = DateTime.Now},
                 new Cheep{Author = cheepAuthor, Message = "Test besked 5", TimeStamp = DateTime.Now},
+                new Cheep{Author = cheepAuthor, Message = "Test besked 1", TimeStamp = DateTime.Now},
+                new Cheep{Author = authors[1], Message = "Test besked 6", TimeStamp = DateTime.Now},
+                new Cheep{Author = authors[1], Message = "Test besked 9", TimeStamp = DateTime.Now},
+                new Cheep{Author = authors[1], Message = "Test besked 8", TimeStamp = DateTime.Now},
+                new Cheep{Author = authors[1], Message = "Test besked 7", TimeStamp = DateTime.Now},
             };
 
             context.Cheeps.AddRange(cheeps);

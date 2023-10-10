@@ -8,12 +8,12 @@ public interface ICheepService
 {
     public List<Cheep> GetCheeps(int? page);
     // public List<DBFacade.CheepViewModel> GetCheepsFromAuthor(string author);
-    public List<Cheep> GetCheepsFromAuthor(int test);
+    public List<Cheep> GetCheepsFromAuthor(string authorName);
 }
 
 public class CheepService : ICheepService
 {
-    private readonly int PageLimit = 2;
+    private readonly int PageLimit = 16;
     private readonly ChirpDBContext context;
     public CheepService(ChirpDBContext context)
     {
@@ -41,12 +41,11 @@ public class CheepService : ICheepService
 
 
 
-    public List<Cheep> GetCheepsFromAuthor(int test)
+    public List<Cheep> GetCheepsFromAuthor(string authorName)
     {
 
-
-
-        return context.Cheeps.Where(r => r.Id == test).ToList();
+        Console.WriteLine(authorName);
+        return context.Cheeps.Where(r => r.Author.Name == authorName).Include(c => c.Author).ToList();
 
 
     }
