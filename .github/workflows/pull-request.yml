@@ -1,0 +1,23 @@
+on:
+  push:
+    branches:
+      - main
+      - pullRequestWorkflow
+name: create-pull-request Workflow
+jobs:
+  createPullRequest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{secrets.GITHUB_TOKEN}}
+          commit-message: Push to main
+          title: 'Push to main from the branch: ${{ github.ref_name}}'
+          body: 'This is an automated pull request.'
+          branch: main
+          branch-suffix: timestamp
+          delete-branch: true
+          labels: automated pr
+
+
