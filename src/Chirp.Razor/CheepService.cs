@@ -22,21 +22,32 @@ public class CheepService : ICheepService
     }
     public List<Cheep> GetCheeps(int? page)
     {
-        return getCheepsFromPage(page).ToList();
+        return context.Cheeps
+            .OrderByDescending(t => t.TimeStamp)
+            .Skip(CalculateSkipCheeps(page))
+            .Take(PageLimit)
+            .Include(c => c.Author)
+            .ToList();
     }
 
     public List<Cheep> GetCheepsFromAuthor(string authorName, int page)
     {
-        return getCheepsFromPage(page).Where(r => r.Author.Name == authorName).ToList();
+        return context.Cheeps
+            .Where(r => r.Author.Name == authorName)
+            .OrderByDescending(t => t.TimeStamp)
+            .Skip(CalculateSkipCheeps(page))
+            .Take(PageLimit)
+            .Include(c => c.Author)
+            .ToList();
     }
 
-    private IQueryable<Cheep> getCheepsFromPage(int? page)  
+    private int CalculateSkipCheeps(int? page)  
     {
          var skip = 0;
          if (page != null)
             skip = (int)((page - 1) * PageLimit);
 
-        return context.Cheeps.OrderByDescending(t => t.TimeStamp).Skip(skip).Take(PageLimit).Include(c => c.Author);
+        return skip;
 
     }
 
