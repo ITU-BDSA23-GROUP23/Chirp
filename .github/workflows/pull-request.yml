@@ -17,7 +17,6 @@ jobs:
           body: 'This is an automated pull request.'
           branch: main
           branch-suffix: timestamp
-          delete-branch: true
           labels: automated pr
 
 
