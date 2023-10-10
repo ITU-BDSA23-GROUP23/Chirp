@@ -20,7 +20,7 @@ public class UserTimelineModel : PageModel
     {
         //Cheeps = _service.GetCheeps(page);
         //Cheeps = _service.GetCheeps(author);
-        Cheeps = _service.GetCheepsFromAuthor(author);
+        Cheeps = _service.GetCheepsFromAuthor(author, page);
         return Page();
     }
 }

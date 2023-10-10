@@ -8,7 +8,7 @@ public interface ICheepService
 {
     public List<Cheep> GetCheeps(int? page);
     // public List<DBFacade.CheepViewModel> GetCheepsFromAuthor(string author);
-    public List<Cheep> GetCheepsFromAuthor(string authorName);
+    public List<Cheep> GetCheepsFromAuthor(string authorName, int page);
 }
 
 public class CheepService : ICheepService
@@ -22,40 +22,23 @@ public class CheepService : ICheepService
     }
     public List<Cheep> GetCheeps(int? page)
     {
-        var skip = 0;
-        // context.Add(new Cheep{
-        //     Author = new Author{
-        //     Name = "TesterGuy",
-        //     Email = "TesterGuy@TestMail.test"},
-        //     Message = "Virkelig sej ting",
-        //     TimeStamp = DateTime.Now,
-        // });
-        // context.SaveChanges();
-        if (page != null)
+        return getCheepsFromPage(page).ToList();
+    }
+
+    public List<Cheep> GetCheepsFromAuthor(string authorName, int page)
+    {
+        return getCheepsFromPage(page).Where(r => r.Author.Name == authorName).ToList();
+    }
+
+    private IQueryable<Cheep> getCheepsFromPage(int? page)  
+    {
+         var skip = 0;
+         if (page != null)
             skip = (int)((page - 1) * PageLimit);
 
-        var cheeps = context.Cheeps.OrderByDescending(t => t.TimeStamp).Skip(skip).Take(PageLimit).Include(c => c.Author);
-
-        return cheeps.ToList();
-    }
-
-
-
-    public List<Cheep> GetCheepsFromAuthor(string authorName)
-    {
-
-        Console.WriteLine(authorName);
-        return context.Cheeps.Where(r => r.Author.Name == authorName).Include(c => c.Author).ToList();
-
+        return context.Cheeps.OrderByDescending(t => t.TimeStamp).Skip(skip).Take(PageLimit).Include(c => c.Author);
 
     }
-
-
-    // public List<DBFacade.CheepViewModel> GetCheepsFromAuthor(string author)
-    // {
-    //     // filter by the provided author name
-    //     return dBFacade.GetCheepsFromAuthor(author);
-    // }
 
     private static string UnixTimeStampToDateTimeString(double unixTimeStamp)
     {
