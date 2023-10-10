@@ -43,12 +43,7 @@ public class CheepService : ICheepService
 
     public List<Cheep> GetCheepsFromAuthor(int test)
     {
-
-
-
         return context.Cheeps.Where(r => r.Id == test).ToList();
-
-
     }
 
 
@@ -58,14 +53,14 @@ public class CheepService : ICheepService
     //     return dBFacade.GetCheepsFromAuthor(author);
     // }
 
-    private static string UnixTimeStampToDateTimeString(double unixTimeStamp)
+    private static string UnixTimeStampToDateTimeString(double unixTimeStamp) //Converts Unix timestamp to a date in MM/dd/yy format
     {
         // Unix timestamp is seconds past epoch
         DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
         dateTime = dateTime.AddSeconds(unixTimeStamp);
         return dateTime.ToString("MM/dd/yy H:mm:ss");
     }
-
+    
     public void Dispose()
     {
         throw new NotImplementedException();
