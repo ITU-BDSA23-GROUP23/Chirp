@@ -1,41 +1,65 @@
+using Azure;
 using Chirp.Razor;
 using Chirp.Razor.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositories;
+using NuGet.Protocol.Plugins;
 
-public class CheepRepository : ICheepRepository<Cheep>
+public class CheepRepository : ICheepRepository
 {
-    private readonly ChirpDBContext _dbContext;
+    private readonly ChirpDBContext dbContext;
 
     public CheepRepository(ChirpDBContext dbContext)
     {
-        _dbContext = dbContext;
+        this.dbContext = dbContext;
     }
 
-    public Cheep? GetById(int id)
-    {
-        return _dbContext.Set<Cheep>().Find(id);
+
+    public IEnumerable<CheepDTO> GetCheeps(int page = 1, int pageSize = 32, string? authorName = null) {
+        IQueryable<Cheep> Cheeps;
+        
+        if (authorName != null) {
+            Cheeps = dbContext.Cheeps.Where(c => c.Author.Name == authorName);
+        } else {
+            Cheeps = dbContext.Cheeps.Where(c => true);
+        }
+
+        Cheeps = Cheeps.OrderByDescending( t => t.TimeStamp)
+            .Skip(CalculateSkippedCheeps(page, pageSize))
+            .Take(pageSize)
+            .Include(c => c.Author);
+        
+        return CheepsToCheepDTOs(Cheeps.ToList());
     }
 
-    public IEnumerable<Cheep> GetAll()
-    {
-        return _dbContext.Set<Cheep>().ToList();
+    private int CalculateSkippedCheeps(int page, int pageSize) {
+        return (page - 1) * pageSize;
     }
 
-    public void Add(Cheep entity)
-    {
-        _dbContext.Set<Cheep>().Add(entity);
-        _dbContext.SaveChanges();
+    private IEnumerable<CheepDTO> CheepsToCheepDTOs(List<Cheep> cheeps) {
+        var cheepDTOs = new List<CheepDTO>();
+        foreach (var cheep in cheeps) {
+            cheepDTOs.Add(new CheepDTO(cheep));
+        }
+
+        return cheepDTOs;
     }
 
-    public void Update(Cheep entity)
-    {
-        _dbContext.Set<Cheep>().Update(entity);
-        _dbContext.SaveChanges();
-    }
+    // public void Add(Cheep entity)
+    // {
+    //     dbContext.Set<Cheep>().Add(entity);
+    //     dbContext.SaveChanges();
+    // }
 
-    public void Remove(Cheep entity)
-    {
-        _dbContext.Set<Cheep>().Remove(entity);
-        _dbContext.SaveChanges();
-    }
+    // public void Update(Cheep entity)
+    // {
+    //     dbContext.Set<Cheep>().Update(entity);
+    //     dbContext.SaveChanges();
+    // }
+
+    // public void Remove(Cheep entity)
+    // {
+    //     dbContext.Set<Cheep>().Remove(entity);
+    //     dbContext.SaveChanges();
+    // }
 }

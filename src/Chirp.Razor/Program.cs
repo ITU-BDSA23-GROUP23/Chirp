@@ -16,7 +16,8 @@ builder.Services.AddDbContext<ChirpDBContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("ChirpDBSource")));
 
 
-builder.Services.AddScoped<CheepService, CheepService>();
+builder.Services.AddScoped<ICheepRepository, CheepRepository>();
+builder.Services.AddScoped<ICheepService, CheepService>();
 
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
