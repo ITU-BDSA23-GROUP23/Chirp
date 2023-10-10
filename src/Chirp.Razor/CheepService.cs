@@ -13,7 +13,7 @@ public interface ICheepService
 
 public class CheepService : ICheepService
 {
-    private readonly int PageLimit = 16;
+    private readonly int PageLimit = 32;
     private readonly ChirpDBContext context;
     public CheepService(ChirpDBContext context)
     {
