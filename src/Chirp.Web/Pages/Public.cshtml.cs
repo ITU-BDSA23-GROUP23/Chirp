@@ -1,9 +1,9 @@
-﻿using Chirp.Razor.Models;
+﻿using Chirp.Core;
+using Chirp.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositories;
 
-namespace Chirp.Razor.Pages;
+namespace Chirp.Web.Pages;
 
 public class PublicModel : PageModel
 {

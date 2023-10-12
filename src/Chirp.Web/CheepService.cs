@@ -1,7 +1,4 @@
-using Chirp.Razor;
-using Chirp.Razor.Models;
-using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositories;
-using Microsoft.EntityFrameworkCore;
+using Chirp.Core;
 
 
 public interface ICheepService : IDisposable
