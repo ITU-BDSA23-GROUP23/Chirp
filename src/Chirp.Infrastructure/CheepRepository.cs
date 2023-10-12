@@ -1,9 +1,6 @@
-using Azure;
-using Chirp.Razor;
-using Chirp.Razor.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositories;
-using NuGet.Protocol.Plugins;
+using Chirp.Core;
+using Chirp.Infrastructure;
 
 public class CheepRepository : ICheepRepository
 {
@@ -39,7 +36,7 @@ public class CheepRepository : ICheepRepository
     private IEnumerable<CheepDTO> CheepsToCheepDTOs(List<Cheep> cheeps) {
         var cheepDTOs = new List<CheepDTO>();
         foreach (var cheep in cheeps) {
-            cheepDTOs.Add(new CheepDTO(cheep));
+            cheepDTOs.Add(new CheepDTO());
         }
 
         return cheepDTOs;

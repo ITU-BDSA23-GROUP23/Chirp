@@ -1,4 +1,4 @@
-namespace Chirp.Razor.Models
+namespace Chirp.Infrastructure
 {
     public class Cheep {
         public int Id { get; set;}

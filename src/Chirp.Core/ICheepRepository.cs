@@ -1,5 +1,4 @@
-using Chirp.Razor.Models;
-namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositories
+namespace Chirp.Core;
 {
     public interface ICheepRepository
     {

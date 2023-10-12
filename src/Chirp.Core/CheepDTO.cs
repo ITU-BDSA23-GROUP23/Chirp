@@ -1,4 +1,4 @@
-namespace Chirp.Razor.Models
+namespace Chirp.Core
 {
     public class CheepDTO
     {
@@ -8,12 +8,12 @@ namespace Chirp.Razor.Models
         public string? AuthorEmail { get; set; }
 
 
-        public CheepDTO(Cheep cheep)
+        public CheepDTO()
         {
-            Message = cheep.Message;
-            TimeStamp = ((DateTimeOffset)cheep.TimeStamp).ToUnixTimeMilliseconds();
-            AuthorName = cheep.Author.Name;
-            AuthorEmail = cheep.Author.Email;
+            // Message = cheep.Message;
+            // TimeStamp = ((DateTimeOffset)cheep.TimeStamp).ToUnixTimeMilliseconds();
+            // AuthorName = cheep.Author.Name;
+            // AuthorEmail = cheep.Author.Email;
         }
 
         public string GetMessage()
