@@ -14,31 +14,42 @@ public class CheepRepository : ICheepRepository
         this.dbContext = dbContext;
     }
 
+    public CheepDTO CreateCheep(CheepDTO cheepDTO)
+    {
+        throw new NotImplementedException();
+    }
 
-    public IEnumerable<CheepDTO> GetCheeps(int page = 1, int pageSize = 32, string? authorName = null) {
+    public IEnumerable<CheepDTO> GetCheeps(int page = 1, int pageSize = 32, string? authorName = null)
+    {
         IQueryable<Cheep> Cheeps;
-        
-        if (authorName != null) {
+
+        if (authorName != null)
+        {
             Cheeps = dbContext.Cheeps.Where(c => c.Author.Name == authorName);
-        } else {
+        }
+        else
+        {
             Cheeps = dbContext.Cheeps.Where(c => true);
         }
 
-        Cheeps = Cheeps.OrderByDescending( t => t.TimeStamp)
+        Cheeps = Cheeps.OrderByDescending(t => t.TimeStamp)
             .Skip(CalculateSkippedCheeps(page, pageSize))
             .Take(pageSize)
             .Include(c => c.Author);
-        
+
         return CheepsToCheepDTOs(Cheeps.ToList());
     }
 
-    private int CalculateSkippedCheeps(int page, int pageSize) {
+    private int CalculateSkippedCheeps(int page, int pageSize)
+    {
         return (page - 1) * pageSize;
     }
 
-    private IEnumerable<CheepDTO> CheepsToCheepDTOs(List<Cheep> cheeps) {
+    private IEnumerable<CheepDTO> CheepsToCheepDTOs(List<Cheep> cheeps)
+    {
         var cheepDTOs = new List<CheepDTO>();
-        foreach (var cheep in cheeps) {
+        foreach (var cheep in cheeps)
+        {
             cheepDTOs.Add(new CheepDTO(cheep));
         }
 

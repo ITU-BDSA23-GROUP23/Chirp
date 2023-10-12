@@ -4,8 +4,8 @@ namespace Chirp.Razor.Models
     {
         public string Message { get; set; }
         public long TimeStamp { get; set; }
-        public string? AuthorName { get; set; }
-        public string? AuthorEmail { get; set; }
+        public string AuthorName { get; set; }
+        public string AuthorEmail { get; set; }
 
 
         public CheepDTO(Cheep cheep)
