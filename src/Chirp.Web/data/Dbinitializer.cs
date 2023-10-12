@@ -1,6 +1,5 @@
-namespace Chirp.Razor.data;
-using Chirp.Razor;
-using Chirp.Razor.Models;
+namespace Chirp.Web.data;
+using Chirp.Infrastructure;
 
 
 public static class DbInitializer
