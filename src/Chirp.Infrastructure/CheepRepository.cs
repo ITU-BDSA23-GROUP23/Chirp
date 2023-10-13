@@ -45,9 +45,12 @@ public class CheepRepository : ICheepRepository
     private IEnumerable<CheepDTO> CheepsToCheepDTOs(List<Cheep> cheeps)
     {
         var cheepDTOs = new List<CheepDTO>();
+
         foreach (var cheep in cheeps)
         {
-            cheepDTOs.Add(new CheepDTO(cheep.Message, cheep.Author.Name, cheep.TimeStamp));
+            long unixTime = ((DateTimeOffset)cheep.TimeStamp).ToUnixTimeSeconds();
+            string unixTimeString = unixTime.ToString();
+            cheepDTOs.Add(new CheepDTO(cheep.Message, cheep.Author.Name, unixTimeString));
         }
 
         return cheepDTOs;
