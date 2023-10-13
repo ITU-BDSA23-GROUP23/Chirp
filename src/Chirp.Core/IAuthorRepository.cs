@@ -5,8 +5,8 @@ namespace Chirp.Infrastructure
 
         public interface IAuthorRepository
         {
-                AuthorDTO FindAuthorByName(string Name);
-                AuthorDTO FindAuthorByEmail(string Email);
+                Task<AuthorDTO> FindAuthorByName(string Name);
+                Task<AuthorDTO> FindAuthorByEmail(string Email);
                 void CreateAuthor(AuthorDTO author);
         }
 }
