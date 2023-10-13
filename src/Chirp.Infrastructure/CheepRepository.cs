@@ -17,7 +17,7 @@ public class CheepRepository : ICheepRepository
         throw new NotImplementedException();
     }
 
-    public Task<IEnumerable<CheepDTO>> GetCheeps(int page = 1, int pageSize = 32, string? authorName = null)
+    public async Task<IEnumerable<CheepDTO>> GetCheeps(int page = 1, int pageSize = 32, string? authorName = null)
     {
         IQueryable<Cheep> Cheeps;
 
@@ -35,7 +35,7 @@ public class CheepRepository : ICheepRepository
             .Take(pageSize)
             .Include(c => c.Author);
 
-        return CheepsToCheepDTOs(Cheeps.ToListAsync());
+        return await CheepsToCheepDTOs(Cheeps.ToListAsync());
     }
 
     private int CalculateSkippedCheeps(int page, int pageSize)
