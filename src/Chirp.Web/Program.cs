@@ -1,8 +1,7 @@
+using Chirp.Core;
 using Microsoft.EntityFrameworkCore;
-using Chirp.Razor;
-using Chirp.Razor.data;
-using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositories;
-using Chirp.Razor.Models;
+using Chirp.Web.data;
+using Chirp.Infrastructure;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 var builder = WebApplication.CreateBuilder(args);
