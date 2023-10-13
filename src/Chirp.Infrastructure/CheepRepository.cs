@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Chirp.Core;
 using Chirp.Infrastructure;
+using System.Diagnostics.CodeAnalysis;
 
 public class CheepRepository : ICheepRepository
 {
@@ -16,7 +17,7 @@ public class CheepRepository : ICheepRepository
         throw new NotImplementedException();
     }
 
-    public IEnumerable<CheepDTO> GetCheeps(int page = 1, int pageSize = 32, string? authorName = null)
+    public async Task<IEnumerable<CheepDTO>> GetCheeps(int page = 1, int pageSize = 32, string? authorName = null)
     {
         IQueryable<Cheep> Cheeps;
 
@@ -34,7 +35,7 @@ public class CheepRepository : ICheepRepository
             .Take(pageSize)
             .Include(c => c.Author);
 
-        return CheepsToCheepDTOs(Cheeps.ToList());
+        return await CheepsToCheepDTOs(Cheeps.ToListAsync());
     }
 
     private int CalculateSkippedCheeps(int page, int pageSize)
@@ -42,11 +43,10 @@ public class CheepRepository : ICheepRepository
         return (page - 1) * pageSize;
     }
 
-    private IEnumerable<CheepDTO> CheepsToCheepDTOs(List<Cheep> cheeps)
+    private async Task<IEnumerable<CheepDTO>> CheepsToCheepDTOs(Task<List<Cheep>> cheeps)
     {
         var cheepDTOs = new List<CheepDTO>();
-
-        foreach (var cheep in cheeps)
+        foreach (var cheep in await cheeps)
         {
             long unixTime = ((DateTimeOffset)cheep.TimeStamp).ToUnixTimeSeconds();
             string unixTimeString = unixTime.ToString();

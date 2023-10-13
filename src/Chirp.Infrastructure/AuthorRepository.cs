@@ -23,15 +23,15 @@ public class AuthorRepository : IAuthorRepository
         });
     }
 
-    public AuthorDTO FindAuthorByEmail(string Email)
+    public async Task<AuthorDTO> FindAuthorByEmail(string Email)
     {
-        var author = dbContext.Authors.Find(Email);
+        var author = await dbContext.Authors.FindAsync(Email);
         return new AuthorDTO(author.Name, author.Email);
     }
 
-    public AuthorDTO FindAuthorByName(string Name)
+    public async Task<AuthorDTO> FindAuthorByName(string Name)
     {
-        var author = dbContext.Authors.Find(Name);
+        var author = await dbContext.Authors.FindAsync(Name);
         return new AuthorDTO(author.Name, author.Email);
     }
 }

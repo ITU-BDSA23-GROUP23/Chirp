@@ -3,9 +3,9 @@ using Chirp.Core;
 
 public interface ICheepService : IDisposable
 {
-    public IEnumerable<CheepDTO> GetCheeps(int page);
+    public Task<IEnumerable<CheepDTO>> GetCheeps(int page);
     // public List<DBFacade.CheepViewModel> GetCheepsFromAuthor(string author);
-    public IEnumerable<CheepDTO> GetCheepsFromAuthor(string authorName, int page);
+    public Task<IEnumerable<CheepDTO>> GetCheepsFromAuthor(string authorName, int page);
 }
 
 public class CheepService : ICheepService
@@ -16,14 +16,14 @@ public class CheepService : ICheepService
         this.cheepRepository = cheepRepository;
         //context = new();
     }
-    public IEnumerable<CheepDTO> GetCheeps(int page)
+    public async Task<IEnumerable<CheepDTO>> GetCheeps(int page)
     {
-        return cheepRepository.GetCheeps(page);
+        return await cheepRepository.GetCheeps(page);
     }
 
-    public IEnumerable<CheepDTO> GetCheepsFromAuthor(string authorName, int page)
+    public async Task<IEnumerable<CheepDTO>> GetCheepsFromAuthor(string authorName, int page)
     {
-        return cheepRepository.GetCheeps(page, authorName: authorName);
+        return await cheepRepository.GetCheeps(page, authorName: authorName);
     }
 
     private static string UnixTimeStampToDateTimeString(double unixTimeStamp) //Converts Unix timestamp to a date in MM/dd/yy format
