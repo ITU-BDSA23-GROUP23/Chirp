@@ -1,9 +1,8 @@
 using Azure;
-using Chirp.Razor;
-using Chirp.Razor.Models;
+using Chirp.Core;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositories;
 using NuGet.Protocol.Plugins;
+using Chirp.Infrastructure;
 
 public class AuthorRepository : IAuthorRepository
 {
@@ -19,8 +18,8 @@ public class AuthorRepository : IAuthorRepository
     {
         dbContext.Authors.Add(new Author
         {
-            Name = author.GetName(),
-            Email = author.GetEmail()
+            Name = author.Name,
+            Email = author.Email
         });
     }
 

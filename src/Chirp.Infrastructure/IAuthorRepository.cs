@@ -1,5 +1,6 @@
-using Chirp.Razor.Models;
-namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositories
+using Chirp.Core;
+
+namespace Chirp.Infrastructure
 {
 
         public interface IAuthorRepository
