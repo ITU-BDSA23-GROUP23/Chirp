@@ -26,6 +26,8 @@ namespace Chirp.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Author>().HasIndex(c => c.Name).IsUnique();
+            modelBuilder.Entity<Author>().HasIndex(c => c.Email).IsUnique();
             modelBuilder.Entity<Author>().ToTable("Authors");
             modelBuilder.Entity<Cheep>().ToTable("Cheeps");
         }
