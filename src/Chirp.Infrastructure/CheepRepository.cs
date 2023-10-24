@@ -12,11 +12,6 @@ public class CheepRepository : ICheepRepository
         this.dbContext = dbContext;
     }
 
-    public CheepDTO CreateCheep(CheepDTO cheepDTO)
-    {
-        throw new NotImplementedException();
-    }
-
     public async Task<IEnumerable<CheepDTO>> GetCheeps(int page = 1, int pageSize = 32, string? authorName = null)
     {
         IQueryable<Cheep> Cheeps;
