@@ -28,16 +28,21 @@ public class CheepRepositoryTests : IDisposable
     [Fact]
     public async Task GetCheepsTest()
     {
-        var a10 = new Author() { Name = "Jacqualine Gilcoine", Email = "Jacqualine.Gilcoine@gmail.com", Cheeps = new List<Cheep>() };
-        var c1 = new Cheep() { Author = a10, Message = "123Testing", TimeStamp = DateTime.Parse("2023-08-01 13:14:37") };
-        context.Authors.Add(a10);
-        context.Cheeps.Add(c1);
-        context.SaveChanges();
+        // var a10 = new Author() { Name = "Jacqualine Gilcoine", Email = "Jacqualine.Gilcoine@gmail.com", Cheeps = new List<Cheep>() };
+        // var c1 = new Cheep() { Author = a10, Message = "123Testing", TimeStamp = DateTime.Parse("2023-08-01 13:14:37") };
         var cheepRepository = new CheepRepository(context);
+        var authorRepository = new AuthorRepository(context);
+        AuthorDTO author = new AuthorDTO("Jacqualine Gilcoine", "Jacqualine.Gilcoine@gmail.com");
+        authorRepository.CreateAuthor(author);
+        CheepDTO cheep = new CheepDTO("123Testing", "Jacqualine Gilcoine", "2023-08-01 13:14:37");
+        cheepRepository.CreateCheep(cheep);
+        // context.Authors.Add(a10);
+        // context.Cheeps.Add(c1);
+        // context.SaveChanges();
         var cheeps = await cheepRepository.GetCheeps();      
-        foreach (CheepDTO cheep in cheeps) 
+        foreach (CheepDTO _cheep in cheeps) 
         {
-            Assert.Equal(cheep.Message, "123Testing");
+            Assert.Equal(_cheep.Message, "123Testing");
         }
     }
 
