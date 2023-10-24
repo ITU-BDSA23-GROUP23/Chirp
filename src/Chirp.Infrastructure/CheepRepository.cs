@@ -38,6 +38,18 @@ public class CheepRepository : ICheepRepository
         return await CheepsToCheepDTOs(Cheeps.ToListAsync());
     }
 
+    public void CreateCheep(AuthorDTO Author, string Message) {
+        Author author = dbContext.Authors.First(a => a.Name == Author.Name);
+        Cheep cheep = new Cheep() {
+            Author = author,
+            Message = Message,
+            TimeStamp = DateTime.Now
+        };
+        author.Cheeps.Append(cheep);
+        dbContext.Cheeps.Add(cheep);
+        dbContext.SaveChanges();
+    }
+
     private int CalculateSkippedCheeps(int page, int pageSize)
     {
         return (page - 1) * pageSize;
