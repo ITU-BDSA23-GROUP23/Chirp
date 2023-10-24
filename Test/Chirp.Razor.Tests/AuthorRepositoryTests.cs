@@ -56,7 +56,6 @@ public class AuthorRepositoryTests
 
         //Assert
         var addedAuthor = db.Authors.SingleOrDefault(a => a.Name == authorDTO.Name);
-        db.Authors.Add(addedAuthor);
         Assert.NotNull(addedAuthor);
         Assert.True(addedAuthor.Name == "Thorbjørnen2");
     }
