@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 public class AuthorRepositoryTests
 {
-    [Fact(Skip = "kk")]
+    [Fact]
     public void CreateAuthorTest()
     {
         var optionsBuilder = new DbContextOptionsBuilder<ChirpDBContext>().UseInMemoryDatabase("CheepMemoryDb");
@@ -37,7 +37,7 @@ public class AuthorRepositoryTests
         _ = authorRepository.FindAuthorByEmail(authorDTO.Email);
 
         //Assert
-        var addedAuthor = db.Authors.SingleOrDefault(a => a.Email == authorDTO.Email);
+        var addedAuthor = db.Authors.SingleOrDefault(a => a.Name == authorDTO.Name && a.Email == authorDTO.Email);
         Assert.NotNull(addedAuthor);
         Assert.True(addedAuthor.Email == "tpep1@bjørn.dk");
     }
