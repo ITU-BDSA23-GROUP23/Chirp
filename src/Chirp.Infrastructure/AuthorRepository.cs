@@ -21,6 +21,7 @@ public class AuthorRepository : IAuthorRepository
             Name = author.Name,
             Email = author.Email
         });
+        dbContext.SaveChanges();
     }
 
     public async Task<AuthorDTO?> FindAuthorByEmail(string Email)
