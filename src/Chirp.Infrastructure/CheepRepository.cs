@@ -35,6 +35,9 @@ public class CheepRepository : ICheepRepository
 
     public void CreateCheep(AuthorDTO Author, string Message) {
         Author author = dbContext.Authors.First(a => a.Name == Author.Name);
+        if (author == null) {
+            throw new NullReferenceException("No author was found with name : " + Author.Name + " email: " + Author.Email); 
+        }
         Cheep cheep = new Cheep() {
             Author = author,
             Message = Message,

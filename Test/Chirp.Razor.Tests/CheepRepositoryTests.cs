@@ -25,7 +25,7 @@ public class CheepRepositoryTests : IDisposable
         
     // }
 
-    [Fact(Skip = "kk")]
+    [Fact]
     public async Task GetCheepsTest()
     {
         // var a10 = new Author() { Name = "Jacqualine Gilcoine", Email = "Jacqualine.Gilcoine@gmail.com", Cheeps = new List<Cheep>() };
@@ -34,7 +34,6 @@ public class CheepRepositoryTests : IDisposable
         var authorRepository = new AuthorRepository(context);
         AuthorDTO author = new AuthorDTO("Jacqualine Gilcoine", "Jacqualine.Gilcoine@gmail.com");
         authorRepository.CreateAuthor(author);
-        context.SaveChanges();
         cheepRepository.CreateCheep(author, "123Testing");
         // context.Authors.Add(a10);
         // context.Cheeps.Add(c1);

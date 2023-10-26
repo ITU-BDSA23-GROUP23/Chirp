@@ -5,6 +5,6 @@ namespace Chirp.Infrastructure
         public Guid Id { get; set; }
         public required string Name { get; set; }
         public required string Email { get; set; }
-        public IEnumerable<Cheep>? Cheeps { get; set; }
+        public required IEnumerable<Cheep> Cheeps { get; set; }
     }
 }

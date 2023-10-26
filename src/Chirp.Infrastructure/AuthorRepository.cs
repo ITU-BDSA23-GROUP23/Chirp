@@ -19,7 +19,8 @@ public class AuthorRepository : IAuthorRepository
         dbContext.Authors.Add(new Author
         {
             Name = author.Name,
-            Email = author.Email
+            Email = author.Email,
+            Cheeps = new List<Cheep>()
         });
         dbContext.SaveChanges();
     }
