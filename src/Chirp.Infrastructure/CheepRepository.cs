@@ -34,11 +34,20 @@ public class CheepRepository : ICheepRepository
         return await CheepsToCheepDTOs(Cheeps.ToListAsync());
     }
 
-    public async Task<IEnumerable<CheepDTO>> GetAllCheeps()
+    public async Task<Int64> GetCheepsAmount(string? authorName = null)
     {
-        IQueryable<Cheep> Cheeps = dbContext.Cheeps;
+        Int64 CheepAmount;
 
-        return await CheepsToCheepDTOs(Cheeps.ToListAsync());
+        if (authorName != null)
+        {
+            CheepAmount = dbContext.Cheeps.Where(c => c.Author.Name == authorName).Count();
+        }
+        else
+        {
+            CheepAmount = dbContext.Cheeps.Where(c => true).Count();
+        }
+
+        return CheepAmount;
     }
 
     public void CreateCheep(AuthorDTO Author, string Message)
