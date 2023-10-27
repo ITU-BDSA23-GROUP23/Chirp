@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Chirp.Core;
 using Chirp.Infrastructure;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 
 public class CheepRepository : ICheepRepository
 {
@@ -33,12 +34,15 @@ public class CheepRepository : ICheepRepository
         return await CheepsToCheepDTOs(Cheeps.ToListAsync());
     }
 
-    public void CreateCheep(AuthorDTO Author, string Message) {
+    public void CreateCheep(AuthorDTO Author, string Message)
+    {
         Author author = dbContext.Authors.First(a => a.Name == Author.Name);
-        if (author == null) {
-            throw new NullReferenceException("No author was found with name : " + Author.Name + " email: " + Author.Email); 
+        if (author == null)
+        {
+            throw new NullReferenceException("No author was found with name : " + Author.Name + " email: " + Author.Email);
         }
-        Cheep cheep = new Cheep() {
+        Cheep cheep = new Cheep()
+        {
             Author = author,
             Message = Message,
             TimeStamp = DateTime.Now
@@ -58,9 +62,11 @@ public class CheepRepository : ICheepRepository
         var cheepDTOs = new List<CheepDTO>();
         foreach (var cheep in await cheeps)
         {
-            long unixTime = ((DateTimeOffset)cheep.TimeStamp).ToUnixTimeSeconds();
-            string unixTimeString = unixTime.ToString();
-            cheepDTOs.Add(new CheepDTO(cheep.Message, cheep.Author.Name, unixTimeString));
+            DateTime cheepDateTimeUtc = cheep.TimeStamp.ToUniversalTime();
+
+            string formattedDateTime = cheepDateTimeUtc.ToString("dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+
+            cheepDTOs.Add(new CheepDTO(cheep.Message, cheep.Author.Name, formattedDateTime));
         }
 
         return cheepDTOs;
