@@ -8,7 +8,7 @@ namespace Chirp.Infrastructure
         public Guid Id { get; set; }
 
         [Required]
-        public required Author Author { get; set; }
+        public Author Author { get; set; }
 
         [Required]
         [MaxLength(128)]
