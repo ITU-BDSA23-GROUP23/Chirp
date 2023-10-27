@@ -1,25 +1,20 @@
-﻿using Chirp.Core;
+using Chirp.Core;
 using Chirp.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using Microsoft.Identity.Web.Resource;
 
 namespace Chirp.Web.Pages;
-[AllowAnonymous]
-public class PublicModel : PageModel
+
+public class siginoidc : PageModel
 {
-    
     private readonly ICheepService _service;
-    private readonly ILogger<PublicModel> _logger;
+    private readonly ILogger<siginoidc> _logger;
     public IEnumerable<CheepDTO>? Cheeps { get; set; }
 
-    public PublicModel(ICheepService service, ILogger<PublicModel> logger)
+    public siginoidc(ICheepService service, ILogger<siginoidc> logger)
     {
-        _service = service;
         _logger = logger;
+        _service = service;
         //Cheeps = service.GetCheeps(null);
     }
 
