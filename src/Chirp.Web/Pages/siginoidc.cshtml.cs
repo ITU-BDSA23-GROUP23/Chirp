@@ -11,13 +11,9 @@ public class siginoidc : PageModel
     private readonly ILogger<siginoidc> _logger;
     public IEnumerable<CheepDTO>? Cheeps { get; set; }
 
-    public siginoidc(ILogger<siginoidc> logger)
-        {
-            _logger = logger;
-        }
-
-    public siginoidc(ICheepService service)
+    public siginoidc(ICheepService service, ILogger<siginoidc> logger)
     {
+        _logger = logger;
         _service = service;
         //Cheeps = service.GetCheeps(null);
     }
