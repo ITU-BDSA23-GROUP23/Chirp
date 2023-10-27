@@ -1,20 +1,24 @@
-﻿using Chirp.Core;
+using Chirp.Core;
 using Chirp.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Chirp.Web.Pages;
 
-public class PublicModel : PageModel
+public class siginoidc : PageModel
 {
     private readonly ICheepService _service;
-    private readonly ILogger<PublicModel> _logger;
+    private readonly ILogger<siginoidc> _logger;
     public IEnumerable<CheepDTO>? Cheeps { get; set; }
 
-    public PublicModel(ICheepService service, ILogger<PublicModel> logger)
+    public siginoidc(ILogger<siginoidc> logger)
+        {
+            _logger = logger;
+        }
+
+    public siginoidc(ICheepService service)
     {
         _service = service;
-        _logger = logger;
         //Cheeps = service.GetCheeps(null);
     }
 

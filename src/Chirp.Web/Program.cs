@@ -3,6 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using Chirp.Web.data;
 using Chirp.Infrastructure;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.UI;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +19,18 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddDbContext<ChirpDBContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("ChirpDBSource")));
+
+builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
+
+builder.Services.AddAuthorization(options =>
+{
+    // By default, all incoming requests will be authorized according to the default policy.
+    options.FallbackPolicy = options.DefaultPolicy;
+});
+
+builder.Services.AddRazorPages()
+    .AddMicrosoftIdentityUI();
 
 
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
@@ -50,6 +68,11 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapRazorPages();
+app.MapControllers();
 
 app.Run();
