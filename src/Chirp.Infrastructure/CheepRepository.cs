@@ -34,6 +34,13 @@ public class CheepRepository : ICheepRepository
         return await CheepsToCheepDTOs(Cheeps.ToListAsync());
     }
 
+    public async Task<IEnumerable<CheepDTO>> GetAllCheeps()
+    {
+        IQueryable<Cheep> Cheeps = dbContext.Cheeps;
+
+        return await CheepsToCheepDTOs(Cheeps.ToListAsync());
+    }
+
     public void CreateCheep(AuthorDTO Author, string Message)
     {
         Author author = dbContext.Authors.First(a => a.Name == Author.Name);
