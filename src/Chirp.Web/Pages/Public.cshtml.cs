@@ -19,7 +19,7 @@ public class PublicModel : PageModel
     public PublicModel(ICheepService service, ILogger<PublicModel> logger)
     {
         _service = service;
-        logger = logger;
+        _logger = logger;
         //Cheeps = service.GetCheeps(null);
     }
 
