@@ -19,6 +19,7 @@ public class CheepService : ICheepService
     public async Task<IEnumerable<CheepDTO>> GetCheeps(int page)
     {
         return await cheepRepository.GetCheeps(page);
+        
     }
 
     public async Task<IEnumerable<CheepDTO>> GetCheepsFromAuthor(string authorName, int page)

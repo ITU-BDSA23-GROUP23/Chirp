@@ -34,10 +34,10 @@ public class AuthorRepositoryTests : IDisposable
         Assert.NotNull(addedAuthor);
     }
 
-    
+
 
     [Fact]
-    public void FindAuthorByEmail()
+    public async void FindAuthorByEmail()
     {
         //Arrange
         AuthorDTO authorDTO = new("Thorbjørnen1", "tpep1@bjørn.dk");
@@ -45,16 +45,15 @@ public class AuthorRepositoryTests : IDisposable
         authorRepository.CreateAuthor(authorDTO);
 
         //Act
-        _ = authorRepository.FindAuthorByEmail(authorDTO.Email);
+        AuthorDTO? foundAuthor = await authorRepository.FindAuthorByName(authorDTO.Name);
 
         //Assert
-        var addedAuthor = context.Authors.SingleOrDefault(a => a.Name == authorDTO.Name && a.Email == authorDTO.Email);
-        Assert.NotNull(addedAuthor);
-        Assert.True(addedAuthor.Email == "tpep1@bjørn.dk");
+        Assert.NotNull(foundAuthor);
+        Assert.True(foundAuthor.Email == "tpep1@bjørn.dk");
     }
 
     [Fact]
-    public void FindAuthorByName()
+    public async void FindAuthorByName()
     {
         //Arrange
         AuthorDTO authorDTO = new("Thorbjørnen2", "tpep2@bjørn.dk");
@@ -62,12 +61,11 @@ public class AuthorRepositoryTests : IDisposable
         authorRepository.CreateAuthor(authorDTO);
 
         //Act
-        _ = authorRepository.FindAuthorByName(authorDTO.Name);
+        AuthorDTO? foundAuthor = await authorRepository.FindAuthorByName(authorDTO.Name);
 
         //Assert
-        var addedAuthor = context.Authors.SingleOrDefault(a => a.Name == authorDTO.Name);
-        Assert.NotNull(addedAuthor);
-        Assert.True(addedAuthor.Name == "Thorbjørnen2");
+        Assert.NotNull(foundAuthor);
+        Assert.True(foundAuthor.Name == "Thorbjørnen2");
     }
 
     public void Dispose()
