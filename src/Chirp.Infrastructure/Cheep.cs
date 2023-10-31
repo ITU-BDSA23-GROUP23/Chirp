@@ -4,18 +4,14 @@ namespace Chirp.Infrastructure
 {
     public class Cheep
     {
-        [Required]
         public Guid Id { get; set; }
 
-        [Required]
-        public Author Author { get; set; }
+        public required Author Author { get; set; }
 
-        [Required]
         [MaxLength(128)]
         [MinLength(1)]
-        public string Message { get; set; }
+        public required string Message { get; set; }
 
-        [Required]
-        public DateTime TimeStamp { get; set; }
+        public required DateTime TimeStamp { get; set; }
     }
 }

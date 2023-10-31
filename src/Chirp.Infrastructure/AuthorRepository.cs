@@ -25,6 +25,23 @@ public class AuthorRepository : IAuthorRepository
         dbContext.SaveChanges();
     }
 
+
+    public async Task<Int64> GetCheepAmount(string authorName)
+    {
+        Int64 CheepAmount;
+
+        Author? Author = await dbContext.Authors.FindAsync(authorName);
+        if (Author != null)
+        {
+            CheepAmount = Author.Cheeps.ToList().Count;
+            return CheepAmount;
+        }
+        else
+        {
+            throw new NullReferenceException($"Author {authorName} does not exist.");
+        }
+    }
+
     public async Task<AuthorDTO?> FindAuthorByEmail(string Email)
     {
         var author = await dbContext.Authors.FindAsync(Email);
