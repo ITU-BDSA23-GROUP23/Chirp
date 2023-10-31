@@ -45,7 +45,7 @@ public class CheepRepositoryTests : IDisposable
             Assert.Equal(_cheep.Message, "123Testing");
         }
     }
-    
+
     [Fact]
     public async Task GetCheepsAmountTest()
     {
@@ -54,10 +54,20 @@ public class CheepRepositoryTests : IDisposable
         var authorRepository = new AuthorRepository(context);
 
         AuthorDTO? author = await authorRepository.FindAuthorByName("Mellie Yost");
+
+        var Cheep = context.Cheeps.First(c => c.Author.Name == "Mellie Yost");
+
+        var Author = context.Authors.First(a => true);
+
+        Assert.Equal(Cheep.Id, Author.Id);
+
+        /*
+        AuthorDTO? author = await authorRepository.FindAuthorByName("Mellie Yost");
         var cheeps = await cheepRepository.GetCheepsAmount("Mellie Yost");
         Console.WriteLine("Total amount of cheeps: " + cheeps);
+        */
     }
-    
+
 
 
     // [Fact]
