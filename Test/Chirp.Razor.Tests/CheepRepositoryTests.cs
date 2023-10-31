@@ -45,17 +45,16 @@ public class CheepRepositoryTests : IDisposable
             Assert.Equal(_cheep.Message, "123Testing");
         }
     }
-    /*
+    
     [Fact]
     public async Task GetCheepsAmountTest()
     {
         DbInitializer.Initialize(context);
-        var cheepRepository = new CheepRepository(context);
+        ICheepRepository cheepRepository = new CheepRepository(context);
         var authorRepository = new AuthorRepository(context);
 
-        var author = 
-
-        cheepRepository.GetCheepsAmount(author);
+        AuthorDTO? author = await authorRepository.FindAuthorByName("Mellie Yost");
+        var cheeps = await cheepRepository.GetCheepsAmount("Mellie Yost");
         // context.Authors.Add(a10);
         // context.Cheeps.Add(c1);
         // context.SaveChanges();
@@ -65,7 +64,7 @@ public class CheepRepositoryTests : IDisposable
             Assert.Equal(_cheep.Message, "123Testing");
         }
     }
-    */
+    
 
 
     // [Fact]
