@@ -26,9 +26,9 @@ public class AuthorRepository : IAuthorRepository
     }
 
 
-    public async Task<Int64> GetCheepAmount(string authorName)
+    public async Task<long> GetCheepAmount(string authorName)
     {
-        Int64 CheepAmount;
+        long CheepAmount;
 
         Author? Author = await dbContext.Authors.FindAsync(authorName);
         if (Author != null)

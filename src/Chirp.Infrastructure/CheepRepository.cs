@@ -34,9 +34,9 @@ public class CheepRepository : ICheepRepository
         return await CheepsToCheepDTOs(Cheeps.ToListAsync());
     }
 
-    public async Task<Int64> GetCheepsAmount(string? authorName = null)
+    public async Task<long> GetCheepsAmount(string? authorName = null)
     {
-        Int64 CheepAmount;
+        long CheepAmount;
 
         if (authorName != null)
         {
