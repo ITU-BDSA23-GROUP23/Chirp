@@ -30,7 +30,7 @@ public class AuthorRepository : IAuthorRepository
     {
         long CheepAmount;
 
-        Author? Author = await dbContext.Authors.FindAsync(authorName);
+        Author? Author = await dbContext.Authors.FirstAsync(a => a.Name == authorName);
         if (Author != null)
         {
             CheepAmount = Author.Cheeps.ToList().Count;

@@ -53,19 +53,11 @@ public class CheepRepositoryTests : IDisposable
         ICheepRepository cheepRepository = new CheepRepository(context);
         var authorRepository = new AuthorRepository(context);
 
-        AuthorDTO? author = await authorRepository.FindAuthorByName("Mellie Yost");
-
-        var Cheep = context.Cheeps.First(c => c.Author.Name == "Mellie Yost");
-
-        var Author = context.Authors.First(a => true);
-
-        Assert.Equal(Cheep.Id, Author.Id);
-
-        /*
-        AuthorDTO? author = await authorRepository.FindAuthorByName("Mellie Yost");
         var cheeps = await cheepRepository.GetCheepsAmount("Mellie Yost");
-        Console.WriteLine("Total amount of cheeps: " + cheeps);
-        */
+        var authorCheeps = await authorRepository.GetCheepAmount("Mellie Yost");
+
+        Assert.Equal(cheeps, 7);
+        Assert.Equal(authorCheeps, 7);
     }
 
 
