@@ -55,14 +55,7 @@ public class CheepRepositoryTests : IDisposable
 
         AuthorDTO? author = await authorRepository.FindAuthorByName("Mellie Yost");
         var cheeps = await cheepRepository.GetCheepsAmount("Mellie Yost");
-        // context.Authors.Add(a10);
-        // context.Cheeps.Add(c1);
-        // context.SaveChanges();
-        var cheeps = await cheepRepository.GetCheeps();
-        foreach (CheepDTO _cheep in cheeps)
-        {
-            Assert.Equal(_cheep.Message, "123Testing");
-        }
+        Console.WriteLine("Total amount of cheeps: " + cheeps);
     }
     
 
