@@ -25,7 +25,7 @@ public class AuthorRepositoryTests : IDisposable
     {
         //Arrange
         AuthorDTO authorDTO = new("Thorbjørnen", "tpep@bjørn.dk");
-        AuthorRepository authorRepository = new(context);
+        IAuthorRepository authorRepository = new AuthorRepository(context);
         //Act
         authorRepository.CreateAuthor(authorDTO);
 
