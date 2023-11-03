@@ -70,6 +70,10 @@ public class CheepRepository : ICheepRepository
 
     private int CalculateSkippedCheeps(int page, int pageSize)
     {
+        if (page < 1)
+        {
+            page = 1;
+        }
         return (page - 1) * pageSize;
     }
 
