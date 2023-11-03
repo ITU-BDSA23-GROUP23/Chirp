@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chirp.Infrastructure.Migrations
 {
     [DbContext(typeof(ChirpDBContext))]
-    [Migration("20231103114757_Migrations")]
+    [Migration("20231103131908_Migrations")]
     partial class Migrations
     {
         /// <inheritdoc />
