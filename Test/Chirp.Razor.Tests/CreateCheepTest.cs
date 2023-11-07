@@ -38,7 +38,8 @@ public class CreateCheepTest
         var cheeps = await cheepRepository.GetCheeps();
         foreach (var cheepDTO in cheeps)
         {
-            Assert.True(cheepDTO.AuthorName == "Thorstein Pedersen" && cheepDTO.Message == "MyMessage");
+            Assert.Equal("Thorstein Pedersen", cheepDTO.AuthorName);
+            Assert.Equal("MyMessage", cheepDTO.Message);
         }
 
     }
