@@ -3,6 +3,10 @@ using Chirp.Core;
 using Chirp.Infrastructure;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.ComponentModel.DataAnnotations;
+using FluentValidation;
+using FluentValidation.Results;
+
 
 public class CheepRepository : ICheepRepository
 {
@@ -57,6 +61,19 @@ public class CheepRepository : ICheepRepository
         {
             throw new NullReferenceException("No author was found with name : " + Author.Name + " email: " + Author.Email);
         }
+
+        // Validation
+        createCheepDTO cheepDTO = new createCheepDTO(Author, Message);
+        createCheepDTOValidator validator = new createCheepDTOValidator();
+        ValidationResult results = validator.Validate(cheepDTO);
+        if (!results.IsValid)
+        {
+            foreach (var failure in results.Errors)
+            {
+                Console.WriteLine("Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage);
+            }
+        }
+
         Cheep cheep = new Cheep()
         {
             Author = author,
