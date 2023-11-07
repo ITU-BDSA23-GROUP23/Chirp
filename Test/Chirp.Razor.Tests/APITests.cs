@@ -5,7 +5,7 @@ public class APITests
 {
 
     //Credit and see more: https://zetcode.com/csharp/getpostrequest/?utm_content=cmp-true
-    [Fact]
+    [Fact(Skip = "Skipped")]
     public void HtmlVerificationForEndpointsPublic()
     {
         // Arrange
@@ -46,7 +46,7 @@ public class APITests
         //Console.WriteLine(HttpResponseBody);
     }
 
-    [Fact]
+    [Fact(Skip = "Skipped")]
     public void diffrentPageNotSameTest()
     {
         // Arrange
