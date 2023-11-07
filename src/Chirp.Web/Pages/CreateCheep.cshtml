@@ -3,7 +3,6 @@
 @using System.Security.Claims
 @model Chirp.Web.Pages.CreateCheepModel
 
-
 @{
     
     ViewData["Title"] = "Chirp!";
@@ -12,11 +11,8 @@
      if (HttpMethods.IsPost(Request.Method)) {
         string Cheep = Request.Form["Cheep"];
     
-      Model.createCheep(@User.Identity?.Name,"no cb is best cb");
+      Model.createCheep(@User.Identity?.Name,Cheep);
       
-         
-
-
         <text>
           You entered: <br />
           Cheep: @Cheep <br />
@@ -25,8 +21,6 @@
     } 
 
 }
-
-
 
 <!DOCTYPE html>
 <html>
@@ -40,7 +34,7 @@
           <legend>Make a Cheep</legend>
           <div>
             <label for="Cheep">Cheep</label>
-            <input type="text" name="Cheep" value="" />
+            <input type="text" name="Cheep" value="" maxlength="140"/>
             <input type="submit" value="Submit" class="submit" />
           </div>
           <div>
