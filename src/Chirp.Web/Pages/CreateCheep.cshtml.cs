@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web.Resource;
 
 namespace Chirp.Web.Pages;
-[AllowAnonymous]
+
 
 
 public class CreateCheepModel : PageModel {
@@ -21,6 +21,7 @@ public class CreateCheepModel : PageModel {
     {
         _service = service;
         _logger = logger;
+
     }
 
 
