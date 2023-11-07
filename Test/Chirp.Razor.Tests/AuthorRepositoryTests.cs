@@ -25,7 +25,7 @@ public class AuthorRepositoryTests : IDisposable
     {
         //Arrange
         AuthorDTO authorDTO = new("Thorbjørnen", "tpep@bjørn.dk");
-        AuthorRepository authorRepository = new(context);
+        IAuthorRepository authorRepository = new AuthorRepository(context);
         //Act
         authorRepository.CreateAuthor(authorDTO);
 
@@ -41,7 +41,7 @@ public class AuthorRepositoryTests : IDisposable
     {
         //Arrange
         AuthorDTO authorDTO = new("Thorbjørnen1", "tpep1@bjørn.dk");
-        AuthorRepository authorRepository = new(context);
+        IAuthorRepository authorRepository = new AuthorRepository(context);
         authorRepository.CreateAuthor(authorDTO);
 
         //Act
@@ -57,7 +57,7 @@ public class AuthorRepositoryTests : IDisposable
     {
         //Arrange
         AuthorDTO authorDTO = new("Thorbjørnen2", "tpep2@bjørn.dk");
-        AuthorRepository authorRepository = new(context);
+        IAuthorRepository authorRepository = new AuthorRepository(context);
         authorRepository.CreateAuthor(authorDTO);
 
         //Act
