@@ -1,5 +1,6 @@
 @page "/CreateCheep"
 @using Chirp.Core
+@using System.Security.Claims
 @model Chirp.Web.Pages.CreateCheepModel
 
 
@@ -8,38 +9,42 @@
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
     
-    if (HttpMethods.IsPost(Request.Method)) {
-        Console.WriteLine("I am here");
+     if (HttpMethods.IsPost(Request.Method)) {
         string Cheep = Request.Form["Cheep"];
+
+         
+
 
         <text>
           You entered: <br />
           Cheep: @Cheep <br />
+          Name: @User.Identity?.Name <br />
         </text>
-    }
+    } 
 
 }
-<div> 
 
 
-    <form method="post"  >
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Customer Form</title>
+    </head>
+    <body>
+      <form method="post">
+        @Html.AntiForgeryToken();
         <fieldset>
           <legend>Make a Cheep</legend>
           <div>
-            <label for="Cheep">Cheep:</label>
+            <label for="Cheep">Cheep</label>
             <input type="text" name="Cheep" value="" />
+            <input type="submit" value="Submit" class="submit" />
           </div>
           <div>
             <label>&nbsp;</label>
-            <input type="submit" value="Submit" class="submit" />
           </div>
         </fieldset>
       </form>
-
-
-
-
-
-
-
-</div>
+    </body>
+</html>
