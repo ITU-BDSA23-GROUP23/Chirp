@@ -65,7 +65,7 @@ public class CheepRepository : ICheepRepository
         // Validation
         createCheepDTO cheepDTO = new createCheepDTO(Author, Message);
         createCheepDTOValidator validator = new createCheepDTOValidator();
-        ValidationResult results = validator.Validate(cheepDTO);
+        FluentValidation.Results.ValidationResult results = validator.Validate(cheepDTO);
         if (!results.IsValid)
         {
             foreach (var failure in results.Errors)
