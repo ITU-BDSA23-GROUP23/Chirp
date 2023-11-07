@@ -17,7 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 
 builder.Services.AddDbContext<ChirpDBContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ChirpDBSource")));
+    options.UseSqlServer(Environment.GetEnvironmentVariable("SQLCONNSTR_")));
 
 builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
