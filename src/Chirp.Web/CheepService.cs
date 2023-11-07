@@ -9,6 +9,8 @@ public interface ICheepService : IDisposable
     Task<IEnumerable<CheepDTO>> GetCheeps(int page);
     Task<IEnumerable<CheepDTO>> GetCheepsFromAuthor(string authorName, int page);
 
+    void createCheep(string UserName, string message);
+
     public Task<int> GetPageAmount(String? authorName = null);
 }
 
@@ -22,7 +24,6 @@ public class CheepService : ICheepService
     {
         this.cheepRepository = cheepRepository;
         this.authorRepository = authorRepository;
-
     }
 
     public async Task<IEnumerable<CheepDTO>> GetCheeps(int page)
@@ -55,6 +56,20 @@ public class CheepService : ICheepService
             cheepAmount = await authorRepository.GetCheepAmount(authorName);
         }
         return (int)Math.Ceiling((double)cheepAmount / PageSize);
+    }
+
+    public async void createCheep(string UserName, string message) {
+        
+        var Author = await this.authorRepository.FindAuthorByName(UserName); 
+        if(Author!= null) {
+            this.cheepRepository.CreateCheep(Author, message);
+        } else {
+            string email = UserName + "email.com";
+            Author = new AuthorDTO(UserName, email);
+            this.authorRepository.CreateAuthor(Author);
+        }
+        
+
     }
 
     public void Dispose()
