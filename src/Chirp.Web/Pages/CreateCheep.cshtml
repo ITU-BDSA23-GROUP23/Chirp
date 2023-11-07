@@ -1,0 +1,45 @@
+@page "/CreateCheep"
+@using Chirp.Core
+@model Chirp.Web.Pages.CreateCheepModel
+
+
+@{
+    
+    ViewData["Title"] = "Chirp!";
+    Layout = "Shared/_Layout";
+    
+    if (HttpMethods.IsPost(Request.Method)) {
+        Console.WriteLine("I am here");
+        string Cheep = Request.Form["Cheep"];
+
+        <text>
+          You entered: <br />
+          Cheep: @Cheep <br />
+        </text>
+    }
+
+}
+<div> 
+
+
+    <form method="post"  >
+        <fieldset>
+          <legend>Make a Cheep</legend>
+          <div>
+            <label for="Cheep">Cheep:</label>
+            <input type="text" name="Cheep" value="" />
+          </div>
+          <div>
+            <label>&nbsp;</label>
+            <input type="submit" value="Submit" class="submit" />
+          </div>
+        </fieldset>
+      </form>
+
+
+
+
+
+
+
+</div>
