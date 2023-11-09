@@ -11,10 +11,12 @@ namespace Chirp.Web.Pages;
 [AllowAnonymous]
 public class PublicModel : PageModel
 {
-    
+
     private readonly ICheepService _service;
     private readonly ILogger<PublicModel> _logger;
     public IEnumerable<CheepDTO>? Cheeps { get; set; }
+
+    public int TotalPages { get; set; }
 
     public PublicModel(ICheepService service, ILogger<PublicModel> logger)
     {
@@ -28,6 +30,11 @@ public class PublicModel : PageModel
         var _Cheeps = _service.GetCheeps(page);
         _Cheeps.Wait();
         Cheeps = _Cheeps.Result;
+
+        var _TotalPages = _service.GetPageAmount();
+        _TotalPages.Wait();
+        TotalPages = _TotalPages.Result;
+
         return Page();
     }
 }

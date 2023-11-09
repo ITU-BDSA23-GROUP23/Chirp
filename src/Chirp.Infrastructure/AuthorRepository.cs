@@ -44,7 +44,7 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task<AuthorDTO?> FindAuthorByEmail(string Email)
     {
-        var author = await dbContext.Authors.FirstAsync(a => a.Email == Email);
+        var author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Email == Email);
         if (author != null)
         {
             return new AuthorDTO(author.Name, author.Email);
@@ -54,11 +54,17 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task<AuthorDTO?> FindAuthorByName(string Name)
     {
+        try {
         var author = await dbContext.Authors.FirstAsync(a => a.Name == Name);
-        if (author != null)
-        {
-            return new AuthorDTO(author.Name, author.Email);
+        return new AuthorDTO(author.Name, author.Email);
+        } catch(Exception E) {
+            return null;
         }
-        return null;
+
+        // if (author != null)
+        // {
+        //     return new AuthorDTO(author.Name, author.Email);
+        // }
+        // return null;
     }
 }

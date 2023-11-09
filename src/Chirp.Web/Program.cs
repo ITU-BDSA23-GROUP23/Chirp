@@ -16,12 +16,17 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 
+var sqlServerString = Environment.GetEnvironmentVariable(builder.Configuration.GetConnectionString("ChirpDBSource"));
+
+Console.WriteLine("Using sql connection string: " + sqlServerString);
 
 builder.Services.AddDbContext<ChirpDBContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("ChirpDBSource")));
+    options.UseSqlServer(sqlServerString));
 
 builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
+
+//AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
 
 builder.Services.AddAuthorization(options =>
 {
@@ -34,6 +39,7 @@ builder.Services.AddRazorPages()
 
 
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
+builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<ICheepService, CheepService>();
 
 

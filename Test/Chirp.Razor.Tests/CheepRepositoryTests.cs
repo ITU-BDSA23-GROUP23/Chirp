@@ -31,8 +31,8 @@ public class CheepRepositoryTests : IDisposable
     {
         // var a10 = new Author() { Name = "Jacqualine Gilcoine", Email = "Jacqualine.Gilcoine@gmail.com", Cheeps = new List<Cheep>() };
         // var c1 = new Cheep() { Author = a10, Message = "123Testing", TimeStamp = DateTime.Parse("2023-08-01 13:14:37") };
-        var cheepRepository = new CheepRepository(context);
-        var authorRepository = new AuthorRepository(context);
+        ICheepRepository cheepRepository = new CheepRepository(context);
+        IAuthorRepository authorRepository = new AuthorRepository(context);
         AuthorDTO author = new AuthorDTO("Jacqualine Gilcoine", "Jacqualine.Gilcoine@gmail.com");
         authorRepository.CreateAuthor(author);
         cheepRepository.CreateCheep(author, "123Testing");
