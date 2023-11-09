@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Principal
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>@ViewData["Title"]</title>
@@ -7,15 +8,57 @@
 </head>
 <body>
 <div class=page>
+
+    
+
     <h1><img src="/images/icon1.png" alt="Icon1"/>Chirp!</h1>
+
+     <div class=navigation>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div>
+                <a href="/@(User.Identity.Name)">my timeline</a> |
+                <a href="/">public timeline</a> |
+                <a href="/CreateCheep">Make cheep</a> |
+                <a href="/MicrosoftIdentity/Account/SignOut" style="float: right;">logout [@(User.Identity.Name)]</a> 
+                
+                @* <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut">Sign out</a>
+                </li> *@
+
+                @* <a asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut">logout [@(User.Identity.Name)]</a> *@
+            </div>
+        }
+        else
+        {
+            <div>
+                <a href="/">public timeline</a> |
+                @* <a ... >register</a> *@
+                
+                <a href="/MicrosoftIdentity/Account/SignIn" style="float: right;">login</a>
+            </div>
+        }
+    </div>
 
     <div class=body>
         @RenderBody()
     </div>
+
+   
+
+
     <div class=footer>
         Chirp &mdash; An ASP.NET Application
     </div>
+
+    
+
+
 </div>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
+
+
 </html>
