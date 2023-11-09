@@ -13,11 +13,7 @@
     
       Model.createCheep(@User.Identity?.Name,Cheep);
       
-        <text>
-          You entered: <br />
-          Cheep: @Cheep <br />
-          Name: @User.Identity?.Name <br />
-        </text>
+      
     } 
 
 }
@@ -29,13 +25,15 @@
     </head>
     <body>
       <form method="post">
-        @Html.AntiForgeryToken();
+        @Html.AntiForgeryToken()
         <fieldset>
-          <legend>Make a Cheep</legend>
-          <div>
-            <label for="Cheep">Cheep</label>
-            <input type="text" name="Cheep" value="" maxlength="140"/>
-            <input type="submit" value="Submit" class="submit" />
+          <legend style="margin: 0 auto;">Make a Cheep</legend>
+          <div style="text-align: center;">
+            <input type="text" name="Cheep" value="" maxlength="140" size="50%" style="height: 75px;" placeholder="Cheep here!"/>
+            <div>
+              <label>&nbsp;</label> 
+            </div>
+            <input type="submit" value="Submit" class="submit" style="height: 50px; width: 75px; "/>
           </div>
           <div>
             <label>&nbsp;</label>
