@@ -10,9 +10,14 @@ public class UserTimelineModel : PageModel
     private readonly ICheepService _service;
     public IEnumerable<CheepDTO>? Cheeps { get; set; }
 
-    public UserTimelineModel(ICheepService service)
+    public int TotalPages { get; set; }
+
+    private readonly ILogger<UserTimelineModel> _logger;
+
+    public UserTimelineModel(ICheepService service, ILogger<UserTimelineModel> logger)
     {
         _service = service;
+        _logger = logger;
         //Cheeps = service.GetCheeps(null);
     }
 
@@ -23,6 +28,11 @@ public class UserTimelineModel : PageModel
         var _Cheeps = _service.GetCheepsFromAuthor(author, page);
         _Cheeps.Wait();
         Cheeps = _Cheeps.Result;
+
+        var _TotalPages = _service.GetPageAmount(author);
+        _TotalPages.Wait();
+        TotalPages = _TotalPages.Result;
+
         return Page();
     }
 }

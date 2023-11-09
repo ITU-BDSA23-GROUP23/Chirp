@@ -25,9 +25,26 @@ public class AuthorRepository : IAuthorRepository
         dbContext.SaveChanges();
     }
 
+
+    public async Task<long> GetCheepAmount(string authorName)
+    {
+        long CheepAmount;
+
+        Author? Author = await dbContext.Authors.FirstAsync(a => a.Name == authorName);
+        if (Author != null)
+        {
+            CheepAmount = Author.Cheeps.ToList().Count;
+            return CheepAmount;
+        }
+        else
+        {
+            throw new NullReferenceException($"Author {authorName} does not exist.");
+        }
+    }
+
     public async Task<AuthorDTO?> FindAuthorByEmail(string Email)
     {
-        var author = await dbContext.Authors.FindAsync(Email);
+        var author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Email == Email);
         if (author != null)
         {
             return new AuthorDTO(author.Name, author.Email);
@@ -37,11 +54,17 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task<AuthorDTO?> FindAuthorByName(string Name)
     {
-        var author = await dbContext.Authors.FindAsync(Name);
-        if (author != null)
-        {
-            return new AuthorDTO(author.Name, author.Email);
+        try {
+        var author = await dbContext.Authors.FirstAsync(a => a.Name == Name);
+        return new AuthorDTO(author.Name, author.Email);
+        } catch(Exception E) {
+            return null;
         }
-        return null;
+
+        // if (author != null)
+        // {
+        //     return new AuthorDTO(author.Name, author.Email);
+        // }
+        // return null;
     }
 }

@@ -5,7 +5,7 @@ namespace Chirp.Infrastructure
 {
     public class ChirpDBContext : DbContext
     {
-        public ChirpDBContext (DbContextOptions<ChirpDBContext> options)
+        public ChirpDBContext(DbContextOptions<ChirpDBContext> options)
             : base(options)
         {
         }
@@ -26,10 +26,19 @@ namespace Chirp.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Author>().HasIndex(c => c.Name).IsUnique();
-            modelBuilder.Entity<Author>().HasIndex(c => c.Email).IsUnique();
+            modelBuilder.Entity<Author>().HasIndex(a => a.Name).IsUnique();
+            modelBuilder.Entity<Author>().HasIndex(a => a.Email).IsUnique();
             modelBuilder.Entity<Author>().ToTable("Authors");
             modelBuilder.Entity<Cheep>().ToTable("Cheeps");
+
+            modelBuilder.Entity<Cheep>().Property(a => a.Message).HasMaxLength(160);
+            modelBuilder.Entity<Author>().Property(a => a.Name).HasMaxLength(39); // Same as github max username length.
+
+
+            // DOESN'T WORK!:
+            //modelBuilder.Entity<Author>().HasIndex(a => a.Email).Email
+            //modelBuilder.Entity<Author>().Property(a => a.Email).Email()
+
         }
     }
 }

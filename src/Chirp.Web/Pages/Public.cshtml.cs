@@ -2,17 +2,26 @@
 using Chirp.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using Microsoft.Identity.Web.Resource;
 
 namespace Chirp.Web.Pages;
-
+[AllowAnonymous]
 public class PublicModel : PageModel
 {
+
     private readonly ICheepService _service;
+    private readonly ILogger<PublicModel> _logger;
     public IEnumerable<CheepDTO>? Cheeps { get; set; }
 
-    public PublicModel(ICheepService service)
+    public int TotalPages { get; set; }
+
+    public PublicModel(ICheepService service, ILogger<PublicModel> logger)
     {
         _service = service;
+        _logger = logger;
         //Cheeps = service.GetCheeps(null);
     }
 
@@ -21,6 +30,11 @@ public class PublicModel : PageModel
         var _Cheeps = _service.GetCheeps(page);
         _Cheeps.Wait();
         Cheeps = _Cheeps.Result;
+
+        var _TotalPages = _service.GetPageAmount();
+        _TotalPages.Wait();
+        TotalPages = _TotalPages.Result;
+
         return Page();
     }
 }
