@@ -23,6 +23,7 @@ namespace Chirp.Infrastructure
 
         public DbSet<Author> Authors { get; set; }
         public DbSet<Cheep> Cheeps { get; set; }
+        public DbSet<Reactions> Reactions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -33,6 +34,7 @@ namespace Chirp.Infrastructure
 
             modelBuilder.Entity<Cheep>().Property(a => a.Message).HasMaxLength(160);
             modelBuilder.Entity<Author>().Property(a => a.Name).HasMaxLength(39); // Same as github max username length.
+            modelBuilder.Entity<Reactions>().HasKey(r => new { r.ChirpId, r.AuthorId });
 
 
             // DOESN'T WORK!:

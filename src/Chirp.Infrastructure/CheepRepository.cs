@@ -80,7 +80,7 @@ public class CheepRepository : ICheepRepository
             Message = Message,
             TimeStamp = DateTime.Now
         };
-       // author.Cheeps.Append(cheep);
+        // author.Cheeps.Append(cheep);
         dbContext.Cheeps.Add(cheep);
         dbContext.SaveChanges();
     }
@@ -103,7 +103,7 @@ public class CheepRepository : ICheepRepository
 
             string formattedDateTime = cheepDateTimeUtc.ToString("dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture);
 
-            cheepDTOs.Add(new CheepDTO(cheep.Message, cheep.Author.Name, formattedDateTime));
+            cheepDTOs.Add(new CheepDTO(cheep.Message, cheep.Author.Name, formattedDateTime, (ICollection<ReactionDTO>?)cheep.Reactions));
         }
 
         return cheepDTOs;

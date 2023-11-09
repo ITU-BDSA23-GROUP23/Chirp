@@ -22,6 +22,21 @@ namespace Chirp.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("AuthorAuthor", b =>
+                {
+                    b.Property<Guid>("FollowersId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("FollowingId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("FollowersId", "FollowingId");
+
+                    b.HasIndex("FollowingId");
+
+                    b.ToTable("AuthorAuthor");
+                });
+
             modelBuilder.Entity("Chirp.Infrastructure.Author", b =>
                 {
                     b.Property<Guid>("Id")
@@ -34,7 +49,8 @@ namespace Chirp.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(39)
+                        .HasColumnType("nvarchar(39)");
 
                     b.HasKey("Id");
 
@@ -58,7 +74,8 @@ namespace Chirp.Infrastructure.Migrations
 
                     b.Property<string>("Message")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(160)
+                        .HasColumnType("nvarchar(160)");
 
                     b.Property<DateTime>("TimeStamp")
                         .HasColumnType("datetime2");
@@ -68,6 +85,44 @@ namespace Chirp.Infrastructure.Migrations
                     b.HasIndex("AuthorId");
 
                     b.ToTable("Cheeps", (string)null);
+                });
+
+            modelBuilder.Entity("Chirp.Infrastructure.Reactions", b =>
+                {
+                    b.Property<int>("ChirpId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("AuthorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CheepId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ReactionType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ChirpId", "AuthorId");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("CheepId");
+
+                    b.ToTable("Reactions");
+                });
+
+            modelBuilder.Entity("AuthorAuthor", b =>
+                {
+                    b.HasOne("Chirp.Infrastructure.Author", null)
+                        .WithMany()
+                        .HasForeignKey("FollowersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Chirp.Infrastructure.Author", null)
+                        .WithMany()
+                        .HasForeignKey("FollowingId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Chirp.Infrastructure.Cheep", b =>
@@ -81,9 +136,33 @@ namespace Chirp.Infrastructure.Migrations
                     b.Navigation("Author");
                 });
 
+            modelBuilder.Entity("Chirp.Infrastructure.Reactions", b =>
+                {
+                    b.HasOne("Chirp.Infrastructure.Author", "Author")
+                        .WithMany("Reactions")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Chirp.Infrastructure.Cheep", "Cheep")
+                        .WithMany("Reactions")
+                        .HasForeignKey("CheepId");
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Cheep");
+                });
+
             modelBuilder.Entity("Chirp.Infrastructure.Author", b =>
                 {
                     b.Navigation("Cheeps");
+
+                    b.Navigation("Reactions");
+                });
+
+            modelBuilder.Entity("Chirp.Infrastructure.Cheep", b =>
+                {
+                    b.Navigation("Reactions");
                 });
 #pragma warning restore 612, 618
         }
