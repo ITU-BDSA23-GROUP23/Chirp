@@ -19,7 +19,9 @@
             <div>
                 <a href="/@(User.Identity.Name)">my timeline</a> |
                 <a href="/">public timeline</a> |
-                <a href="/MicrosoftIdentity/Account/SignOut">logout [@(User.Identity.Name)]</a>
+                <a href="/CreateCheep">Make cheep</a> |
+                <a href="/MicrosoftIdentity/Account/SignOut" style="float: right;">logout [@(User.Identity.Name)]</a> 
+                
                 @* <li class="nav-item">
                     <a class="nav-link text-dark" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut">Sign out</a>
                 </li> *@
@@ -31,9 +33,9 @@
         {
             <div>
                 <a href="/">public timeline</a> |
-                <a ... >register</a>
+                @* <a ... >register</a> *@
                 
-                <a href="/MicrosoftIdentity/Account/SignIn">login</a>
+                <a href="/MicrosoftIdentity/Account/SignIn" style="float: right;">login</a>
             </div>
         }
     </div>
