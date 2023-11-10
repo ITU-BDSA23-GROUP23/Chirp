@@ -7,6 +7,7 @@ using Microsoft.Identity.Web.Resource;
 
 namespace Chirp.Web.Pages.Shared;
 
+//Model for page navigation needs to be instanced in other models
 public class PageNavModel : PageModel
 {
 
