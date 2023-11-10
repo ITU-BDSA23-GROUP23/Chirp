@@ -27,7 +27,7 @@ namespace Chirp.Infrastructure
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Author>().HasIndex(a => a.Name).IsUnique();
-            modelBuilder.Entity<Author>().HasIndex(a => a.Email).IsUnique();
+            // modelBuilder.Entity<Author>().HasIndex(a => a.Email).IsUnique(); // makes no sense to have unique email when many of them would be null, as we currently don't have the email when creating Authors. 
             modelBuilder.Entity<Author>().ToTable("Authors");
             modelBuilder.Entity<Cheep>().ToTable("Cheeps");
 

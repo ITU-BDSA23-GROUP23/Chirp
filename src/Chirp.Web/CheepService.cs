@@ -58,17 +58,21 @@ public class CheepService : ICheepService
         return (int)Math.Ceiling((double)cheepAmount / PageSize);
     }
 
-    public async void createCheep(string UserName, string message) {
-        
-        var Author = await this.authorRepository.FindAuthorByName(UserName); 
-        if(Author!= null) {
+    public async void createCheep(string UserName, string message)
+    {
+
+        var Author = await this.authorRepository.FindAuthorByName(UserName);
+        if (Author != null)
+        {
             this.cheepRepository.CreateCheep(Author, message);
-        } else {
+        }
+        else
+        {
             string email = UserName + "email.com";
             Author = new AuthorDTO(UserName, email);
             this.authorRepository.CreateAuthor(Author);
         }
-        
+
 
     }
 

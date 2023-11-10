@@ -65,24 +65,30 @@ public class CheepRepository : ICheepRepository
         // Validation
         createCheepDTO cheepDTO = new createCheepDTO(Author, Message);
         createCheepDTOValidator validator = new createCheepDTOValidator();
+        string MessageIssues = "";
         FluentValidation.Results.ValidationResult results = validator.Validate(cheepDTO);
         if (!results.IsValid)
         {
             foreach (var failure in results.Errors)
             {
+                MessageIssues += "Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage + "\n";
                 Console.WriteLine("Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage);
             }
+            // throw new ValidationException();
+            // WE Don't want to output any faildata, as the only way this validation should fail, is if the users are malicious. We can incomment this for debugging purposes.
         }
-
-        Cheep cheep = new Cheep()
+        else
         {
-            Author = author,
-            Message = Message,
-            TimeStamp = DateTime.Now
-        };
-       // author.Cheeps.Append(cheep);
-        dbContext.Cheeps.Add(cheep);
-        dbContext.SaveChanges();
+            Cheep cheep = new Cheep()
+            {
+                Author = author,
+                Message = Message,
+                TimeStamp = DateTime.Now
+            };
+            // author.Cheeps.Append(cheep);
+            dbContext.Cheeps.Add(cheep);
+            dbContext.SaveChanges();
+        }
     }
 
     private int CalculateSkippedCheeps(int page, int pageSize)
