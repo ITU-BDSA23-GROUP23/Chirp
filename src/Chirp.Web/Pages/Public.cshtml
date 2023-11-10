@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using Chirp.Core
+@using Chirp.Web.Pages.Shared
 @model Chirp.Web.Pages.PublicModel
 @{
     ViewData["Title"] = "Chirp!";
@@ -33,5 +34,5 @@
         <em>There are no cheeps so far.</em>
     }
     
-    @(await Html.PartialAsync("PageNav"))
+    @(await Html.PartialAsync("Shared/PageNav", @Model.PageNav))
 </div>
