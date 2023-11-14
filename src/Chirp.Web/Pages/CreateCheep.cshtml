@@ -4,41 +4,46 @@
 @model Chirp.Web.Pages.CreateCheepModel
 
 @{
-    
-    ViewData["Title"] = "Chirp!";
-    Layout = "Shared/_Layout";
-    
-     if (HttpMethods.IsPost(Request.Method)) {
-        string Cheep = Request.Form["Cheep"];
-    
-      Model.createCheep(@User.Identity?.Name,Cheep);
-      
-      
-    } 
+
+  ViewData["Title"] = "Chirp!";
+  Layout = "Shared/_Layout";
+
+  if (HttpMethods.IsPost(Request.Method))
+  {
+    string Cheep = Request.Form["Cheep"];
+
+    Model.createCheep(@User.Identity?.Name, Cheep);
+
+
+  }
 
 }
 
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Customer Form</title>
-    </head>
-    <body>
-      <form method="post">
-        @Html.AntiForgeryToken()
-        <fieldset>
-          <legend style="margin: 0 auto;">Make a Cheep</legend>
-          <div style="text-align: center;">
-            <input type="text" name="Cheep" value="" maxlength="140" size="50%" style="height: 75px;" placeholder="Cheep here!"/>
-            <div>
-              <label>&nbsp;</label> 
-            </div>
-            <input type="submit" value="Submit" class="submit" style="height: 50px; width: 75px; "/>
-          </div>
-          <div>
-            <label>&nbsp;</label>
-          </div>
-        </fieldset>
-      </form>
-    </body>
+
+<head>
+  <title>Customer Form</title>
+</head>
+
+<body>
+  <form method="post">
+    @Html.AntiForgeryToken()
+    <fieldset>
+      <legend style="margin: 0 auto;">Make a Cheep</legend>
+      <div style="text-align: center;">
+        <input type="text" name="Cheep" value="" maxlength="140" size="50%" style="height: 75px;"
+          placeholder="Cheep here!" />
+        <div>
+          <label>&nbsp;</label>
+        </div>
+        <input type="submit" value="Submit" class="submit" style="height: 50px; width: 75px; " />
+      </div>
+      <div>
+        <label>&nbsp;</label>
+      </div>
+    </fieldset>
+  </form>
+</body>
+
 </html>

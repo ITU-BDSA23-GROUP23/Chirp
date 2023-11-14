@@ -34,7 +34,7 @@ namespace Chirp.Infrastructure
             modelBuilder.Entity<Cheep>().Property(a => a.Message).HasMaxLength(160);
             modelBuilder.Entity<Author>().Property(a => a.Name).HasMaxLength(39); // Same as github max username length.
 
-
+            modelBuilder.Entity<Author>().Property(a => a.Email).HasAnnotation("RegularExpression", "[.+@.+]");
             // DOESN'T WORK!:
             //modelBuilder.Entity<Author>().HasIndex(a => a.Email).Email
             //modelBuilder.Entity<Author>().Property(a => a.Email).Email()
