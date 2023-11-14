@@ -29,7 +29,7 @@ public class PublicModel : PageModel
 
     public ActionResult OnGet([FromQuery] int page)
     {
-        PageNav = new PageNavModel(_service);
+        PageNav = new PageNavModel(_service, page);
 
         var _Cheeps = _service.GetCheeps(page);
         _Cheeps.Wait();

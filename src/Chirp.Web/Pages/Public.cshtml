@@ -8,8 +8,10 @@
 }
 
 <div>
-    <h2> Public Timeline </h2>
-
+    <div style="display: flex;justify-content: space-between;">
+        <h2> Public Timeline </h2>
+        @(await Html.PartialAsync("Shared/PageNav", @Model.PageNav))
+    </div>
     
 
     @if (Model.Cheeps != null && Model.Cheeps.Any())
