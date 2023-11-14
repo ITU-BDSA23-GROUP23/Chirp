@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web.Resource;
+using Chirp.Web.Pages.Shared;
 
 namespace Chirp.Web.Pages;
 [AllowAnonymous]
@@ -15,6 +16,7 @@ public class PublicModel : PageModel
     private readonly ICheepService _service;
     private readonly ILogger<PublicModel> _logger;
     public IEnumerable<CheepDTO>? Cheeps { get; set; }
+    public PageNavModel PageNav;
 
     public int TotalPages { get; set; }
 
@@ -27,6 +29,8 @@ public class PublicModel : PageModel
 
     public ActionResult OnGet([FromQuery] int page)
     {
+        PageNav = new PageNavModel(_service, page);
+
         var _Cheeps = _service.GetCheeps(page);
         _Cheeps.Wait();
         Cheeps = _Cheeps.Result;
