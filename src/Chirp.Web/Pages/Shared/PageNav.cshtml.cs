@@ -31,6 +31,10 @@ public class PageNavModel : PageModel
 
     public string GetPageString(int mod = 0) {
         var _page = CurrentPage + mod;
+        //Workaround that disables incrementing the page when it is on the last page
+        if (_page > TotalPages) {
+            _page = CurrentPage;
+        }
         return "?page=" + _page;
     }
 
