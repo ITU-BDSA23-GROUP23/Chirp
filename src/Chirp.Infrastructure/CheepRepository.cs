@@ -54,41 +54,26 @@ public class CheepRepository : ICheepRepository
         return CheepAmount;
     }
 
-    public void CreateCheep(AuthorDTO Author, string Message)
+    public void CreateCheep(createCheepDTO cheepDTO)
     {
-        Author author = dbContext.Authors.First(a => a.Name == Author.Name);
+        Author author = dbContext.Authors.First(a => a.Name == cheepDTO.Author.Name);
         if (author == null)
         {
-            throw new NullReferenceException("No author was found with name : " + Author.Name + " email: " + Author.Email);
+            throw new NullReferenceException("No author was found with name : " + cheepDTO.Author.Name + " email: " + cheepDTO.Author.Email);
         }
+        
+        Cheep cheep = new Cheep(){
+            Author = author,
+            Message = cheepDTO.Message,
+            TimeStamp = DateTime.Now
+        };
 
-        // Validation
-        createCheepDTO cheepDTO = new createCheepDTO(Author, Message);
-        createCheepDTOValidator validator = new createCheepDTOValidator();
-        string MessageIssues = "";
-        FluentValidation.Results.ValidationResult results = validator.Validate(cheepDTO);
-        if (!results.IsValid)
-        {
-            foreach (var failure in results.Errors)
-            {
-                MessageIssues += "Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage + "\n";
-                Console.WriteLine("Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage);
-            }
-            // throw new ValidationException();
-            // WE Don't want to output any faildata, as the only way this validation should fail, is if the users are malicious. We can incomment this for debugging purposes.
-        }
-        else
-        {
-            Cheep cheep = new Cheep()
-            {
-                Author = author,
-                Message = Message,
-                TimeStamp = DateTime.Now
-            };
-            // author.Cheeps.Append(cheep);
-            dbContext.Cheeps.Add(cheep);
-            dbContext.SaveChanges();
-        }
+        if(author.Cheeps == null) 
+            author.Cheeps = new List<Cheep>();
+
+        author.Cheeps.Add(cheep);
+        dbContext.Cheeps.Add(cheep);
+        dbContext.SaveChanges();
     }
 
     private int CalculateSkippedCheeps(int page, int pageSize)

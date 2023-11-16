@@ -37,18 +37,38 @@ public class CreateCheepModel : PageModel
         var _Author = _Author_repository.FindAuthorByName(UserName);
         _Author.Wait();
         var Author = _Author.Result;
-        Console.WriteLine("Author:  " + Author);
-        Console.WriteLine("Message:  " + message);
-        if (Author != null)
+        //Console.WriteLine("Author:  " +Author);
+        //Console.WriteLine("Message:  " +message);  
+        if(Author!= null) {
+            
+        createCheepDTO cheepDTO = new createCheepDTO(Author, message);
+        createCheepDTOValidator validator = new createCheepDTOValidator();
+        FluentValidation.Results.ValidationResult results = validator.Validate(cheepDTO);
+        if (!results.IsValid)
         {
-            _Cheep_repository.CreateCheep(Author, message);
+            foreach (var failure in results.Errors)
+            {
+                Console.WriteLine("Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage);
+            }
         }
-        else
-        {
-            // string email = UserName + "email.com"; // We can't get the correct
-            Author = new AuthorDTO(UserName, Email: null);
+            _Cheep_repository.CreateCheep(cheepDTO);
+        } else {
+            string email = UserName + "email.com";
+            Author = new AuthorDTO(UserName, email);
+
             _Author_repository.CreateAuthor(Author);
-            _Cheep_repository.CreateCheep(Author, message);
+            createCheepDTO cheepDTO = new createCheepDTO(Author, message);
+            createCheepDTOValidator validator = new createCheepDTOValidator();
+            FluentValidation.Results.ValidationResult results = validator.Validate(cheepDTO);
+            if (!results.IsValid)
+            {
+                foreach (var failure in results.Errors)
+                {
+                    Console.WriteLine("Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage);
+                }
+            }
+
+            _Cheep_repository.CreateCheep(cheepDTO);
         }
     }
     public ActionResult OnGet()
