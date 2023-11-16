@@ -28,13 +28,20 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task<long> GetCheepAmount(string authorName)
     {
-        long CheepAmount;
+        long? CheepAmount;
 
         Author? Author = await dbContext.Authors.FirstAsync(a => a.Name == authorName);
         if (Author != null)
         {
             CheepAmount = Author.Cheeps.ToList().Count;
-            return CheepAmount;
+            if (CheepAmount == null)
+            {
+                return 0;
+            }
+            else
+            {
+                return (long)CheepAmount;
+            }
         }
         else
         {
@@ -54,10 +61,13 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task<AuthorDTO?> FindAuthorByName(string Name)
     {
-        try {
-        var author = await dbContext.Authors.FirstAsync(a => a.Name == Name);
-        return new AuthorDTO(author.Name, author.Email);
-        } catch(Exception E) {
+        try
+        {
+            var author = await dbContext.Authors.FirstAsync(a => a.Name == Name);
+            return new AuthorDTO(author.Name, author.Email);
+        }
+        catch (Exception E)
+        {
             return null;
         }
 
