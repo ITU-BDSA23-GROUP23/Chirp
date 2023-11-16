@@ -30,7 +30,7 @@ public class UserTimelineModel : PageModel
 
     public ActionResult OnGet(string author, [FromQuery] int page)
     {
-        PageNav = new PageNavModel(_service, page);
+        
         //Cheeps = _service.GetCheeps(page);
         //Cheeps = _service.GetCheeps(author);
         var _Cheeps = _service.GetCheepsFromAuthor(author, page);
@@ -40,6 +40,7 @@ public class UserTimelineModel : PageModel
         var _TotalPages = _service.GetPageAmount(author);
         _TotalPages.Wait();
         TotalPages = _TotalPages.Result;
+        PageNav = new PageNavModel(_service, page, TotalPages);
 
         return Page();
     }

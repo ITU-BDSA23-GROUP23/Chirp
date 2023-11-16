@@ -18,9 +18,10 @@ public class PageNavModel : PageModel
 
     public int CurrentPage { get; set; } = 1;
 
-    public PageNavModel(ICheepService service, int page)
+    public PageNavModel(ICheepService service, int page, int maxPages)
     {
         _service = service;
+        TotalPages = maxPages;
 
         if (page > 1) {
             CurrentPage = page;
@@ -40,10 +41,6 @@ public class PageNavModel : PageModel
 
     public ActionResult OnGetPartial()
     {
-        var _TotalPages = _service.GetPageAmount();
-        _TotalPages.Wait();
-        TotalPages = _TotalPages.Result;
-
         return Page();
     }
 }

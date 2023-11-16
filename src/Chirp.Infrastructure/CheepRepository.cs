@@ -80,7 +80,7 @@ public class CheepRepository : ICheepRepository
             Message = Message,
             TimeStamp = DateTime.Now
         };
-       // author.Cheeps.Append(cheep);
+        author.Cheeps.Append(cheep);
         dbContext.Cheeps.Add(cheep);
         dbContext.SaveChanges();
     }
