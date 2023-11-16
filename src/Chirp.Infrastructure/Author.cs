@@ -11,6 +11,6 @@ namespace Chirp.Infrastructure
         [EmailAddress]
         public required string Email { get; set; }
 
-        public required IEnumerable<Cheep> Cheeps { get; set; }
+        public required ICollection<Cheep> Cheeps { get; set; }
     }
 }

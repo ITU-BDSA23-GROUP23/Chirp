@@ -20,7 +20,7 @@ public class AuthorRepository : IAuthorRepository
         {
             Name = author.Name,
             Email = author.Email,
-            Cheeps = new List<Cheep>()
+            Cheeps = new List<Cheep>(),
         });
         dbContext.SaveChanges();
     }
