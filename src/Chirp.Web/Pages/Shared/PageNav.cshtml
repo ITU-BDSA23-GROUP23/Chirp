@@ -1,0 +1,22 @@
+@model Chirp.Web.Pages.Shared.PageNavModel
+
+<style>
+    .navDir {
+        display: flex;
+        justify-content: right;
+        align-items: center;
+    }
+
+    .navDirElement {
+        margin: 0px 10px;
+        font-size: 30px;
+        text-decoration: none;
+    }
+</style>
+
+<div class="navDir">
+    <a class="navDirElement" href=@Model.GetPageString(-1)>-</a>
+    <p class="navDirElement" >@Model.CurrentPage</p>
+    <a class="navDirElement"  href=@Model.GetPageString(1)>+</a>
+</div>
+

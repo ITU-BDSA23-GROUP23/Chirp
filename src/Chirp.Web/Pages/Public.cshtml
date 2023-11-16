@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using Chirp.Core
+@using Chirp.Web.Pages.Shared
 @model Chirp.Web.Pages.PublicModel
 @{
     ViewData["Title"] = "Chirp!";
@@ -7,9 +8,17 @@
 }
 
 <div>
+<<<<<<< HEAD
     <h2> Public Timeline </h2>
 
 
+=======
+    <div style="display: flex;justify-content: space-between;">
+        <h2> Public Timeline </h2>
+        @(await Html.PartialAsync("Shared/PageNav", @Model.PageNav))
+    </div>
+    
+>>>>>>> main
 
     @if (Model.Cheeps != null && Model.Cheeps.Any())
     {
@@ -27,31 +36,20 @@
                 </li>
             }
         </ul>
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    }
+   }
     else
     {
         <em>There are no cheeps so far.</em>
     }
+<<<<<<< HEAD
 
     <div class="pagination">
         <a href="/?page=" \>
 
     </div>
 </div>
+=======
+    
+    @(await Html.PartialAsync("Shared/PageNav", @Model.PageNav))
+</div>
+>>>>>>> main
