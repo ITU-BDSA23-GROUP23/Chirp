@@ -20,9 +20,44 @@ public class AuthorRepository : IAuthorRepository
         {
             Name = author.Name,
             Email = author.Email,
-            Cheeps = new List<Cheep>()
+            Cheeps = new List<Cheep>(),
+            Following = new List<Author>(),
+            Followers = new List<Author>()
         });
         dbContext.SaveChanges();
+    }
+    public async Task FollowAuthor(string followerName, string followingName)
+    {
+        Author? follower = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == followerName);
+        Author? following = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == followingName);
+
+        if (follower != null && following != null)
+        {
+            follower.Following.Add(following);
+            following.Followers.Add(follower);
+            dbContext.SaveChanges();
+        }
+        else
+        {
+            throw new NullReferenceException($"Author {followerName} or {followingName} does not exist.");
+        }
+    }
+
+    public async Task UnfollowAuthor(string followerName, string followingName)
+    {
+        Author? follower = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == followerName);
+        Author? following = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == followingName);
+
+        if (follower != null && following != null)
+        {
+            follower.Following.Remove(following);
+            following.Followers.Remove(follower);
+            dbContext.SaveChanges();
+        }
+        else
+        {
+            throw new NullReferenceException($"Author {followerName} or {followingName} does not exist.");
+        }
     }
 
 
@@ -54,10 +89,13 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task<AuthorDTO?> FindAuthorByName(string Name)
     {
-        try {
-        var author = await dbContext.Authors.FirstAsync(a => a.Name == Name);
-        return new AuthorDTO(author.Name, author.Email);
-        } catch(Exception E) {
+        try
+        {
+            var author = await dbContext.Authors.FirstAsync(a => a.Name == Name);
+            return new AuthorDTO(author.Name, author.Email);
+        }
+        catch (Exception E)
+        {
             return null;
         }
 

@@ -12,7 +12,7 @@
         <h2> Public Timeline </h2>
         @(await Html.PartialAsync("Shared/PageNav", @Model.PageNav))
     </div>
-    
+
 
     @if (Model.Cheeps != null && Model.Cheeps.Any())
     {
@@ -26,15 +26,20 @@
                         </strong>
                         @cheep.Message
                         <small>&mdash; @cheep.TimeStamp</small>
-                    </p>
+                    <form method="post">
+                        <input type="hidden" name="follow" value="@cheep.AuthorName" />
+                        <input type="submit" value="Follow" />
+                        <input type="hidden" name="Unfollow" value="@cheep.AuthorName" />
+                        <input type="submit" value="Unfollow" />
+                        </p>
                 </li>
             }
         </ul>
-   }
+    }
     else
     {
         <em>There are no cheeps so far.</em>
     }
-    
+
     @(await Html.PartialAsync("Shared/PageNav", @Model.PageNav))
 </div>

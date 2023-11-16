@@ -31,6 +31,7 @@ namespace Chirp.Infrastructure
             modelBuilder.Entity<Author>().HasIndex(a => a.Email).IsUnique();
             modelBuilder.Entity<Author>().ToTable("Authors");
             modelBuilder.Entity<Cheep>().ToTable("Cheeps");
+            modelBuilder.Entity<Reactions>().ToTable("Reactions");
 
             modelBuilder.Entity<Cheep>().Property(a => a.Message).HasMaxLength(160);
             modelBuilder.Entity<Author>().Property(a => a.Name).HasMaxLength(39); // Same as github max username length.
