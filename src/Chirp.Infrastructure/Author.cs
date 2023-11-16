@@ -9,7 +9,7 @@ namespace Chirp.Infrastructure
         public required string Name { get; set; }
 
         [EmailAddress]
-        public required string Email { get; set; }
+        public string? Email { get; set; }
 
         public required ICollection<Cheep> Cheeps { get; set; }
     }

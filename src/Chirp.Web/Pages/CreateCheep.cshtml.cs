@@ -11,7 +11,8 @@ namespace Chirp.Web.Pages;
 
 
 
-public class CreateCheepModel : PageModel {
+public class CreateCheepModel : PageModel
+{
 
 
     private readonly ICheepService _service;
@@ -26,12 +27,13 @@ public class CreateCheepModel : PageModel {
         _service = service;
         _logger = logger;
         _Author_repository = Author_repository;
-        _Cheep_repository =  Cheep_repository;
+        _Cheep_repository = Cheep_repository;
 
     }
 
 
-    public async void createCheep(string UserName, string message) {
+    public async void createCheep(string UserName, string message)
+    {
         var _Author = _Author_repository.FindAuthorByName(UserName);
         _Author.Wait();
         var Author = _Author.Result;
@@ -53,6 +55,7 @@ public class CreateCheepModel : PageModel {
         } else {
             string email = UserName + "email.com";
             Author = new AuthorDTO(UserName, email);
+
             _Author_repository.CreateAuthor(Author);
             createCheepDTO cheepDTO = new createCheepDTO(Author, message);
             createCheepDTOValidator validator = new createCheepDTOValidator();
@@ -68,10 +71,11 @@ public class CreateCheepModel : PageModel {
             _Cheep_repository.CreateCheep(cheepDTO);
         }
     }
-     public ActionResult OnGet()
+    public ActionResult OnGet()
     {
-        
-        return Page();
-    
 
-} }
+        return Page();
+
+
+    }
+}

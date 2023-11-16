@@ -61,9 +61,8 @@ public class CheepRepository : ICheepRepository
         {
             throw new NullReferenceException("No author was found with name : " + cheepDTO.Author.Name + " email: " + cheepDTO.Author.Email);
         }
-
-        Cheep cheep = new Cheep()
-        {
+        
+        Cheep cheep = new Cheep(){
             Author = author,
             Message = cheepDTO.Message,
             TimeStamp = DateTime.Now
