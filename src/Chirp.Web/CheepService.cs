@@ -12,6 +12,8 @@ public interface ICheepService : IDisposable
     void createCheep(string UserName, string message);
 
     public Task<int> GetPageAmount(String? authorName = null);
+    int GetFollowingCount(string author);
+    int GetFollowersCount(string author);
 }
 
 public class CheepService : ICheepService
@@ -20,10 +22,13 @@ public class CheepService : ICheepService
     private readonly ICheepRepository cheepRepository;
     private readonly IAuthorRepository authorRepository;
 
-    public CheepService(ICheepRepository cheepRepository, IAuthorRepository authorRepository)
+    ChirpDBContext _dbContext;
+
+    public CheepService(ICheepRepository cheepRepository, IAuthorRepository authorRepository, ChirpDBContext dbContext)
     {
         this.cheepRepository = cheepRepository;
         this.authorRepository = authorRepository;
+        _dbContext = dbContext;
     }
 
     public async Task<IEnumerable<CheepDTO>> GetCheeps(int page)
@@ -58,17 +63,20 @@ public class CheepService : ICheepService
         return (int)Math.Ceiling((double)cheepAmount / PageSize);
     }
 
-    public async void createCheep(string UserName, string message) {
-        
-        var Author = await this.authorRepository.FindAuthorByName(UserName); 
-        if(Author!= null) {
+    public async void createCheep(string UserName, string message)
+    {
+
+        var Author = await this.authorRepository.FindAuthorByName(UserName);
+        if (Author != null)
+        {
             this.cheepRepository.CreateCheep(Author, message);
-        } else {
+        }
+        else
+        {
             string email = UserName + "email.com";
             Author = new AuthorDTO(UserName, email);
             this.authorRepository.CreateAuthor(Author);
         }
-        
 
     }
 
@@ -76,4 +84,33 @@ public class CheepService : ICheepService
     {
         // Implement Dispose method here if necessary.
     }
+
+    public int GetFollowingCount(string authorName)
+    {
+        Author author = _dbContext.Authors.FirstOrDefault(a => a.Name == authorName);
+
+        if (author != null)
+        {
+            // Check if author.Following is not null before accessing Count
+            int followingCount = author.Following?.Count ?? 0;
+            return followingCount;
+        }
+
+        return 0; // or handle the case when the author is not found
+    }
+
+    public int GetFollowersCount(string authorName)
+    {
+        Author author = _dbContext.Authors.FirstOrDefault(a => a.Name == authorName);
+
+        if (author != null)
+        {
+            // Check if author.Followers is not null before accessing Count
+            int followersCount = author.Followers?.Count ?? 0;
+            return followersCount;
+        }
+
+        return 0; // or handle the case when the author is not found
+    }
+
 }

@@ -5,6 +5,15 @@
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
+
+    if (HttpMethods.IsPost(Request.Method))
+    {
+        var follow = Request.Form["follow"];
+        var unfollow = Request.Form["unfollow"];
+
+        await Model.FollowAuthor(follow, User.Identity.Name);
+        await Model.UnfollowAuthor(unfollow, User.Identity.Name);
+    }
 }
 
 <div>
@@ -26,19 +35,58 @@
                         </strong>
                         @cheep.Message
                         <small>&mdash; @cheep.TimeStamp</small>
-                    <form method="post">
-                        <input type="hidden" name="follow" value="@cheep.AuthorName" />
-                        <input type="submit" value="Follow" />
-                        <input type="hidden" name="Unfollow" value="@cheep.AuthorName" />
-                        <input type="submit" value="Unfollow" />
-                        </p>
+                    <form id="followForm_@cheep.AuthorName" asp-page-handler="FollowAuthor"
+                        asp-route-followerName="@User.Identity.Name" asp-route-followingName="@cheep.AuthorName">
+                        <button type="button" class="btn btn-primary follow-button"
+                            onclick="submitForm('followForm_@cheep.AuthorName')">Follow</button>
+
+
+                    </form>
+
+                    <form id="unfollowForm_@cheep.AuthorName" asp-page-handler="UnfollowAuthor"
+                        asp-route-followerName="@User.Identity.Name" asp-route-followingName="@cheep.AuthorName">
+                        <button type="button" class="btn btn-danger unfollow-button"
+                            onclick="submitForm('unfollowForm_@cheep.AuthorName')">Unfollow</button>
+                    </form>
+                    </p>
                 </li>
             }
         </ul>
     }
+
+    @section scripts {
+        <script>
+            function submitForm(formId) {
+                console.log('Form submitted:', formId);
+
+                var form = document.getElementById(formId);
+                if (!form) {
+                    console.error('Form not found:', formId);
+                    return;
+                }
+
+                var formData = new FormData(form);
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => {
+                        console.log('Form submitted successfully');
+                        // Handle the response as needed
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+        </script>
+    }
+
+
+
+
     else
     {
-        <em>There are no cheeps so far.</em>
+    <em>There are no cheeps so far.</em>
     }
 
     @(await Html.PartialAsync("Shared/PageNav", @Model.PageNav))

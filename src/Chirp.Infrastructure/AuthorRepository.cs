@@ -26,40 +26,6 @@ public class AuthorRepository : IAuthorRepository
         });
         dbContext.SaveChanges();
     }
-    public async Task FollowAuthor(string followerName, string followingName)
-    {
-        Author? follower = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == followerName);
-        Author? following = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == followingName);
-
-        if (follower != null && following != null)
-        {
-            follower.Following.Add(following);
-            following.Followers.Add(follower);
-            dbContext.SaveChanges();
-        }
-        else
-        {
-            throw new NullReferenceException($"Author {followerName} or {followingName} does not exist.");
-        }
-    }
-
-    public async Task UnfollowAuthor(string followerName, string followingName)
-    {
-        Author? follower = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == followerName);
-        Author? following = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == followingName);
-
-        if (follower != null && following != null)
-        {
-            follower.Following.Remove(following);
-            following.Followers.Remove(follower);
-            dbContext.SaveChanges();
-        }
-        else
-        {
-            throw new NullReferenceException($"Author {followerName} or {followingName} does not exist.");
-        }
-    }
-
 
     public async Task<long> GetCheepAmount(string authorName)
     {

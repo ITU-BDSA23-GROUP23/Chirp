@@ -37,7 +37,6 @@ namespace Chirp.Infrastructure
             modelBuilder.Entity<Author>().Property(a => a.Name).HasMaxLength(39); // Same as github max username length.
             modelBuilder.Entity<Reactions>().HasKey(r => new { r.ChirpId, r.AuthorId });
 
-
             // DOESN'T WORK!:
             //modelBuilder.Entity<Author>().HasIndex(a => a.Email).Email
             //modelBuilder.Entity<Author>().Property(a => a.Email).Email()

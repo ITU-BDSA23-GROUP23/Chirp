@@ -43,4 +43,16 @@ public class UserTimelineModel : PageModel
 
         return Page();
     }
+
+    public int FollowingCount(string author)
+    {
+        var _FollowingCount = _service.GetFollowingCount(author);
+        return _FollowingCount;
+    }
+    public int FollowersCount(string author)
+    {
+        var _FollowersCount = _service.GetFollowersCount(author);
+        return _FollowersCount;
+    }
+
 }
