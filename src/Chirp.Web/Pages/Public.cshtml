@@ -59,6 +59,7 @@
 
                 var form = event.target;
                 var formData = new FormData(form);
+                form.action = form.action.replace(/(Follow|Unfollow)Author/, action + 'Author');
 
                 fetch(form.action, {
                     method: 'POST',
