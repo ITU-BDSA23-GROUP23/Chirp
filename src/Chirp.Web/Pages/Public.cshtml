@@ -11,8 +11,8 @@
         var follow = Request.Form["follow"];
         var unfollow = Request.Form["unfollow"];
 
-        await Model.FollowAuthor(follow, User.Identity.Name);
-        await Model.UnfollowAuthor(unfollow, User.Identity.Name);
+        await Model.FollowAuthor(@User.Identity.Name, follow);
+        await Model.UnfollowAuthor(@User.Identity.Name, unfollow);
     }
 }
 
@@ -35,53 +35,29 @@
                         </strong>
                         @cheep.Message
                         <small>&mdash; @cheep.TimeStamp</small>
-                    <form id="followForm_@cheep.AuthorName" asp-page-handler="FollowAuthor"
-                        asp-route-followerName="@User.Identity.Name" asp-route-followingName="@cheep.AuthorName"
-                        onsubmit="submitForm(event)">
-                        <button type="submit" class="btn btn-primary follow-button">Follow</button>
-                    </form>
-
-                    <form id="unfollowForm_@cheep.AuthorName" asp-page-handler="UnfollowAuthor"
-                        asp-route-followerName="@User.Identity.Name" asp-route-followingName="@cheep.AuthorName"
-                        onsubmit="submitForm(event)">
-                        <button type="submit" class="btn btn-danger unfollow-button">Unfollow</button>
-                    </form>
+                         @* Add follow and Unfollow buttons to the cheeps *@
+                        @if (User.Identity.IsAuthenticated && cheep.AuthorName != User.Identity.Name)
+                        {
+                            if (Model.IsFollowing(cheep.AuthorName))
+                            {
+                                <form method="post">
+                                    <input type="hidden" name="unfollow" value="@cheep.AuthorName" />
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary">Unfollow</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <form method="post">
+                                    <input type="hidden" name="follow" value="@cheep.AuthorName" />
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary">Follow</button>
+                                </form>
+                            }
+                        }
                     </p>
                 </li>
             }
         </ul>
     }
-
-    @section scripts {
-        <script>
-            function submitForm(event) {
-                event.preventDefault();
-
-                var form = event.target;
-                var formData = new FormData(form);
-                form.action = form.action.replace(/(Follow|Unfollow)Author/, action + 'Author');
-
-                fetch(form.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'RequestVerificationToken': form.elements['__RequestVerificationToken'].value
-                    }
-                })
-                    .then(response => {
-                        console.log('Form submitted successfully');
-                        // Handle the response as needed
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
-            }
-        </script>
-    }
-
-
-
-
     else
     {
     <em>There are no cheeps so far.</em>

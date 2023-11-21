@@ -31,6 +31,23 @@ public class PublicModel : PageModel
         //Cheeps = service.GetCheeps(null);
     }
 
+    // checks if the current author is in the user's following list
+    public bool IsFollowing(string authorName)
+    {
+        Console.WriteLine(authorName);
+        var user = _dbContext.Authors.FirstOrDefault(a => a.Name == User.Identity.Name);
+        var author = _dbContext.Authors.FirstOrDefault(a => a.Name == authorName);
+
+        if (user != null && author != null)
+        {
+            return user.Following?.Contains(author) ?? false;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public ActionResult OnGet([FromQuery] int page)
     {
         PageNav = new PageNavModel(_service, page);
