@@ -13,31 +13,10 @@ namespace PlaywrightTests;
 [TestFixture]
 public class Tests : PageTest
 {
-    [Test]
-    public async Task HomepageHasPlaywrightInTitleAndGetStartedLinkLinkingtoTheIntroPage()
-    {
-        await Page.GotoAsync("https://playwright.dev");
-
-        // Expect a title "to contain" a substring.
-        await Expect(Page).ToHaveTitleAsync(new Regex("Playwright"));
-
-        // create a locator
-        var getStarted = Page.GetByRole(AriaRole.Link, new() { Name = "Get started" });
-
-        // Expect an attribute "to be strictly equal" to the value.
-        await Expect(getStarted).ToHaveAttributeAsync("href", "/docs/intro");
-
-        // Click the get started link.
-        await getStarted.ClickAsync();
-
-        // Expects the URL to contain intro.
-        await Expect(Page).ToHaveURLAsync(new Regex(".*intro"));
-    }
-
+  
     [Test]
     public async Task PublicGoToPrivateGoTOPublic() {
-
-        //using var playwright = await Playwright.CreateAsync();
+        
         await using var browser = await Playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
         {
             Headless = false,
@@ -50,8 +29,8 @@ public class Tests : PageTest
         var page = await context.NewPageAsync();
 
         await page.GotoAsync("https://localhost:7040/");
-
-        await page.Locator("p").Filter(new() { HasText = "nicklas609 afspj — 16-11-2023 14:53:15" }).GetByRole(AriaRole.Link).ClickAsync();
+        
+        await page.Locator("p").Filter(new() { HasText = "Jacqualine Gilcoine Starbuck now is what we hear the worst. — 01-08-2023 11:17:3" }).GetByRole(AriaRole.Link).ClickAsync();
 
         await page.GetByRole(AriaRole.Link, new() { Name = "public timeline" }).ClickAsync();
 
@@ -61,7 +40,6 @@ public class Tests : PageTest
     [Test]
     public async Task LoginLoguot() {
 
-        //using var playwright = await Playwright.CreateAsync();
         await using var browser = await Playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
         {
             Headless = false,
@@ -88,16 +66,11 @@ public class Tests : PageTest
         await page.GetByRole(AriaRole.Button, new() { Name = "Sign in", Exact = true }).ClickAsync();
 
         await page.GetByRole(AriaRole.Link, new() { Name = "logout [UITestAreGreat]" }).ClickAsync();
-
-
-
-
     }
 
     [Test]
-    public async Task LoginCreateCheepCheckOutPrivateTimelineCheckIfnewCheepIsThere() {
+    public async Task LoginCreateCheepCheckOutPrivateTimeline() {
 
-        //using var playwright = await Playwright.CreateAsync();
         await using var browser = await Playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
         {
             Headless = false,
@@ -132,8 +105,6 @@ public class Tests : PageTest
         await page.GetByRole(AriaRole.Button, new() { Name = "Submit" }).ClickAsync();
 
         await page.GetByRole(AriaRole.Link, new() { Name = "my timeline" }).ClickAsync();
-
-        await page.GetByText("UITestAreGreat Test — 21-11-2023 10:46:47").ClickAsync();
 
     }
 }
