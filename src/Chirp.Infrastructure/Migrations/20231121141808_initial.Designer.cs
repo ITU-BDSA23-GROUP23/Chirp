@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chirp.Infrastructure.Migrations
 {
     [DbContext(typeof(ChirpDBContext))]
-    [Migration("20231121135738_followUnfollow")]
-    partial class followUnfollow
+    [Migration("20231121141808_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,8 +47,8 @@ namespace Chirp.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("RegularExpression", "[.+@.+]");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -56,9 +56,6 @@ namespace Chirp.Infrastructure.Migrations
                         .HasColumnType("nvarchar(39)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Email")
-                        .IsUnique();
 
                     b.HasIndex("Name")
                         .IsUnique();

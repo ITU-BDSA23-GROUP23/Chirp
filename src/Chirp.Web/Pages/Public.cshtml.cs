@@ -9,6 +9,7 @@ using Microsoft.Identity.Web.Resource;
 using Chirp.Web.Pages.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Humanizer;
 
 namespace Chirp.Web.Pages;
 [AllowAnonymous]
@@ -41,7 +42,7 @@ public class PublicModel : PageModel
 
     public ActionResult OnGet([FromQuery] int page)
     {
-        PageNav = new PageNavModel(_service, page);
+        
 
         var _Cheeps = _service.GetCheeps(page);
         _Cheeps.Wait();
@@ -50,6 +51,7 @@ public class PublicModel : PageModel
         var _TotalPages = _service.GetPageAmount();
         _TotalPages.Wait();
         TotalPages = _TotalPages.Result;
+        PageNav = new PageNavModel(_service, page, TotalPages);
 
         return Page();
     }

@@ -28,7 +28,7 @@ namespace Chirp.Infrastructure
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Author>().HasIndex(a => a.Name).IsUnique();
-            modelBuilder.Entity<Author>().HasIndex(a => a.Email).IsUnique();
+            // modelBuilder.Entity<Author>().HasIndex(a => a.Email).IsUnique(); // makes no sense to have unique email when many of them would be null, as we currently don't have the email when creating Authors. 
             modelBuilder.Entity<Author>().ToTable("Authors");
             modelBuilder.Entity<Cheep>().ToTable("Cheeps");
             modelBuilder.Entity<Reactions>().ToTable("Reactions");
@@ -37,6 +37,8 @@ namespace Chirp.Infrastructure
             modelBuilder.Entity<Author>().Property(a => a.Name).HasMaxLength(39); // Same as github max username length.
             modelBuilder.Entity<Reactions>().HasKey(r => new { r.ChirpId, r.AuthorId });
 
+
+            modelBuilder.Entity<Author>().Property(a => a.Email).HasAnnotation("RegularExpression", "[.+@.+]");
             // DOESN'T WORK!:
             //modelBuilder.Entity<Author>().HasIndex(a => a.Email).Email
             //modelBuilder.Entity<Author>().Property(a => a.Email).Email()

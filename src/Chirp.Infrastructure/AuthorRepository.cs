@@ -29,13 +29,20 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task<long> GetCheepAmount(string authorName)
     {
-        long CheepAmount;
+        long? CheepAmount;
 
         Author? Author = await dbContext.Authors.FirstAsync(a => a.Name == authorName);
         if (Author != null)
         {
             CheepAmount = Author.Cheeps.ToList().Count;
-            return CheepAmount;
+            if (CheepAmount == null)
+            {
+                return 0;
+            }
+            else
+            {
+                return (long)CheepAmount;
+            }
         }
         else
         {

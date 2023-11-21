@@ -2,7 +2,7 @@ namespace Chirp.Core
 
 {
     using FluentValidation;
-    
+
     public class createCheepDTO
     {
         public AuthorDTO Author { get; set; }

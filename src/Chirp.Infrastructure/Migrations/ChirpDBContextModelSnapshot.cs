@@ -44,8 +44,8 @@ namespace Chirp.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("RegularExpression", "[.+@.+]");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -53,9 +53,6 @@ namespace Chirp.Infrastructure.Migrations
                         .HasColumnType("nvarchar(39)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Email")
-                        .IsUnique();
 
                     b.HasIndex("Name")
                         .IsUnique();

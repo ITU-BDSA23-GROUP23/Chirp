@@ -31,9 +31,24 @@ public class AuthorRepositoryTests : IDisposable
 
         //Assert
         var addedAuthor = context.Authors.SingleOrDefault(a => a.Name == authorDTO.Name && a.Email == authorDTO.Email);
-        Assert.NotNull(addedAuthor);
+        Assert.Equal("Thorbjørnen", addedAuthor.Name);
+        Assert.Equal("tpep@bjørn.dk", addedAuthor.Email);
     }
 
+    [Fact]
+    public void CreateAuthorEmailFailTest()
+    {
+        //Arrange
+        AuthorDTO authorDTO = new("Thorbjørnen", "tpepbjørn.dk");
+        IAuthorRepository authorRepository = new AuthorRepository(context);
+        //Act
+        authorRepository.CreateAuthor(authorDTO);
+
+        //Assert
+        var addedAuthor = context.Authors.SingleOrDefault(a => a.Name == authorDTO.Name && a.Email == authorDTO.Email);
+        Assert.Equal("Thorbjørnen", addedAuthor.Name);
+        Assert.Equal("tpepbjørn.dk", addedAuthor.Email);
+    }
 
 
     [Fact]
