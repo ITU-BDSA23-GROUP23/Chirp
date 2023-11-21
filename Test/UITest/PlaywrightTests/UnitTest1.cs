@@ -86,7 +86,7 @@ public class Tests : PageTest
         await page.GetByLabel("Password").FillAsync("23Passwrod");
 
         await page.GetByRole(AriaRole.Button, new() { Name = "Sign in", Exact = true }).ClickAsync();
-        
+
         await page.GetByRole(AriaRole.Link, new() { Name = "logout [UITestAreGreat]" }).ClickAsync();
 
 
@@ -94,7 +94,46 @@ public class Tests : PageTest
 
     }
 
+    [Test]
+    public async Task LoginCreateCheepCheckOutPrivateTimelineCheckIfnewCheepIsThere() {
 
+        //using var playwright = await Playwright.CreateAsync();
+        await using var browser = await Playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
+        {
+            Headless = false,
+        });
+        var context = await browser.NewContextAsync(new BrowserNewContextOptions
+        {
+            IgnoreHTTPSErrors = true,
+        });
 
+        var page = await context.NewPageAsync();
 
+        await page.GotoAsync("https://localhost:7040/");
+
+        await page.GetByRole(AriaRole.Link, new() { Name = "login" }).ClickAsync();
+
+        await page.GetByLabel("Username or email address").ClickAsync();
+
+        await page.GetByLabel("Username or email address").FillAsync("github@nyrrdin.com");
+
+        await page.GetByLabel("Username or email address").PressAsync("Tab");
+
+        await page.GetByLabel("Password").FillAsync("23Passwrod");
+
+        await page.GetByRole(AriaRole.Button, new() { Name = "Sign in", Exact = true }).ClickAsync();
+
+        await page.GetByRole(AriaRole.Link, new() { Name = "Make cheep" }).ClickAsync();
+
+        await page.GetByPlaceholder("Cheep here!").ClickAsync();
+
+        await page.GetByPlaceholder("Cheep here!").FillAsync("Test");
+
+        await page.GetByRole(AriaRole.Button, new() { Name = "Submit" }).ClickAsync();
+
+        await page.GetByRole(AriaRole.Link, new() { Name = "my timeline" }).ClickAsync();
+
+        await page.GetByText("UITestAreGreat Test — 21-11-2023 10:46:47").ClickAsync();
+
+    }
 }
