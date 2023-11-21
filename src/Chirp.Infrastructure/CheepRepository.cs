@@ -54,7 +54,7 @@ public class CheepRepository : ICheepRepository
         return CheepAmount;
     }
 
-    public void CreateCheep(createCheepDTO cheepDTO)
+    public void CreateCheep(createCheepDTO cheepDTO, DateTime? Timestamp = null)
     {
         Author author = dbContext.Authors.First(a => a.Name == cheepDTO.Author.Name);
         if (author == null)
@@ -65,7 +65,7 @@ public class CheepRepository : ICheepRepository
         Cheep cheep = new Cheep(){
             Author = author,
             Message = cheepDTO.Message,
-            TimeStamp = DateTime.Now
+            TimeStamp = Timestamp == null? DateTime.Now : (DateTime)Timestamp
         };
 
         if(author.Cheeps == null) 

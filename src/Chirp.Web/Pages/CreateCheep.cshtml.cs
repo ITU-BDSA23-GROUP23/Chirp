@@ -51,7 +51,7 @@ public class CreateCheepModel : PageModel
                 Console.WriteLine("Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage);
             }
         }
-            _Cheep_repository.CreateCheep(cheepDTO);
+            _Cheep_repository.CreateCheep(cheepDTO, null);
         } else {
             string email = UserName + "email.com";
             Author = new AuthorDTO(UserName, email);
@@ -68,7 +68,7 @@ public class CreateCheepModel : PageModel
                 }
             }
 
-            _Cheep_repository.CreateCheep(cheepDTO);
+            _Cheep_repository.CreateCheep(cheepDTO, null);
         }
     }
     public ActionResult OnGet()
