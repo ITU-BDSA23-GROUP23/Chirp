@@ -35,15 +35,11 @@
                         </strong>
                         @cheep.Message
                         <small>&mdash; @cheep.TimeStamp</small>
-                    <form id="followForm_@cheep.AuthorName" asp-page-handler="FollowAuthor"
-                        asp-route-followerName="@User.Identity.Name" asp-route-followingName="@cheep.AuthorName"
-                        onsubmit="submitForm(event)">
+                    <form id="followForm_@cheep.AuthorName" onsubmit="submitForm(event)">
                         <button type="submit" class="btn btn-primary follow-button">Follow</button>
                     </form>
 
-                    <form id="unfollowForm_@cheep.AuthorName" asp-page-handler="UnfollowAuthor"
-                        asp-route-followerName="@User.Identity.Name" asp-route-followingName="@cheep.AuthorName"
-                        onsubmit="submitForm(event)">
+                    <form id="unfollowForm_@cheep.AuthorName" asp-page-handler="UnfollowAuthor" onsubmit="submitForm(event)">
                         <button type="submit" class="btn btn-danger unfollow-button">Unfollow</button>
                     </form>
                     </p>
