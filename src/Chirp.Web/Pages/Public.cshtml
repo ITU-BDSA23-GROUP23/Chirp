@@ -38,18 +38,18 @@
                          @* Add follow and Unfollow buttons to the cheeps *@
                         @if (User.Identity.IsAuthenticated && cheep.AuthorName != User.Identity.Name)
                         {
-                            if (Model.IsFollowing(cheep.AuthorName))
+                            @if (Model.IsFollowingAuthor(cheep))
                             {
                                 <form method="post">
                                     <input type="hidden" name="unfollow" value="@cheep.AuthorName" />
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary">Unfollow</button>
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary" onclick=@Model.UnfollowAuthor(User.Identity.Name, cheep.AuthorName)>Unfollow</button>
                                 </form>
                             }
                             else
                             {
                                 <form method="post">
                                     <input type="hidden" name="follow" value="@cheep.AuthorName" />
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary">Follow</button>
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary" onclick=@Model.FollowAuthor(User.Identity.Name, cheep.AuthorName) >Follow</button>
                                 </form>
                             }
                         }

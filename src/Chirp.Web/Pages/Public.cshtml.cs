@@ -13,7 +13,7 @@ namespace Chirp.Web.Pages;
 [AllowAnonymous]
 public class PublicModel : PageModel
 {
-
+    
     private readonly ICheepService _service;
     private readonly ILogger<PublicModel> _logger;
     public IEnumerable<CheepDTO>? Cheeps { get; set; }
@@ -32,21 +32,23 @@ public class PublicModel : PageModel
     }
 
     // checks if the current author is in the user's following list
-    public bool IsFollowing(string authorName)
+    public bool IsFollowingAuthor(Cheep cheep)
     {
-        Console.WriteLine(authorName);
-        var user = _dbContext.Authors.FirstOrDefault(a => a.Name == User.Identity.Name);
-        var author = _dbContext.Authors.FirstOrDefault(a => a.Name == authorName);
+        Console.WriteLine($"IsFollowingAuthor called with cheep: {cheep}");
+        var user = User.Identity.Name;
+        var author = cheep.Author;
 
         if (user != null && author != null)
         {
-            return user.Following?.Contains(author) ?? false;
+            return author.Followers.Any(f => f.Name == user);
         }
         else
         {
             return false;
         }
     }
+    
+
 
     public ActionResult OnGet([FromQuery] int page)
     {
