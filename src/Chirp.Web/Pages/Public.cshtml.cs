@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web.Resource;
 using Chirp.Web.Pages.Shared;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Chirp.Web.Pages;
 [AllowAnonymous]
@@ -31,21 +32,9 @@ public class PublicModel : PageModel
         //Cheeps = service.GetCheeps(null);
     }
 
-    // checks if the current author is in the user's following list
-    public bool IsFollowingAuthor(Cheep cheep)
+    private Author? FindAuthorByName(string authorName)
     {
-        Console.WriteLine($"IsFollowingAuthor called with cheep: {cheep}");
-        var user = User.Identity.Name;
-        var author = cheep.Author;
-
-        if (user != null && author != null)
-        {
-            return author.Followers.Any(f => f.Name == user);
-        }
-        else
-        {
-            return false;
-        }
+        return _dbContext.Authors.FirstOrDefault(a => a.Name == authorName);
     }
     
 
@@ -90,8 +79,8 @@ public class PublicModel : PageModel
 
         Console.WriteLine($"UnfollowAuthor called with followerName: {followerName}, followingName: {followingName}");
 
-        Author? follower = await _dbContext.Authors.FirstOrDefaultAsync(a => a.Name == followerName);
-        Author? following = await _dbContext.Authors.FirstOrDefaultAsync(a => a.Name == followingName);
+        Author? follower = await _dbContext.Authors.FirstAsync(a => a.Name == followerName);
+        Author? following = await _dbContext.Authors.FirstAsync(a => a.Name == followingName);
 
         if (follower != null && following != null)
         {

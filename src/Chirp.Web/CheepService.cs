@@ -87,7 +87,7 @@ public class CheepService : ICheepService
 
     public int GetFollowingCount(string authorName)
     {
-        Author author = _dbContext.Authors.FirstOrDefault(a => a.Name == authorName);
+        Author author = _dbContext.Authors.First(a => a.Name == authorName);
 
         if (author != null)
         {
@@ -101,7 +101,7 @@ public class CheepService : ICheepService
 
     public int GetFollowersCount(string authorName)
     {
-        Author author = _dbContext.Authors.FirstOrDefault(a => a.Name == authorName);
+        Author author = _dbContext.Authors.First(a => a.Name == authorName);
 
         if (author != null)
         {
