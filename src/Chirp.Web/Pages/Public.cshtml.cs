@@ -15,27 +15,25 @@ namespace Chirp.Web.Pages;
 [AllowAnonymous]
 public class PublicModel : PageModel
 {
-    private readonly AuthorRepository authorRepository;
+    private readonly IAuthorRepository authorRepository;
     private readonly ICheepService _service;
     private readonly ILogger<PublicModel> _logger;
     public IEnumerable<CheepDTO>? Cheeps { get; set; }
     public PageNavModel PageNav;
-
-    public ChirpDBContext _dbContext;
-
     public int TotalPages { get; set; }
 
-    public PublicModel(ICheepService service, ILogger<PublicModel> logger, ChirpDBContext dbContext, AuthorRepository authorRepository)
+    public PublicModel(ICheepService service, ILogger<PublicModel> logger, IAuthorRepository authorRepository)
     {
         _service = service;
         _logger = logger;
-        _dbContext = dbContext;
         this.authorRepository = authorRepository;
         //Cheeps = service.GetCheeps(null);
     }
 
     public ActionResult OnGet([FromQuery] int page)
     {
+
+
         var _Cheeps = _service.GetCheeps(page);
         _Cheeps.Wait();
         Cheeps = _Cheeps.Result;
@@ -52,20 +50,10 @@ public class PublicModel : PageModel
     {
         Console.WriteLine($"FollowAuthor called with followerName: {followerName}, followingName: {followingName}");
 
-        Author? follower = authorRepository.GetAuthorByName(followerName);
-        Author? following = authorRepository.GetAuthorByName(followingName);
+        var follower = await authorRepository.FindAuthorByName(followerName);
+        var following = await authorRepository.FindAuthorByName(followingName);
 
-        if (follower != null && following != null)
-        {
-            follower.Following.Add(following);
-            following.Followers.Add(follower);
-            Console.WriteLine("Followed");
-            await _dbContext.SaveChangesAsync();
-        }
-        else
-        {
-            throw new NullReferenceException($"Author {followerName} or {followingName} does not exist.");
-        }
+        await authorRepository.FollowAuthor(follower, following);
     }
 
     public async Task UnfollowAuthor(string followerName, string followingName)
@@ -73,20 +61,9 @@ public class PublicModel : PageModel
 
         Console.WriteLine($"UnfollowAuthor called with followerName: {followerName}, followingName: {followingName}");
 
-        Author? follower = authorRepository.GetAuthorByName(followerName);
-        Author? following = authorRepository.GetAuthorByName(followingName);
+        var follower = await authorRepository.FindAuthorByName(followerName);
+        var following = await authorRepository.FindAuthorByName(followingName);
 
-
-        if (follower != null && following != null)
-        {
-            follower.Following.Remove(following);
-            following.Followers.Remove(follower);
-            Console.WriteLine("Unfollowed");
-            await _dbContext.SaveChangesAsync();
-        }
-        else
-        {
-            throw new NullReferenceException($"Author {followerName} or {followingName} does not exist.");
-        }
+        await authorRepository.UnfollowAuthor(follower, following);
     }
 }

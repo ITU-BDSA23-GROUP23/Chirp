@@ -67,7 +67,7 @@ using (var scope = app.Services.CreateScope())
 
     var context = services.GetRequiredService<ChirpDBContext>();
     context.Database.EnsureCreated();
-    DbInitializer.Initialize(context);
+    await DbInitializer.Initialize(context);
 }
 
 app.UseHttpsRedirection();

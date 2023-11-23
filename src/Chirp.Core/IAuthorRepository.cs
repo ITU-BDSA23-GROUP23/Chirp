@@ -8,8 +8,9 @@ namespace Chirp.Infrastructure
         {
                 Task<AuthorDTO?> FindAuthorByName(string Name);
                 Task<AuthorDTO?> FindAuthorByEmail(string Email);
-                void CreateAuthor(AuthorDTO author);
+                void CreateAuthor(CreateAuthorDTO author);
                 Task<long> GetCheepAmount(string authorName);
-
+                Task UnfollowAuthor(AuthorDTO self, AuthorDTO other);
+                Task FollowAuthor(AuthorDTO self, AuthorDTO other);
         }
 }
