@@ -3,6 +3,7 @@ using Chirp.Core;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol.Plugins;
 using Chirp.Infrastructure;
+using SQLitePCL;
 
 public class AuthorRepository : IAuthorRepository
 {
@@ -105,8 +106,8 @@ public class AuthorRepository : IAuthorRepository
     //Copilot with this!
     public async Task UnfollowAuthor(AuthorDTO self, AuthorDTO other)
     {
-        var selfAuthor = await dbContext.Authors.FirstAsync(a => a.Name == self.Name);
-        var otherAuthor = await dbContext.Authors.FirstAsync(a => a.Name == other.Name);
+        var selfAuthor = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == self.Name);
+        var otherAuthor = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == other.Name);
 
         if (selfAuthor != null && otherAuthor != null)
         {
@@ -122,8 +123,8 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task FollowAuthor(AuthorDTO self, AuthorDTO other)
     {
-        var selfAuthor = await dbContext.Authors.FirstAsync(a => a.Name == self.Name);
-        var otherAuthor = await dbContext.Authors.FirstAsync(a => a.Name == other.Name);
+        var selfAuthor = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == self.Name);
+        var otherAuthor = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == other.Name);
 
         if (selfAuthor != null && otherAuthor != null)
         {
