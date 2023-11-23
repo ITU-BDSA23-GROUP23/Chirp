@@ -5,15 +5,6 @@
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
-
-    if (HttpMethods.IsPost(Request.Method))
-    {
-        var follow = Request.Form["follow"];
-        var unfollow = Request.Form["unfollow"];
-
-        await Model.FollowAuthor(@User.Identity.Name, follow);
-        await Model.UnfollowAuthor(@User.Identity.Name, unfollow);
-    }
 }
 
 <div>
@@ -35,11 +26,11 @@
                         </strong>
                         @cheep.Message
                         <small>&mdash; @cheep.TimeStamp</small>
-                         @* Add follow and Unfollow buttons to the cheeps *@
+                        @* Add follow and Unfollow buttons to the cheeps *@
                         @if (User.Identity.IsAuthenticated && cheep.AuthorName != User.Identity.Name)
                         {
-                            <button type="submit" class="btn btn-sm btn-outline-secondary" onclick="@Model.UnfollowAuthor(User.Identity.Name, cheep.AuthorName)">Unfollow</button>
-                            <button type="submit" class="btn btn-sm btn-outline-secondary" onclick="@Model.FollowAuthor(User.Identity.Name, cheep.AuthorName)">Follow</button>
+                            <a href=@Model.UnfollowAuthor(User.Identity.Name, cheep.AuthorName)>Unfollow</a>
+                            <a href=@Model.FollowAuthor(User.Identity.Name, cheep.AuthorName)>Follow</a>
 
                         }
                     </p>
@@ -49,7 +40,7 @@
     }
     else
     {
-    <em>There are no cheeps so far.</em>
+        <em>There are no cheeps so far.</em>
     }
 
     @(await Html.PartialAsync("Shared/PageNav", @Model.PageNav))

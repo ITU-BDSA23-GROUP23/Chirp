@@ -129,5 +129,4 @@ public class SendingCheepsTest
             Assert.Contains("æøå", cheepDTO.Message);
         }
     }
-
 }

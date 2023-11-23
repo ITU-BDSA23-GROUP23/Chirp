@@ -54,33 +54,24 @@ public class CheepRepository : ICheepRepository
         return CheepAmount;
     }
 
-    public void CreateCheep(AuthorDTO Author, string Message)
+    public void CreateCheep(createCheepDTO cheepDTO, DateTime? Timestamp = null)
     {
-        Author author = dbContext.Authors.First(a => a.Name == Author.Name);
+        Author author = dbContext.Authors.First(a => a.Name == cheepDTO.Author.Name);
         if (author == null)
         {
-            throw new NullReferenceException("No author was found with name : " + Author.Name + " email: " + Author.Email);
+            throw new NullReferenceException("No author was found with name : " + cheepDTO.Author.Name + " email: " + cheepDTO.Author.Email);
         }
-
-        // Validation
-        createCheepDTO cheepDTO = new createCheepDTO(Author, Message);
-        createCheepDTOValidator validator = new createCheepDTOValidator();
-        FluentValidation.Results.ValidationResult results = validator.Validate(cheepDTO);
-        if (!results.IsValid)
-        {
-            foreach (var failure in results.Errors)
-            {
-                Console.WriteLine("Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage);
-            }
-        }
-
-        Cheep cheep = new Cheep()
-        {
+        
+        Cheep cheep = new Cheep(){
             Author = author,
-            Message = Message,
-            TimeStamp = DateTime.Now
+            Message = cheepDTO.Message,
+            TimeStamp = Timestamp == null? DateTime.Now : (DateTime)Timestamp
         };
-        // author.Cheeps.Append(cheep);
+
+        if(author.Cheeps == null) 
+            author.Cheeps = new List<Cheep>();
+
+        author.Cheeps.Add(cheep);
         dbContext.Cheeps.Add(cheep);
         dbContext.SaveChanges();
     }
