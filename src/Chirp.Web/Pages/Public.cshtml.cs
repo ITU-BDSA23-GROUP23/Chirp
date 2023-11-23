@@ -15,7 +15,7 @@ namespace Chirp.Web.Pages;
 [AllowAnonymous]
 public class PublicModel : PageModel
 {
-    
+    private readonly AuthorRepository authorRepository;
     private readonly ICheepService _service;
     private readonly ILogger<PublicModel> _logger;
     public IEnumerable<CheepDTO>? Cheeps { get; set; }
@@ -25,25 +25,17 @@ public class PublicModel : PageModel
 
     public int TotalPages { get; set; }
 
-    public PublicModel(ICheepService service, ILogger<PublicModel> logger, ChirpDBContext dbContext)
+    public PublicModel(ICheepService service, ILogger<PublicModel> logger, ChirpDBContext dbContext, AuthorRepository authorRepository)
     {
         _service = service;
         _logger = logger;
         _dbContext = dbContext;
+        this.authorRepository = authorRepository;
         //Cheeps = service.GetCheeps(null);
     }
 
-    private Author? FindAuthorByName(string authorName)
-    {
-        return _dbContext.Authors.FirstOrDefault(a => a.Name == authorName);
-    }
-    
-
-
     public ActionResult OnGet([FromQuery] int page)
     {
-        
-
         var _Cheeps = _service.GetCheeps(page);
         _Cheeps.Wait();
         Cheeps = _Cheeps.Result;
@@ -60,8 +52,8 @@ public class PublicModel : PageModel
     {
         Console.WriteLine($"FollowAuthor called with followerName: {followerName}, followingName: {followingName}");
 
-        Author? follower = await _dbContext.Authors.FirstOrDefaultAsync(a => a.Name == followerName);
-        Author? following = await _dbContext.Authors.FirstOrDefaultAsync(a => a.Name == followingName);
+        Author? follower = authorRepository.GetAuthorByName(followerName);
+        Author? following = authorRepository.GetAuthorByName(followingName);
 
         if (follower != null && following != null)
         {
@@ -81,8 +73,9 @@ public class PublicModel : PageModel
 
         Console.WriteLine($"UnfollowAuthor called with followerName: {followerName}, followingName: {followingName}");
 
-        Author? follower = await _dbContext.Authors.FirstAsync(a => a.Name == followerName);
-        Author? following = await _dbContext.Authors.FirstAsync(a => a.Name == followingName);
+        Author? follower = authorRepository.GetAuthorByName(followerName);
+        Author? following = authorRepository.GetAuthorByName(followingName);
+
 
         if (follower != null && following != null)
         {

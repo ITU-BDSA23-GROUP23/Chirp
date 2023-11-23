@@ -78,4 +78,14 @@ public class AuthorRepository : IAuthorRepository
         // }
         // return null;
     }
+
+    public Author? GetAuthorByName(string followerName)
+    {
+        if (followerName == null)
+        {
+            throw new ArgumentNullException(nameof(followerName));
+        }
+
+        return dbContext.Authors.FirstOrDefault(a => a.Name == followerName);
+    }
 }
