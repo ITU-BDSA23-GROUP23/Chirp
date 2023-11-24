@@ -1,17 +1,24 @@
 ﻿@page "/"
 @using Chirp.Core
 @using Chirp.Web.Pages.Shared
+@using System.Security.Claims
 @model Chirp.Web.Pages.PublicModel
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
+
+    if (HttpMethods.IsPost(Request.Method))
+    {
+        string AuthorName = Request.Form["Follow"];
+        Model.FollowAuthor(@User.Identity.Name, AuthorName);
+    }
 }
 
 <div>
     <div style="display: flex;justify-content: space-between;">
         <h2> Public Timeline </h2>
         @(await Html.PartialAsync("Shared/PageNav", @Model.PageNav))
-    </div>
+    </div> 
 
 
     @if (Model.Cheeps != null && Model.Cheeps.Any())
@@ -29,8 +36,16 @@
                         @* Add follow and Unfollow buttons to the cheeps *@
                         @if (User.Identity.IsAuthenticated && cheep.AuthorName != User.Identity.Name)
                         {
-                            <a href=@Model.UnfollowAuthor(User.Identity.Name, cheep.AuthorName)>Unfollow</a>
-                            <a href=@Model.FollowAuthor(User.Identity.Name, cheep.AuthorName)>Follow</a>
+                            <form method="post">
+                                @Html.AntiForgeryToken()
+                                <input hidden type="text" name="Unfollow" value=@cheep.AuthorName/>
+                                <input type="submit" value="Unfollow" class/>
+                            </form>
+                            <form  method="post" >
+                                @Html.AntiForgeryToken()
+                                <input hidden type="text" name="Follow" value="@cheep.AuthorName"/>
+                                <input type="submit" name="submit" value="Follow" class="submit"/>
+                            </form>
 
                         }
                     </p>
