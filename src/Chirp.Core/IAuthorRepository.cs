@@ -2,8 +2,9 @@ using Chirp.Core;
 
 namespace Chirp.Infrastructure
 {
-        //temp
-
+        /// <summary>
+        /// We use a repository pattern to abstract away the database. This interface defines the Author specific methods that we need in our repository.
+        /// </summary>
         public interface IAuthorRepository
         {
                 Task<AuthorDTO?> FindAuthorByName(string Name);

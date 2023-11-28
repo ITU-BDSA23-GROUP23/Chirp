@@ -44,11 +44,4 @@ public class CreateCheepTest
 
     }
 
-    [Fact]
-    public void CreateCheepFromSubmit()
-    {
-
-    }
-
-
 }
