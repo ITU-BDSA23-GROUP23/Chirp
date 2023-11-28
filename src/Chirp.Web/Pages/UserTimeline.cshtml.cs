@@ -19,12 +19,15 @@ public class UserTimelineModel : PageModel
 
     public PageNavModel PageNav;
 
+    private readonly IAuthorRepository _authorRepository;
+
     private readonly ILogger<UserTimelineModel> _logger;
 
-    public UserTimelineModel(ICheepService service, ILogger<UserTimelineModel> logger)
+    public UserTimelineModel(ICheepService service, ILogger<UserTimelineModel> logger, IAuthorRepository authorRepository)
     {
         _service = service;
         _logger = logger;
+        _authorRepository = authorRepository;
         //Cheeps = service.GetCheeps(null);
     }
 
@@ -37,9 +40,9 @@ public class UserTimelineModel : PageModel
         _Cheeps.Wait();
         Cheeps = _Cheeps.Result;
 
-        /* var _TotalPages = _service.GetPageAmount(author);
+        var _TotalPages = _service.GetPageAmount(author);
          _TotalPages.Wait();
-         TotalPages = _TotalPages.Result; */
+         TotalPages = _TotalPages.Result; 
         TotalPages = 1;
         PageNav = new PageNavModel(_service, page, TotalPages);
 
@@ -48,15 +51,20 @@ public class UserTimelineModel : PageModel
 
     public int FollowingCount(string author)
     {
-        var _FollowingCount = _service.GetFollowingCount(author);
-        Console.WriteLine(_FollowingCount.Result + " is the result of _FollowingCount");
-        return _FollowingCount.Result;
+        var _author = _authorRepository.FindAuthorByName(author);
+        _author.Wait();
+        //Console.WriteLine(_author.Result.Following.ToArray()[0]);
+        var _FollowingCount = _author.Result.Following.Count;
+        Console.WriteLine(_FollowingCount+ " is the result of _FollowingCount");
+        return _FollowingCount;
     }
     public int FollowersCount(string author)
     {
-        var _FollowersCount = _service.GetFollowersCount(author);
-        Console.WriteLine(_FollowersCount.Result + " is the result of _FollowingCount");
-        return _FollowersCount.Result;
+        var _author = _authorRepository.FindAuthorByName(author);
+        _author.Wait();
+        var _FollowersCount = _author.Result.Followers.Count;
+        Console.WriteLine(_FollowersCount + " is the result of _FollowersCount");
+        return _FollowersCount;
     }
 
 }

@@ -32,8 +32,19 @@ public class PublicModel : PageModel
 
     public ActionResult OnGet([FromQuery] int page)
     {
+        var _Cheeps = _service.GetCheeps(page);
+        _Cheeps.Wait();
+        Cheeps = _Cheeps.Result;
 
+        var _TotalPages = _service.GetPageAmount();
+        _TotalPages.Wait();
+        TotalPages = _TotalPages.Result;
+        PageNav = new PageNavModel(_service, page, TotalPages);
 
+        return Page();
+    }
+
+    public ActionResult OnPost([FromQuery] int page) {
         var _Cheeps = _service.GetCheeps(page);
         _Cheeps.Wait();
         Cheeps = _Cheeps.Result;
@@ -48,22 +59,31 @@ public class PublicModel : PageModel
 
     public async Task FollowAuthor(string followerName, string followingName)
     {
-        Console.WriteLine($"FollowAuthor called with followerName: {followerName}, followingName: {followingName}");
+        //Console.WriteLine($"FollowAuthor called with followerName: {followerName}, followingName: {followingName}");
 
-        var follower = await authorRepository.FindAuthorByName(followerName);
-        var following = await authorRepository.FindAuthorByName(followingName);
+        var _follower = authorRepository.FindAuthorByName(followerName);
+        _follower.Wait();
+        var _following = authorRepository.FindAuthorByName(followingName);
+        _following.Wait();
 
-        await authorRepository.FollowAuthor(follower, following);
+
+        Console.WriteLine($"FollowAuthor is now using the following: {_follower.Result} as follower, and {_following.Result} as following");
+
+        authorRepository.FollowAuthor(_follower.Result, _following.Result);
     }
 
     public async Task UnfollowAuthor(string followerName, string followingName)
     {
 
-        Console.WriteLine($"UnfollowAuthor called with followerName: {followerName}, followingName: {followingName}");
+        //Console.WriteLine($"UnfollowAuthor called with followerName: {followerName}, followingName: {followingName}");
 
-        var follower = await authorRepository.FindAuthorByName(followerName);
-        var following = await authorRepository.FindAuthorByName(followingName);
+        var _follower =  authorRepository.FindAuthorByName(followerName);
+        _follower.Wait();
+        var _following = authorRepository.FindAuthorByName(followingName);
+        _following.Wait();
 
-        await authorRepository.UnfollowAuthor(follower, following);
+        Console.WriteLine($"UnfollowAuthor is now using the following: {_follower.Result} as follower, and {_following.Result} as following");
+
+        await authorRepository.UnfollowAuthor(_follower.Result, _following.Result);
     }
 }

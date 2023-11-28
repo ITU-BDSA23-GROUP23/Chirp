@@ -73,12 +73,17 @@ public class CheepService : ICheepService
 
     public async Task<int> GetFollowingCount(string authorName)
     {
-        Author author = await _dbContext.Authors.FirstAsync(a => a.Name == authorName);
+        var author = await _dbContext.Authors.FirstOrDefaultAsync(a => a.Name == authorName);
 
         if (author != null)
         {
+
             // Check if author.Following is not null before accessing Count
-            int followingCount = author.Following.Count;
+            int followingCount = 0;
+            if (author.Following != null)
+            {
+                followingCount = author.Following.Count;
+            }
             return followingCount;
         }
 
@@ -87,12 +92,17 @@ public class CheepService : ICheepService
 
     public async Task<int> GetFollowersCount(string authorName)
     {
-        Author author = await _dbContext.Authors.FirstAsync(a => a.Name == authorName);
+        var author = await _dbContext.Authors.FirstOrDefaultAsync(a => a.Name == authorName);
 
         if (author != null)
         {
+
             // Check if author.Followers is not null before accessing Count
-            int followersCount = author.Followers.Count;
+            int followersCount = 0;
+            if (author.Followers != null)
+            {
+                followersCount = author.Followers.Count;
+            }
             return followersCount;
         }
 
