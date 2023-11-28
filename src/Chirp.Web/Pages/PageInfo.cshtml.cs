@@ -37,11 +37,12 @@ public class PageInfoModel : PageModel
     }
 
     // list of cheeps
-    public void OnGet(string author, [FromQuery] int page)
+    public ActionResult OnGet(string author, [FromQuery] int page)
     {
         var _Cheeps = _service.GetCheepsFromAuthor(author, page);
         _Cheeps.Wait();
         Cheeps = _Cheeps.Result;
+        return Page();
     }
 
     // list of followers for author
@@ -68,22 +69,36 @@ public class PageInfoModel : PageModel
         CheepAmount = _CheepAmount.Result;
     }
 
-    public int FollowingCount(string author)
+    public int FollowingCount(string authorName)
     {
-        var _author = _Author_repository.FindAuthorByName(author);
-        _author.Wait();
-        //Console.WriteLine(_author.Result.Following.ToArray()[0]);
-        var _FollowingCount = _author.Result.Following.Count;
-        Console.WriteLine(_FollowingCount + " is the result of _FollowingCount");
-        return _FollowingCount;
+        if (authorName == null)
+        {
+            return 0;
+        }
+        else
+        {
+            var _author = _Author_repository.FindAuthorByName(authorName);
+            _author.Wait();
+            var _FollowingCount = _author.Result.Following.Count;
+            Console.WriteLine(_FollowingCount + " is the result of _FollowingCount");
+            return _FollowingCount;
+        }
     }
-    public int FollowersCount(string author)
+
+    public int FollowersCount(string authorName)
     {
-        var _author = _Author_repository.FindAuthorByName(author);
-        _author.Wait();
-        var _FollowersCount = _author.Result.Followers.Count;
-        Console.WriteLine(_FollowersCount + " is the result of _FollowersCount");
-        return _FollowersCount;
+        if (authorName == null)
+        {
+            return 0;
+        }
+        else
+        {
+            var _author = _Author_repository.FindAuthorByName(authorName);
+            _author.Wait();
+            var _FollowersCount = _author.Result.Followers.Count;
+            Console.WriteLine(_FollowersCount + " is the result of _FollowersCount");
+            return _FollowersCount;
+        }
     }
 
 

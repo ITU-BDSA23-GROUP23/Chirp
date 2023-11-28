@@ -9,49 +9,68 @@
 }
 
 <!--Name and email-->
-<h2>@Model.Author?.Name</h2>
-<h3>@Model.Author?.Email</h3>
-
-<!--display followers and following count-->
 <div>
+    <h2>@User.Identity?.Name</h2>
     @if (Model.Author != null)
     {
-        <a>Following: @(Model.FollowingCount(Model.Author.Name))</a>
-        <a>Followers: @(Model.FollowersCount(Model.Author.Name))</a>
+        <h4>@Model.Author.Email</h4>
+    }
+    else
+    {
+        <h4>No email available</h4>
     }
 </div>
+
+<!-- Display followers and following count -->
+<div class="followers">
+    <a>Followers: @Model.FollowersCount(Model.Author?.Name)</a>
+    <a>Following: @Model.FollowingCount(Model.Author?.Name)</a>
+</div>
+
 
 <!--display followers and following-->
 <div class="followers">
     <h3>Followers</h3>
     <ul>
-        @foreach (var follower in Model.Followers)
+        @if (Model.Followers != null)
         {
-            <li>
-                <a href="/@follower.Name">@follower.Name</a>
-            </li>
+            @foreach (var follower in Model.Followers)
+            {
+                <li>
+                    <a href="/@follower.Name">@follower.Name</a>
+                </li>
+            }
         }
     </ul>
 </div>
 <div class="following">
     <h3>Following</h3>
     <ul>
-        @foreach (var following in Model.Following)
+        @if (Model.Following != null)
         {
-            <li>
-                <a href="/@following.Name">@following.Name</a>
-            </li>
+            @foreach (var following in Model.Following)
+            {
+                <li>
+                    <a href="/@following.Name">@following.Name</a>
+                </li>
+                {
+                    <li>
+                        <a href="/@following.Name">@following.Name</a>
+                    </li>
+                }
+            }
         }
     </ul>
 </div>
 
 <!--display cheeps for the user-->
 <div class="cheeps">
-    <h3>My Cheeps</h3>
-    @if (Model.Cheeps != null && Model.Cheeps.Any())
+    <legend style="margin: 0 auto;">My Cheeps</legend>
+
+    @if (Model.Cheeps != null && Model.Cheeps.Any(c => c.AuthorName == User.Identity.Name))
     {
         <ul id="messagelist" class="cheeps">
-            @foreach (var cheep in Model.Cheeps)
+            @foreach (var cheep in Model.Cheeps.Where(c => c.AuthorName == User.Identity.Name))
             {
                 <li>
                     <p>
