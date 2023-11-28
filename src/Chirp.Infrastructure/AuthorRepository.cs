@@ -64,7 +64,7 @@ public class AuthorRepository : IAuthorRepository
         return null;
     }
 
-    public AuthorDTO? AuthorToAuthorDTO(Author author)
+    public AuthorDTO? AuthorToAuthorDTO(Author? author)
     {
         if (author != null)
         {
@@ -72,15 +72,22 @@ public class AuthorRepository : IAuthorRepository
             ICollection<Guid> Followers = new List<Guid>();
             ICollection<Guid> Following = new List<Guid>();
 
-            foreach (var follower in author.Followers)
+            if (author.Followers != null) 
             {
-                Followers.Add(follower.Id);
+                foreach (var follower in author.Followers)
+                {
+                    Followers.Add(follower.Id);
+                }
             }
 
-            foreach (var following in author.Following)
+            if (author.Following != null) 
             {
-                Following.Add(following.Id);
+                foreach (var following in author.Following)
+                {
+                    Following.Add(following.Id);
+                }
             }
+
 
             return new AuthorDTO(author.Name, author.Email, Followers, Following);
         }
@@ -89,15 +96,10 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task<AuthorDTO?> FindAuthorByName(string Name)
     {
-        try
-        {
-            var author = await dbContext.Authors.FirstAsync(a => a.Name == Name);
-            return AuthorToAuthorDTO(author);
-        }
-        catch (Exception E)
-        {
-            return null;
-        }
+
+        var author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == Name);
+        return AuthorToAuthorDTO(author);
+
 
         // if (author != null)
         // {
@@ -124,16 +126,19 @@ public class AuthorRepository : IAuthorRepository
         }
     }
 
-    public async Task FollowAuthor(AuthorDTO self, AuthorDTO other)
+    public void FollowAuthor(AuthorDTO self, AuthorDTO other)
     {
-        var selfAuthor = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == self.Name);
-        var otherAuthor = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == other.Name);
-
+        Console.WriteLine("Other name is " + other.Name);
+        var selfAuthor = dbContext.Authors.FirstOrDefaultAsync(a => a.Name == self.Name);
+        selfAuthor.Wait();
+        var otherAuthor = dbContext.Authors.FirstOrDefaultAsync(a => a.Name == other.Name);
+        otherAuthor.Wait();
+        Console.WriteLine("My name is: " + selfAuthor.Result.Name);
         if (selfAuthor != null && otherAuthor != null)
         {
-            selfAuthor.Following.Add(otherAuthor);
-            otherAuthor.Followers.Add(selfAuthor);
-            await dbContext.SaveChangesAsync();
+            selfAuthor.Result.Following.Add(otherAuthor.Result);
+            otherAuthor.Result.Followers.Add(selfAuthor.Result);
+            dbContext.SaveChangesAsync();
         }
         else
         {

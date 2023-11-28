@@ -11,6 +11,6 @@ namespace Chirp.Infrastructure
                 void CreateAuthor(CreateAuthorDTO author);
                 Task<long> GetCheepAmount(string authorName);
                 Task UnfollowAuthor(AuthorDTO self, AuthorDTO other);
-                Task FollowAuthor(AuthorDTO self, AuthorDTO other);
+                void FollowAuthor(AuthorDTO self, AuthorDTO other);
         }
 }

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Chirp.Infrastructure
 {
@@ -11,9 +12,9 @@ namespace Chirp.Infrastructure
         [EmailAddress]
         public string? Email { get; set; }
 
-        public ICollection<Author>? Followers { get; set; }
+        public required virtual ICollection<Author> Followers { get; set; }
 
-        public ICollection<Author>? Following { get; set; }
+        public required virtual ICollection<Author> Following { get; set; }
 
         public ICollection<Reactions>? Reactions { get; set; }
         public required ICollection<Cheep> Cheeps { get; set; }
