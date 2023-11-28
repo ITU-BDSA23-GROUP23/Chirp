@@ -10,6 +10,7 @@ using Chirp.Web.Pages.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Humanizer;
+using SQLitePCL;
 
 namespace Chirp.Web.Pages;
 [AllowAnonymous]
@@ -44,22 +45,66 @@ public class PublicModel : PageModel
         return Page();
     }
 
-    public ActionResult OnPost([FromQuery] int page) {
+    public async Task<ActionResult> OnPost([FromQuery] int page, [FromQuery] string handler) {
+        Console.WriteLine("OnPost called!");
         var _Cheeps = _service.GetCheeps(page);
         _Cheeps.Wait();
-        Cheeps = _Cheeps.Result;
 
+        Cheeps = _Cheeps.Result;
         var _TotalPages = _service.GetPageAmount();
         _TotalPages.Wait();
         TotalPages = _TotalPages.Result;
         PageNav = new PageNavModel(_service, page, TotalPages);
 
+        if (handler == "follow")
+        {
+            Console.WriteLine("OnPostFollow Called in OnPost");
+            if(User.Identity.Name != null)
+            {
+                string? AuthorName = Request.Form["Follow"];
+                await FollowAuthor(User.Identity.Name, AuthorName);
+            }
+            else
+            {
+                string? AuthorName = Request.Form["Follow"];
+                Console.WriteLine("AuthorName is: " + AuthorName);
+                await FollowAuthor(AuthorName);
+            }
+        }
+
         return Page();
     }
+    public void OnPostFollow([FromQuery] int page)
+    {
+        Console.WriteLine("OnPostFollow Called");
+        if(User.Identity.Name != null)
+        {
+            string? AuthorName = Request.Form["Follow"];
+            FollowAuthor(User.Identity.Name, AuthorName);
+        }
+        else
+        {
+            string? AuthorName = Request.Form["Follow"];
+            Console.WriteLine("AuthorName is: " + AuthorName);
+            FollowAuthor(AuthorName);
+        }
+        //return RedirectToPage("/");
+    }
+    // for testing purposes only
+    public async Task FollowAuthor(string followerName)
+    {
+        Console.WriteLine("!!!This is a test, calling Followauthor with a temp user (Not logged in)");
+        Console.WriteLine("FollowerName: " + followerName);
+        var _tempFollowing = authorRepository.FindAuthorByName("temp");
+        _tempFollowing.Wait();
+        Console.WriteLine("Now calling FollowAuthor");
+        await FollowAuthor(followerName, _tempFollowing.Result.Name);
+    }
+
 
     public async Task FollowAuthor(string followerName, string followingName)
     {
-        //Console.WriteLine($"FollowAuthor called with followerName: {followerName}, followingName: {followingName}");
+        Console.WriteLine($"FollowAuthor called with followerName: {followerName}, followingName: {followingName}");
 
         var _follower = authorRepository.FindAuthorByName(followerName);
         _follower.Wait();
@@ -69,7 +114,7 @@ public class PublicModel : PageModel
 
         Console.WriteLine($"FollowAuthor is now using the following: {_follower.Result} as follower, and {_following.Result} as following");
 
-        authorRepository.FollowAuthor(_follower.Result, _following.Result);
+        await authorRepository.FollowAuthor(_follower.Result, _following.Result);
     }
 
     public async Task UnfollowAuthor(string followerName, string followingName)

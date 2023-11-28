@@ -109,7 +109,7 @@ public class AuthorRepository : IAuthorRepository
     }
 
     //Copilot with this!
-    public async Task UnfollowAuthor(AuthorDTO self, AuthorDTO other)
+    public async Task UnfollowAuthor(AuthorDTO other, AuthorDTO self)
     {
         var selfAuthor = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == self.Name);
         var otherAuthor = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == other.Name);
@@ -126,19 +126,18 @@ public class AuthorRepository : IAuthorRepository
         }
     }
 
-    public void FollowAuthor(AuthorDTO self, AuthorDTO other)
+    public async Task FollowAuthor(AuthorDTO other, AuthorDTO self)
     {
         Console.WriteLine("Other name is " + other.Name);
-        var selfAuthor = dbContext.Authors.FirstOrDefaultAsync(a => a.Name == self.Name);
-        selfAuthor.Wait();
-        var otherAuthor = dbContext.Authors.FirstOrDefaultAsync(a => a.Name == other.Name);
-        otherAuthor.Wait();
-        Console.WriteLine("My name is: " + selfAuthor.Result.Name);
+        var selfAuthor = await dbContext.Authors.FirstAsync(a => a.Name == self.Name);
+        var otherAuthor = await dbContext.Authors.FirstAsync(a => a.Name == other.Name);
+        Console.WriteLine("My name is: " + selfAuthor.Name);
         if (selfAuthor != null && otherAuthor != null)
         {
-            selfAuthor.Result.Following.Add(otherAuthor.Result);
-            otherAuthor.Result.Followers.Add(selfAuthor.Result);
-            dbContext.SaveChangesAsync();
+            Console.WriteLine("I am here!");
+            selfAuthor.Following.Add(otherAuthor);
+            otherAuthor.Followers.Add(selfAuthor);
+            await dbContext.SaveChangesAsync();
         }
         else
         {

@@ -73,7 +73,7 @@ public class CheepRepository : ICheepRepository
 
         author.Cheeps.Add(cheep);
         dbContext.Cheeps.Add(cheep);
-        dbContext.SaveChanges();
+        dbContext.SaveChangesAsync();
     }
 
     private int CalculateSkippedCheeps(int page, int pageSize)
