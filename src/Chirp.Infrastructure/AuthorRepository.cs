@@ -140,4 +140,33 @@ public class AuthorRepository : IAuthorRepository
             throw new NullReferenceException($"Author {self.Name} or {other.Name} does not exist.");
         }
     }
+    public async Task<IEnumerable<AuthorDTO>> GetFollowers(string authorName)
+    {
+        var author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == authorName);
+        if (author != null)
+        {
+            ICollection<AuthorDTO> Followers = new List<AuthorDTO>();
+            foreach (var follower in author.Followers)
+            {
+                Followers.Add(AuthorToAuthorDTO(follower));
+            }
+            return Followers;
+        }
+        return null;
+    }
+
+    public async Task<IEnumerable<AuthorDTO>> GetFollowing(string authorName)
+    {
+        var author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == authorName);
+        if (author != null)
+        {
+            ICollection<AuthorDTO> Following = new List<AuthorDTO>();
+            foreach (var following in author.Following)
+            {
+                Following.Add(AuthorToAuthorDTO(following));
+            }
+            return Following;
+        }
+        return null;
+    }
 }

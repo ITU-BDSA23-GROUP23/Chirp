@@ -12,5 +12,7 @@ namespace Chirp.Infrastructure
                 Task<long> GetCheepAmount(string authorName);
                 Task UnfollowAuthor(AuthorDTO self, AuthorDTO other);
                 Task FollowAuthor(AuthorDTO self, AuthorDTO other);
+                Task<IEnumerable<AuthorDTO>> GetFollowers(string authorName);
+                Task<IEnumerable<AuthorDTO>> GetFollowing(string authorName);
         }
 }
