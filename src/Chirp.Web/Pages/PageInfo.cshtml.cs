@@ -101,7 +101,12 @@ public class PageInfoModel : PageModel
         }
     }
 
-
-    //****ADD FORGET ME FEATURE****
+    //Forget me
+    public async Task<IActionResult> OnPostDeleteAuthor(string authorName)
+    {
+        var _DeleteAuthor = _Author_repository.DeleteAuthor(authorName);
+        _DeleteAuthor.Wait();
+        return Page();
+    }
 
 }
