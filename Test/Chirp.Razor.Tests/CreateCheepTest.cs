@@ -21,7 +21,7 @@ public class CreateCheepTest
     }
 
     [Fact]
-    public async void CreateCheep()
+    public async Task CreateCheep()
     {
         //Arrange
         string Message = "MyMessage";

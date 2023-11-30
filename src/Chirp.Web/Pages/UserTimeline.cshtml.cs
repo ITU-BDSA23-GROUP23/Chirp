@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web.Resource;
 using Chirp.Web.Pages.Shared;
+using System.Runtime.CompilerServices;
 
 namespace Chirp.Web.Pages;
 [AllowAnonymous]
@@ -53,6 +54,7 @@ public class UserTimelineModel : PageModel
     {
         var _author = _authorRepository.FindAuthorByName(author);
         _author.Wait();
+        Console.WriteLine($"Is author null? = {_author == null}");
         //Console.WriteLine(_author.Result.Following.ToArray()[0]);
         var _FollowingCount = _author.Result.Following.Count;
         Console.WriteLine(_FollowingCount+ " is the result of _FollowingCount");

@@ -64,7 +64,7 @@ public class AuthorRepository : IAuthorRepository
         return null;
     }
 
-    public AuthorDTO? AuthorToAuthorDTO(Author author)
+    public AuthorDTO? AuthorToAuthorDTO(Author? author)
     {
         if (author != null)
         {
@@ -72,16 +72,23 @@ public class AuthorRepository : IAuthorRepository
             ICollection<Guid> Followers = new List<Guid>();
             ICollection<Guid> Following = new List<Guid>();
 
-            foreach (var follower in author.Followers)
+            if (author.Followers != null)
             {
-                Followers.Add(follower.Id);
+                foreach (var follower in author.Followers)
+                {
+                    Followers.Add(follower.Id);
+                }
             }
 
-            foreach (var following in author.Following)
+            if (author.Following != null)
             {
-                Following.Add(following.Id);
+                foreach (var following in author.Following)
+                {
+                    Following.Add(following.Id);
+                }
             }
 
+            Console.WriteLine($"Created AuthorDTO for {author.Name} with {Followers.Count} followers and following {Following.Count}");
             return new AuthorDTO(author.Name, author.Email, Followers, Following);
         }
         return null;
@@ -89,15 +96,9 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task<AuthorDTO?> FindAuthorByName(string Name)
     {
-        try
-        {
-            var author = await dbContext.Authors.FirstAsync(a => a.Name == Name);
-            return AuthorToAuthorDTO(author);
-        }
-        catch (Exception E)
-        {
-            return null;
-        }
+        var author = await dbContext.Authors.Include(f => f.Followers).Include(f => f.Following).FirstOrDefaultAsync(a => a.Name == Name);
+        return AuthorToAuthorDTO(author);
+
 
         // if (author != null)
         // {
@@ -107,7 +108,7 @@ public class AuthorRepository : IAuthorRepository
     }
 
     //Copilot with this!
-    public async Task UnfollowAuthor(AuthorDTO self, AuthorDTO other)
+    public async Task UnfollowAuthor(AuthorDTO other, AuthorDTO self)
     {
         var selfAuthor = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == self.Name);
         var otherAuthor = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == other.Name);
@@ -124,15 +125,19 @@ public class AuthorRepository : IAuthorRepository
         }
     }
 
-    public async Task FollowAuthor(AuthorDTO self, AuthorDTO other)
+    public async Task FollowAuthor(AuthorDTO other, AuthorDTO self)
     {
-        var selfAuthor = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == self.Name);
-        var otherAuthor = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == other.Name);
+        Console.WriteLine("Other name is " + other.Name);
 
+        var selfAuthor = await dbContext.Authors.FirstAsync(a => a.Name == self.Name);
+        var otherAuthor = await dbContext.Authors.FirstAsync(a => a.Name == other.Name);
+        Console.WriteLine("My name is: " + selfAuthor.Name);
         if (selfAuthor != null && otherAuthor != null)
         {
+            Console.WriteLine("I am here!");
             selfAuthor.Following.Add(otherAuthor);
             otherAuthor.Followers.Add(selfAuthor);
+            Console.WriteLine($"Follow author called for {otherAuthor.Name}. They now have {otherAuthor.Followers.Count} followers!");
             await dbContext.SaveChangesAsync();
         }
         else
@@ -140,6 +145,7 @@ public class AuthorRepository : IAuthorRepository
             throw new NullReferenceException($"Author {self.Name} or {other.Name} does not exist.");
         }
     }
+
     public async Task<IEnumerable<AuthorDTO>> GetFollowers(string authorName)
     {
         var author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == authorName);
@@ -154,7 +160,6 @@ public class AuthorRepository : IAuthorRepository
         }
         return null;
     }
-
     public async Task<IEnumerable<AuthorDTO>> GetFollowing(string authorName)
     {
         var author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == authorName);
@@ -177,10 +182,8 @@ public class AuthorRepository : IAuthorRepository
         {
             // Delete the Cheeps
             dbContext.Cheeps.RemoveRange(dbContext.Cheeps.Where(c => c.Author.Name == authorName));
-
             // Delete the Author
             dbContext.Authors.Remove(author);
-
             await dbContext.SaveChangesAsync();
         }
         else

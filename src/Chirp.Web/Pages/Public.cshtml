@@ -6,18 +6,12 @@
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
-
-    if (HttpMethods.IsPost(Request.Method))
-    {
-        string AuthorName = Request.Form["Follow"];
-        Model.FollowAuthor(@User.Identity.Name, AuthorName);
-    }
 }
 
 <div>
     <div style="display: flex;justify-content: space-between;">
         <h2> Public Timeline </h2>
-        @(await Html.PartialAsync("Shared/PageNav", @Model.PageNav))
+        @* @(await Html.PartialAsync("Shared/PageNav", @Model.PageNav)) *@
     </div> 
 
 
@@ -34,20 +28,20 @@
                         @cheep.Message
                         <small>&mdash; @cheep.TimeStamp</small>
                         @* Add follow and Unfollow buttons to the cheeps *@
-                        @if (User.Identity.IsAuthenticated && cheep.AuthorName != User.Identity.Name)
-                        {
-                            <form method="post">
+                        @* @if (User.Identity.IsAuthenticated && cheep.AuthorName != User.Identity.Name)
+                        { *@
+                            <form asp-page-handler="unfollow" method="post">
                                 @Html.AntiForgeryToken()
                                 <input hidden type="text" name="Unfollow" value=@cheep.AuthorName/>
                                 <input type="submit" value="Unfollow" class/>
                             </form>
-                            <form  method="post" >
+                            <form asp-page-handler="Follow" method="post" action="?handler=follow">
                                 @Html.AntiForgeryToken()
                                 <input hidden type="text" name="Follow" value="@cheep.AuthorName"/>
                                 <input type="submit" name="submit" value="Follow" class="submit"/>
                             </form>
 
-                        }
+                        @* } *@
                     </p>
                 </li>
             }
@@ -58,5 +52,5 @@
         <em>There are no cheeps so far.</em>
     }
 
-    @(await Html.PartialAsync("Shared/PageNav", @Model.PageNav))
+    @* @(await Html.PartialAsync("Shared/PageNav", @Model.PageNav)) *@
 </div>

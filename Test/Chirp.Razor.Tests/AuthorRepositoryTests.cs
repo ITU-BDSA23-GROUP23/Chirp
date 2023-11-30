@@ -52,7 +52,7 @@ public class AuthorRepositoryTests : IDisposable
 
 
     [Fact]
-    public async void FindAuthorByEmail()
+    public async Task FindAuthorByEmail()
     {
         //Arrange
         AuthorDTO authorDTO = new("Thorbjørnen1", "tpep1@bjørn.dk");
@@ -68,7 +68,7 @@ public class AuthorRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async void FindAuthorByName()
+    public async Task FindAuthorByName()
     {
         //Arrange
         AuthorDTO authorDTO = new("Thorbjørnen2", "tpep2@bjørn.dk");
