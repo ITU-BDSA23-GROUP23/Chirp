@@ -29,7 +29,7 @@ namespace Chirp.Infrastructure
         {
             
             modelBuilder.Entity<Author>().HasIndex(a => a.Name).IsUnique();
-            // modelBuilder.Entity<Author>().HasMany(f => f.Followers);
+            modelBuilder.Entity<Author>().HasMany(f => f.Followers).WithMany(f => f.Following);
             // modelBuilder.Entity<Author>().HasMany(f => f.Following);
             // modelBuilder.Entity<Author>().HasIndex(a => a.Email).IsUnique(); // makes no sense to have unique email when many of them would be null, as we currently don't have the email when creating Authors. 
             modelBuilder.Entity<Author>().ToTable("Authors");
