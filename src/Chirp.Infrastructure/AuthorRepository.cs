@@ -97,7 +97,7 @@ public class AuthorRepository : IAuthorRepository
     public async Task<AuthorDTO?> FindAuthorByName(string Name)
     {
 
-        var author = await dbContext.Authors.Include(f => f.Followers).Include(f => f.Following).FirstOrDefaultAsync(a => a.Name == Name);
+        var author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == Name);
         return AuthorToAuthorDTO(author);
 
 
@@ -138,6 +138,7 @@ public class AuthorRepository : IAuthorRepository
             Console.WriteLine("I am here!");
             selfAuthor.Following.Add(otherAuthor);
             otherAuthor.Followers.Add(selfAuthor);
+            Console.WriteLine($"Follow author called for {otherAuthor.Name}. They now have {otherAuthor.Followers.Count} followers!");
             await dbContext.SaveChangesAsync();
         }
         else
