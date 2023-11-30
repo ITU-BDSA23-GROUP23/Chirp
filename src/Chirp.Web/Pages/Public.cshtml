@@ -12,6 +12,13 @@
         <h2> Public Timeline </h2>
         @(await Html.PartialAsync("Shared/PageNav", @Model.PageNav))
     </div>
+
+      @if (User.Identity.IsAuthenticated) {
+
+
+         @(await Html.PartialAsync("CreateCheep", @Model.CreateCheep))
+
+     } 
     
 
     @if (Model.Cheeps != null && Model.Cheeps.Any())
@@ -36,5 +43,5 @@
         <em>There are no cheeps so far.</em>
     }
     
-    @(await Html.PartialAsync("Shared/PageNav", @Model.PageNav))
+   @(await Html.PartialAsync("Shared/PageNav", @Model.PageNav))
 </div>
