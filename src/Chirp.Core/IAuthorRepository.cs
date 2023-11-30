@@ -15,8 +15,6 @@ namespace Chirp.Infrastructure
                 Task FollowAuthor(AuthorDTO self, AuthorDTO other);
                 Task<IEnumerable<AuthorDTO>> GetFollowers(string authorName);
                 Task<IEnumerable<AuthorDTO>> GetFollowing(string authorName);
-
-                // I want to make a void task that deletes an author, and all of their cheeps.
                 Task DeleteAuthor(string authorName);
         }
 }
