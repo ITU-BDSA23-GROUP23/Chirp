@@ -169,4 +169,23 @@ public class AuthorRepository : IAuthorRepository
         }
         return null;
     }
+
+    public async Task DeleteAuthor(string authorName)
+    {
+        var author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == authorName);
+        if (author != null)
+        {
+            // Delete the Cheeps
+            dbContext.Cheeps.RemoveRange(dbContext.Cheeps.Where(c => c.Author.Name == authorName));
+
+            // Delete the Author
+            dbContext.Authors.Remove(author);
+
+            await dbContext.SaveChangesAsync();
+        }
+        else
+        {
+            throw new NullReferenceException($"Author {authorName} does not exist.");
+        }
+    }
 }
