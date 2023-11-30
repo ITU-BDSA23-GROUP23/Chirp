@@ -72,7 +72,7 @@ public class AuthorRepository : IAuthorRepository
             ICollection<Guid> Followers = new List<Guid>();
             ICollection<Guid> Following = new List<Guid>();
 
-            if (author.Followers != null) 
+            if (author.Followers != null)
             {
                 foreach (var follower in author.Followers)
                 {
@@ -80,7 +80,7 @@ public class AuthorRepository : IAuthorRepository
                 }
             }
 
-            if (author.Following != null) 
+            if (author.Following != null)
             {
                 foreach (var following in author.Following)
                 {
@@ -96,8 +96,7 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task<AuthorDTO?> FindAuthorByName(string Name)
     {
-
-        var author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == Name);
+        var author = await dbContext.Authors.Include(f => f.Followers).Include(f => f.Following).FirstOrDefaultAsync(a => a.Name == Name);
         return AuthorToAuthorDTO(author);
 
 
