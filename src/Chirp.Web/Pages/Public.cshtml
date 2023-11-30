@@ -35,7 +35,7 @@
                                 <input hidden type="text" name="Unfollow" value=@cheep.AuthorName/>
                                 <input type="submit" value="Unfollow" class/>
                             </form>
-                            <form asp-page-handler="Follow" method="post" action="?handler=follow">
+                            <form asp-page-handler="Follow" method="post" action=@("?username=" + @User.Identity?.Name)>
                                 @Html.AntiForgeryToken()
                                 <input hidden type="text" name="Follow" value="@cheep.AuthorName"/>
                                 <input type="submit" name="submit" value="Follow" class="submit"/>

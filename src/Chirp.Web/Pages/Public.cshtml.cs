@@ -45,7 +45,7 @@ public class PublicModel : PageModel
         return Page();
     }
 
-    public async Task<ActionResult> OnPost([FromQuery] int page, [FromQuery] string handler)
+    public async Task<ActionResult> OnPost([FromQuery] int page, [FromQuery] string username)
     {
         Console.WriteLine("OnPost called!");
         var _Cheeps = _service.GetCheeps(page);
@@ -75,21 +75,25 @@ public class PublicModel : PageModel
         */
         return Page();
     }
-    public async Task OnPostFollow([FromQuery] int page)
+
+    
+    public async Task<ActionResult> OnPostFollow([FromQuery] int page, [FromQuery] string username)
     {
         Console.WriteLine("OnPostFollow Called");
-        if (User.Identity.Name != null)
+        if (User.Identity?.Name != null)
         {
             string? AuthorName = Request.Form["Follow"];
-            await FollowAuthor(AuthorName);
+            await FollowAuthor(AuthorName, username);
         }
         else
         {
+            Console.WriteLine("FollowAuthor called while not logged in");
+            /*
             string? AuthorName = Request.Form["Follow"];
             Console.WriteLine("AuthorName is: " + AuthorName);
-            await FollowAuthor(AuthorName);
+            await FollowAuthor(AuthorName);*/
         }
-        //return RedirectToPage("/");
+        return RedirectToPage("/");
     }
     // for testing purposes only
     public async Task FollowAuthor(string followerName)
