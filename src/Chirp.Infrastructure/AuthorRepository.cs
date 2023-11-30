@@ -88,7 +88,7 @@ public class AuthorRepository : IAuthorRepository
                 }
             }
 
-
+            Console.WriteLine($"Created AuthorDTO for {author.Name} with {Followers.Count} followers and following {Following.Count}");
             return new AuthorDTO(author.Name, author.Email, Followers, Following);
         }
         return null;
@@ -97,7 +97,7 @@ public class AuthorRepository : IAuthorRepository
     public async Task<AuthorDTO?> FindAuthorByName(string Name)
     {
 
-        var author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == Name);
+        var author = await dbContext.Authors.Include(f => f.Followers).Include(f => f.Following).FirstOrDefaultAsync(a => a.Name == Name);
         return AuthorToAuthorDTO(author);
 
 
@@ -129,9 +129,9 @@ public class AuthorRepository : IAuthorRepository
     public void FollowAuthor(AuthorDTO self, AuthorDTO other)
     {
         Console.WriteLine("Other name is " + other.Name);
-        var selfAuthor = dbContext.Authors.FirstOrDefaultAsync(a => a.Name == self.Name);
+        var selfAuthor = dbContext.Authors.Include(f => f.Followers).FirstOrDefaultAsync(a => a.Name == self.Name);
         selfAuthor.Wait();
-        var otherAuthor = dbContext.Authors.FirstOrDefaultAsync(a => a.Name == other.Name);
+        var otherAuthor = dbContext.Authors.Include(f => f.Following).FirstOrDefaultAsync(a => a.Name == other.Name);
         otherAuthor.Wait();
         Console.WriteLine("My name is: " + selfAuthor.Result.Name);
         if (selfAuthor != null && otherAuthor != null)
@@ -139,6 +139,7 @@ public class AuthorRepository : IAuthorRepository
             selfAuthor.Result.Following.Add(otherAuthor.Result);
             otherAuthor.Result.Followers.Add(selfAuthor.Result);
             dbContext.SaveChangesAsync();
+            Console.WriteLine($"Followauthor called, {otherAuthor.Result.Name} now has {otherAuthor.Result.Followers.Count} followers");
         }
         else
         {
