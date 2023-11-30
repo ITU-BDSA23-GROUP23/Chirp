@@ -32,7 +32,7 @@ public class CreateCheepModel : PageModel
     }
 
 
-    public async void createCheep(string UserName, string message)
+    public async Task createCheep(string UserName, string message)
     {
         var _Author = _Author_repository.FindAuthorByName(UserName);
         _Author.Wait();
