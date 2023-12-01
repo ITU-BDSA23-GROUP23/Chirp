@@ -90,8 +90,4 @@ public class PageInfoModel : PageModel
 
         return RedirectToPage("/Index");
     }
-
-
-
-
 }
