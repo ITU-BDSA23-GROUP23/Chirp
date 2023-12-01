@@ -29,12 +29,23 @@ public class CreateCheepModel : PageModel
 
     }
 
+    public ActionResult OnPostCheep(string c, string message) 
+    {
+        if (c != null)
+        { 
+            createCheep(c, message);
+        }
 
-    public void createCheep(string UserName, string message)
+        return RedirectToPage("/");
+    }
+
+    public void createCheep(string UserName, string? message)
+
     {
         var _Author = _Author_repository.FindAuthorByName(UserName);
         _Author.Wait();
         var Author = _Author.Result;
+
   
         if (Author != null)
         {
@@ -49,14 +60,14 @@ public class CreateCheepModel : PageModel
                     Console.WriteLine("Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage);
                 }
             }
-            _Cheep_repository.CreateCheep(cheepDTO);
+            _Cheep_repository.CreateCheep(cheepDTO, null);
         }
         else
         {
             string email = UserName + "email.com";
-            Author = new AuthorDTO(UserName, email);
 
-            _Author_repository.CreateAuthor(Author);
+            _Author_repository.CreateAuthor(new CreateAuthorDTO(UserName, email));
+            Author = _Author_repository.FindAuthorByName(UserName).Result;
             createCheepDTO cheepDTO = new createCheepDTO(Author, message);
             createCheepDTOValidator validator = new createCheepDTOValidator();
             FluentValidation.Results.ValidationResult results = validator.Validate(cheepDTO);
@@ -67,8 +78,7 @@ public class CreateCheepModel : PageModel
                     Console.WriteLine("Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage);
                 }
             }
-
-            _Cheep_repository.CreateCheep(cheepDTO);
+            _Cheep_repository.CreateCheep(cheepDTO, null);
         }
     }
     public ActionResult OnGetPartial()

@@ -1,5 +1,6 @@
 using Chirp.Core;
 using Chirp.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,9 +10,11 @@ public interface ICheepService : IDisposable
     Task<IEnumerable<CheepDTO>> GetCheeps(int page);
     Task<IEnumerable<CheepDTO>> GetCheepsFromAuthor(string authorName, int page);
 
-   // void createCheep(string UserName, string message);
+    // void createCheep(string UserName, string message);
 
     public Task<int> GetPageAmount(String? authorName = null);
+    Task<int> GetFollowingCount(string author);
+    Task<int> GetFollowersCount(string author);
 }
 
 public class CheepService : ICheepService
@@ -20,10 +23,13 @@ public class CheepService : ICheepService
     private readonly ICheepRepository cheepRepository;
     private readonly IAuthorRepository authorRepository;
 
-    public CheepService(ICheepRepository cheepRepository, IAuthorRepository authorRepository)
+    ChirpDBContext _dbContext;
+
+    public CheepService(ICheepRepository cheepRepository, IAuthorRepository authorRepository, ChirpDBContext dbContext)
     {
         this.cheepRepository = cheepRepository;
         this.authorRepository = authorRepository;
+        _dbContext = dbContext;
     }
 
     public async Task<IEnumerable<CheepDTO>> GetCheeps(int page)
@@ -64,4 +70,43 @@ public class CheepService : ICheepService
     {
         // Implement Dispose method here if necessary.
     }
+
+    public async Task<int> GetFollowingCount(string authorName)
+    {
+        var author = await _dbContext.Authors.FirstOrDefaultAsync(a => a.Name == authorName);
+
+        if (author != null)
+        {
+
+            // Check if author.Following is not null before accessing Count
+            int followingCount = 0;
+            if (author.Following != null)
+            {
+                followingCount = author.Following.Count;
+            }
+            return followingCount;
+        }
+
+        return 0; // or handle the case when the author is not found
+    }
+
+    public async Task<int> GetFollowersCount(string authorName)
+    {
+        var author = await _dbContext.Authors.FirstOrDefaultAsync(a => a.Name == authorName);
+
+        if (author != null)
+        {
+
+            // Check if author.Followers is not null before accessing Count
+            int followersCount = 0;
+            if (author.Followers != null)
+            {
+                followersCount = author.Followers.Count;
+            }
+            return followersCount;
+        }
+
+        return 0; // or handle the case when the author is not found
+    }
+
 }

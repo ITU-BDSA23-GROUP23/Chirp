@@ -15,5 +15,7 @@ namespace Chirp.Infrastructure
         public required string Message { get; set; }
 
         public required DateTime TimeStamp { get; set; }
+
+        public ICollection<Reactions>? Reactions { get; set; }
     }
 }

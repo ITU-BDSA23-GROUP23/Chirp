@@ -38,8 +38,8 @@ builder.Services.AddRazorPages()
     .AddMicrosoftIdentityUI();
 
 
-builder.Services.AddScoped<ICheepRepository, CheepRepository>();
-builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
+builder.Services.AddTransient<ICheepRepository, CheepRepository>();
+builder.Services.AddTransient<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<ICheepService, CheepService>();
 
 
@@ -67,7 +67,7 @@ using (var scope = app.Services.CreateScope())
 
     var context = services.GetRequiredService<ChirpDBContext>();
     context.Database.EnsureCreated();
-    DbInitializer.Initialize(context);
+    await DbInitializer.Initialize(context);
 }
 
 app.UseHttpsRedirection();

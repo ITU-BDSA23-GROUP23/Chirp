@@ -3,18 +3,6 @@
 @model Chirp.Web.Pages.CreateCheepModel
 
 
-@{
-  if (HttpMethods.IsPost(@Context.Request.Method))
-  {
-    string Cheep = @Context.Request.Form["Cheep"];
-
-    Model.createCheep(@Context.User.Identity?.Name, Cheep);
-    @Context.Response.Redirect("/");
-
-
-
-
-  }}
 
 
 <!DOCTYPE html>
@@ -23,7 +11,7 @@
         <title>Customer Form</title>
     </head>
     <body>
-      <form method="post">
+      <form method="post" action=@("?c=" + @User.Identity?.Name)>
         @Html.AntiForgeryToken()
         <fieldset>
           <legend style="margin: 0 auto;">Make a Cheep</legend>

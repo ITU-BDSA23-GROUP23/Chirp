@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chirp.Infrastructure.Migrations
 {
     [DbContext(typeof(ChirpDBContext))]
-    [Migration("20231116144112_collection")]
-    partial class collection
+    [Migration("20231130141153_Migrations")]
+    partial class Migrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,6 +25,21 @@ namespace Chirp.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("AuthorAuthor", b =>
+                {
+                    b.Property<Guid>("FollowersId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("FollowingId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("FollowersId", "FollowingId");
+
+                    b.HasIndex("FollowingId");
+
+                    b.ToTable("AuthorAuthor");
+                });
+
             modelBuilder.Entity("Chirp.Infrastructure.Author", b =>
                 {
                     b.Property<Guid>("Id")
@@ -32,8 +47,8 @@ namespace Chirp.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("RegularExpression", "[.+@.+]");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -41,9 +56,6 @@ namespace Chirp.Infrastructure.Migrations
                         .HasColumnType("nvarchar(39)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Email")
-                        .IsUnique();
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -75,6 +87,44 @@ namespace Chirp.Infrastructure.Migrations
                     b.ToTable("Cheeps", (string)null);
                 });
 
+            modelBuilder.Entity("Chirp.Infrastructure.Reactions", b =>
+                {
+                    b.Property<int>("ChirpId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("AuthorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CheepId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ReactionType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ChirpId", "AuthorId");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("CheepId");
+
+                    b.ToTable("Reactions", (string)null);
+                });
+
+            modelBuilder.Entity("AuthorAuthor", b =>
+                {
+                    b.HasOne("Chirp.Infrastructure.Author", null)
+                        .WithMany()
+                        .HasForeignKey("FollowersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Chirp.Infrastructure.Author", null)
+                        .WithMany()
+                        .HasForeignKey("FollowingId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Chirp.Infrastructure.Cheep", b =>
                 {
                     b.HasOne("Chirp.Infrastructure.Author", "Author")
@@ -86,9 +136,33 @@ namespace Chirp.Infrastructure.Migrations
                     b.Navigation("Author");
                 });
 
+            modelBuilder.Entity("Chirp.Infrastructure.Reactions", b =>
+                {
+                    b.HasOne("Chirp.Infrastructure.Author", "Author")
+                        .WithMany("Reactions")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Chirp.Infrastructure.Cheep", "Cheep")
+                        .WithMany("Reactions")
+                        .HasForeignKey("CheepId");
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Cheep");
+                });
+
             modelBuilder.Entity("Chirp.Infrastructure.Author", b =>
                 {
                     b.Navigation("Cheeps");
+
+                    b.Navigation("Reactions");
+                });
+
+            modelBuilder.Entity("Chirp.Infrastructure.Cheep", b =>
+                {
+                    b.Navigation("Reactions");
                 });
 #pragma warning restore 612, 618
         }

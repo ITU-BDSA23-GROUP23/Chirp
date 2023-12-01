@@ -54,21 +54,22 @@ public class CheepRepository : ICheepRepository
         return CheepAmount;
     }
 
-    public void CreateCheep(createCheepDTO cheepDTO)
+    public void CreateCheep(createCheepDTO cheepDTO, DateTime? Timestamp = null)
     {
         Author author = dbContext.Authors.First(a => a.Name == cheepDTO.Author.Name);
         if (author == null)
         {
             throw new NullReferenceException("No author was found with name : " + cheepDTO.Author.Name + " email: " + cheepDTO.Author.Email);
         }
-        
-        Cheep cheep = new Cheep(){
+
+        Cheep cheep = new Cheep()
+        {
             Author = author,
             Message = cheepDTO.Message,
-            TimeStamp = DateTime.Now
+            TimeStamp = Timestamp == null ? DateTime.Now : (DateTime)Timestamp
         };
 
-        if(author.Cheeps == null) 
+        if (author.Cheeps == null)
             author.Cheeps = new List<Cheep>();
 
         author.Cheeps.Add(cheep);
@@ -94,7 +95,9 @@ public class CheepRepository : ICheepRepository
 
             string formattedDateTime = cheepDateTimeUtc.ToString("dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture);
 
-            cheepDTOs.Add(new CheepDTO(cheep.Message, cheep.Author.Name, formattedDateTime));
+            ICollection<AuthorDTO>? following = new List<AuthorDTO>();
+
+            cheepDTOs.Add(new CheepDTO(cheep.Message, cheep.Author.Name, formattedDateTime, (ICollection<ReactionDTO>?)cheep.Reactions, following));
         }
 
         return cheepDTOs;
