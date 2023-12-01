@@ -194,27 +194,31 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task RemoveFollowers(IEnumerable<AuthorDTO> result)
     {
-        foreach (var author in result)
+        var authorNames = result.Select(author => author.Name).ToList();
+        var authors = await dbContext.Authors
+            .Where(a => authorNames.Contains(a.Name))
+            .ToListAsync();
+
+        foreach (var author in authors)
         {
-            var _author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == author.Name);
-            if (_author != null)
-            {
-                _author.Followers.Clear();
-                await dbContext.SaveChangesAsync();
-            }
+            author.Followers.Clear();
         }
+
+        await dbContext.SaveChangesAsync();
     }
 
     public async Task RemoveFollowing(IEnumerable<AuthorDTO> result)
     {
-        foreach (var author in result)
+        var authorNames = result.Select(author => author.Name).ToList();
+        var authors = await dbContext.Authors
+            .Where(a => authorNames.Contains(a.Name))
+            .ToListAsync();
+
+        foreach (var author in authors)
         {
-            var _author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == author.Name);
-            if (_author != null)
-            {
-                _author.Following.Clear();
-                await dbContext.SaveChangesAsync();
-            }
+            author.Following.Clear();
         }
+
+        await dbContext.SaveChangesAsync();
     }
 }
