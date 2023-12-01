@@ -46,67 +46,52 @@ public class PageInfoModel : PageModel
     }
 
     // list of followers for author
-    public void OnGetFollowers(string author)
+    public int FollowingCount(string author)
     {
+        var _author = _Author_repository.FindAuthorByName(author);
+        _author.Wait();
+        Console.WriteLine($"Is author null? = {_author == null}");
+        //Console.WriteLine(_author.Result.Following.ToArray()[0]);
+        var _FollowingCount = _author.Result.Following.Count;
+        Console.WriteLine(_FollowingCount + " is the result of _FollowingCount");
+        return _FollowingCount;
+    }
+    public int FollowersCount(string author)
+    {
+        var _author = _Author_repository.FindAuthorByName(author);
+        _author.Wait();
+        var _FollowersCount = _author.Result.Followers.Count;
+        Console.WriteLine(_FollowersCount + " is the result of _FollowersCount");
+        return _FollowersCount;
+    }
+
+    //make async task that calls removeAuthor
+    public async Task<IActionResult> OnPostDeleteAuthor(string author)
+    {
+        var _Author = _Author_repository.FindAuthorByName(author);
+        _Author.Wait();
+        var _Cheeps = _Cheep_repository.GetCheeps(1, 1, author);
+        _Cheeps.Wait();
         var _Followers = _Author_repository.GetFollowers(author);
         _Followers.Wait();
-        Followers = _Followers.Result;
-    }
-
-    // list of following for author
-    public void OnGetFollowing(string author)
-    {
         var _Following = _Author_repository.GetFollowing(author);
         _Following.Wait();
-        Following = _Following.Result;
-    }
-
-    // number of cheeps for author
-    public void OnGetCheepAmount(string author)
-    {
         var _CheepAmount = _Author_repository.GetCheepAmount(author);
         _CheepAmount.Wait();
-        CheepAmount = _CheepAmount.Result;
+
+        await _Author_repository.DeleteAuthor(author);
+        Console.WriteLine($"Author {_Author.Result.Name} deleted.");
+        await _Cheep_repository.RemoveCheeps(_Cheeps.Result);
+        Console.WriteLine($"Cheeps deleted.");
+        await _Author_repository.RemoveFollowers(_Followers.Result);
+        Console.WriteLine($"Followers deleted.");
+        await _Author_repository.RemoveFollowing(_Following.Result);
+        Console.WriteLine($"Following deleted.");
+
+        return RedirectToPage("/Index");
     }
 
-    public int FollowingCount(string authorName)
-    {
-        if (authorName == null)
-        {
-            return 0;
-        }
-        else
-        {
-            var _author = _Author_repository.FindAuthorByName(authorName);
-            _author.Wait();
-            var _FollowingCount = _author.Result.Following.Count;
-            Console.WriteLine(_FollowingCount + " is the result of _FollowingCount");
-            return _FollowingCount;
-        }
-    }
 
-    public int FollowersCount(string authorName)
-    {
-        if (authorName == null)
-        {
-            return 0;
-        }
-        else
-        {
-            var _author = _Author_repository.FindAuthorByName(authorName);
-            _author.Wait();
-            var _FollowersCount = _author.Result.Followers.Count;
-            Console.WriteLine(_FollowersCount + " is the result of _FollowersCount");
-            return _FollowersCount;
-        }
-    }
 
-    //Forget me
-    public async Task<IActionResult> OnPostDeleteAuthor(string authorName)
-    {
-        var _DeleteAuthor = _Author_repository.DeleteAuthor(authorName);
-        _DeleteAuthor.Wait();
-        return Page();
-    }
 
 }

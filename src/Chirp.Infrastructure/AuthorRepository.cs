@@ -191,4 +191,30 @@ public class AuthorRepository : IAuthorRepository
             throw new NullReferenceException($"Author {authorName} does not exist.");
         }
     }
+
+    public async Task RemoveFollowers(IEnumerable<AuthorDTO> result)
+    {
+        foreach (var author in result)
+        {
+            var _author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == author.Name);
+            if (_author != null)
+            {
+                _author.Followers.Clear();
+                await dbContext.SaveChangesAsync();
+            }
+        }
+    }
+
+    public async Task RemoveFollowing(IEnumerable<AuthorDTO> result)
+    {
+        foreach (var author in result)
+        {
+            var _author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == author.Name);
+            if (_author != null)
+            {
+                _author.Following.Clear();
+                await dbContext.SaveChangesAsync();
+            }
+        }
+    }
 }

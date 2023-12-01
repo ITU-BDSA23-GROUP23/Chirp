@@ -103,6 +103,19 @@ public class CheepRepository : ICheepRepository
         return cheepDTOs;
     }
 
+    public async Task RemoveCheeps(IEnumerable<CheepDTO> result)
+    {
+        foreach (var cheep in result)
+        {
+            var _cheep = await dbContext.Cheeps.FirstOrDefaultAsync(c => c.Message == cheep.Message);
+            if (_cheep != null)
+            {
+                dbContext.Cheeps.Remove(_cheep);
+                await dbContext.SaveChangesAsync();
+            }
+        }
+    }
+
     // public void Add(Cheep entity)
     // {
     //     dbContext.Set<Cheep>().Add(entity);

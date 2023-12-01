@@ -23,8 +23,8 @@
 
 <!-- Display followers and following count -->
 <div class="followers">
-    <a>Followers: @Model.FollowersCount(Model.Author?.Name)</a>
-    <a>Following: @Model.FollowingCount(Model.Author?.Name)</a>
+    <a>Followers: @Model.FollowersCount(User.Identity.Name)</a>
+    <a>Following: @Model.FollowingCount(User.Identity.Name)</a>
 </div>
 
 
