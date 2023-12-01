@@ -28,11 +28,11 @@ public class CreateCheepTest
         ICheepRepository cheepRepository = new CheepRepository(context);
         IAuthorRepository authorRepository = new AuthorRepository(context);
         AuthorDTO author = new AuthorDTO("Thorstein Pedersen", "tpepsi@gmail.com");
-
+        createCheepDTO createcheepDTO = new createCheepDTO(author, Message);
         authorRepository.CreateAuthor(author);
 
         //Act
-        cheepRepository.CreateCheep(author, Message);
+        cheepRepository.CreateCheep(createcheepDTO);
 
         //Assert
         var cheeps = await cheepRepository.GetCheeps();

@@ -29,8 +29,7 @@ public class UserTimelineModel : PageModel
         _service = service;
         _logger = logger;
         _authorRepository = authorRepository;
-        PageNav = new PageNavModel(_service, 1, 1);
-        //Cheeps = service.GetCheeps(null);
+        PageNav = new PageNavModel(_service, 1, TotalPages);
     }
 
     public ActionResult OnGet(string author, [FromQuery] int page)

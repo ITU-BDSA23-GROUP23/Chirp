@@ -9,11 +9,16 @@
 }
 
 <div>
-    <div style="display: flex;justify-content: space-between;">
+    <div style="justify-content: space-between;">
         <h2> Public Timeline </h2>
-        @(await Html.PartialAsync("Shared/PageNav", @Model.PageNav))
-    </div> 
 
+        @if (User.Identity.IsAuthenticated) 
+        {
+            @(await Html.PartialAsync("CreateCheep", @Model.CreateCheep))
+        }
+        
+        @(await Html.PartialAsync("Shared/PageNav", @Model.PageNav))
+    
 
     @if (Model.Cheeps != null && Model.Cheeps.Any())
     {
@@ -28,8 +33,8 @@
                         @cheep.Message
                         <small>&mdash; @cheep.TimeStamp</small>
                         @* Add follow and Unfollow buttons to the cheeps *@
-                        @* @if (User.Identity.IsAuthenticated && cheep.AuthorName != User.Identity.Name)
-                        { *@
+                        @if (User.Identity.IsAuthenticated && cheep.AuthorName != User.Identity.Name)
+                        {
                             @if (await Model.IsFollowing(User.Identity?.Name, @cheep.AuthorName))
                             {
                                 <form method="post" action=@("?uf=" + @User.Identity?.Name)>
@@ -47,7 +52,7 @@
                                 </form>
                             }
 
-                        @* } *@
+                        }
                     </p>
                 </li>
             }
@@ -59,4 +64,5 @@
     }
 
     @(await Html.PartialAsync("Shared/PageNav", @Model.PageNav))
+    
 </div>

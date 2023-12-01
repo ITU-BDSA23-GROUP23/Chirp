@@ -17,36 +17,40 @@ namespace Chirp.Web.Pages;
 public class PublicModel : PageModel
 {
     private readonly IAuthorRepository authorRepository;
+    private readonly ICheepRepository cheepRepository;
+    public CreateCheepModel CreateCheep;
     private readonly ICheepService _service;
     private readonly ILogger<PublicModel> _logger;
     public IEnumerable<CheepDTO>? Cheeps { get; set; }
     public PageNavModel PageNav;
     public int TotalPages { get; set; }
 
-    public PublicModel(ICheepService service, ILogger<PublicModel> logger, IAuthorRepository authorRepository)
+    public PublicModel(ICheepService service, ILogger<PublicModel> logger, IAuthorRepository authorRepository, ICheepRepository cheepRepository)
     {
         _service = service;
         _logger = logger;
         this.authorRepository = authorRepository;
+        this.cheepRepository = cheepRepository;
         PageNav = new PageNavModel(_service, 1, TotalPages);
-        //Cheeps = service.GetCheeps(null);
+        CreateCheep = new CreateCheepModel(_service, authorRepository, cheepRepository);
+        
     }
 
     public ActionResult OnGet([FromQuery] int page)
     {
-        var _Cheeps = _service.GetCheeps(page);
-        _Cheeps.Wait();
-        Cheeps = _Cheeps.Result;
-
         var _TotalPages = _service.GetPageAmount();
         _TotalPages.Wait();
         TotalPages = _TotalPages.Result;
         PageNav = new PageNavModel(_service, page, TotalPages);
+       
+        var _Cheeps = _service.GetCheeps(page);
+        _Cheeps.Wait();
+        Cheeps = _Cheeps.Result;
 
         return Page();
     }
 
-    public async Task OnPost([FromQuery] int page, [FromQuery] string f, [FromQuery] string uf)
+    public async Task<ActionResult> OnPost([FromQuery] int page, [FromQuery] string f, [FromQuery] string uf, [FromQuery] string c)
     {
         Console.WriteLine("OnPost called!");
         var _Cheeps = await _service.GetCheeps(page);
@@ -65,8 +69,13 @@ public class PublicModel : PageModel
         {
             string? AuthorName = Request.Form["Unfollow"];
             await UnfollowAuthor(uf, AuthorName);
-
+        } else if (c != null) 
+        {
+            string? Message = Request.Form["Cheep"];
+            CreateCheep.OnPostCheep(c, Message);
+            return RedirectToPage("");
         }
+        return Page();
     }
 
     

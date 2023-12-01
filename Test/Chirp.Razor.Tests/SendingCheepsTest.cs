@@ -32,9 +32,9 @@ public class SendingCheepsTest
         AuthorDTO author = new AuthorDTO("Thorstein", "tpep123@gmail.com");
 
         authorRepository.CreateAuthor(author);
-
+        createCheepDTO createcheepDTO = new createCheepDTO(author, Message);
         //Act
-        cheepRepository.CreateCheep(author, Message);
+        cheepRepository.CreateCheep(createcheepDTO);
 
         //Assert
         var cheeps = await cheepRepository.GetCheeps();
@@ -61,9 +61,10 @@ public class SendingCheepsTest
         AuthorDTO author = new AuthorDTO("Thorstein", "tpep123@gmail.com");
 
         authorRepository.CreateAuthor(author);
+        createCheepDTO createcheepDTO = new createCheepDTO(author, Message);
 
         //Act
-        cheepRepository.CreateCheep(author, Message);
+        cheepRepository.CreateCheep(createcheepDTO);
         var cheeps = await cheepRepository.GetCheeps(authorName: author.Name);
 
         //Assert
@@ -80,9 +81,9 @@ public class SendingCheepsTest
         AuthorDTO author = new AuthorDTO("Thorstein", "tpep123@gmail.com");
 
         authorRepository.CreateAuthor(author);
-
+        createCheepDTO createcheepDTO = new createCheepDTO(author, Message);
         //Act
-        cheepRepository.CreateCheep(author, Message);
+        cheepRepository.CreateCheep(createcheepDTO);
         var cheeps = await cheepRepository.GetCheeps(authorName: author.Name);
 
         //Assert
@@ -100,8 +101,10 @@ public class SendingCheepsTest
 
         authorRepository.CreateAuthor(author);
 
+        createCheepDTO createcheepDTO = new createCheepDTO(author, Message);
+
         //Act
-        cheepRepository.CreateCheep(author, Message);
+        cheepRepository.CreateCheep(createcheepDTO);
         var cheeps = await cheepRepository.GetCheeps(authorName: author.Name);
 
         //Assert
@@ -118,9 +121,10 @@ public class SendingCheepsTest
         AuthorDTO author = new AuthorDTO("Thorstein", "tpep123@gmail.com");
 
         authorRepository.CreateAuthor(author);
-
+        createCheepDTO createcheepDTO = new createCheepDTO(author, Message);
+        
         //Act
-        cheepRepository.CreateCheep(author, Message);
+        cheepRepository.CreateCheep(createcheepDTO);
         var cheeps = await cheepRepository.GetCheeps();
 
         //Assert
