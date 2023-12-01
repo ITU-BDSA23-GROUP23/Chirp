@@ -65,29 +65,24 @@ public class PageInfoModel : PageModel
         return _FollowersCount;
     }
 
-    //make async task that calls removeAuthor
+
     public async Task<IActionResult> OnPostDeleteAuthor(string author)
     {
         var _Author = _Author_repository.FindAuthorByName(author);
         _Author.Wait();
-        var _Cheeps = _Cheep_repository.GetCheeps(1, 1, author);
-        _Cheeps.Wait();
         var _Followers = _Author_repository.GetFollowers(author);
         _Followers.Wait();
         var _Following = _Author_repository.GetFollowing(author);
         _Following.Wait();
-        var _CheepAmount = _Author_repository.GetCheepAmount(author);
-        _CheepAmount.Wait();
 
         await _Author_repository.DeleteAuthor(author);
         Console.WriteLine($"Author {_Author.Result.Name} deleted.");
-        await _Cheep_repository.RemoveCheeps(_Cheeps.Result);
         Console.WriteLine($"Cheeps deleted.");
         await _Author_repository.RemoveFollowers(_Followers.Result);
         Console.WriteLine($"Followers deleted.");
         await _Author_repository.RemoveFollowing(_Following.Result);
         Console.WriteLine($"Following deleted.");
 
-        return RedirectToPage("/Index");
+        return Page();
     }
 }

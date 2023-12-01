@@ -92,7 +92,7 @@
 
 <!--forget me button-->
 <div class="forgetme">
-    <form method="post" asp-page-handler="OnPostDeleteAuthor">
+    <form method="post" asp-page-handler=@Model.OnPostDeleteAuthor(User.Identity.Name)>
         <button type="submit" class="btn btn-danger"
             style="height: 30px; width: 100px; background-color: #f44336;">Forget me</button>
     </form>
