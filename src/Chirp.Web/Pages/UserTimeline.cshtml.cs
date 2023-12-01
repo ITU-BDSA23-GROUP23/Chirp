@@ -29,7 +29,7 @@ public class UserTimelineModel : PageModel
         _service = service;
         _logger = logger;
         _authorRepository = authorRepository;
-        //Cheeps = service.GetCheeps(null);
+        PageNav = new PageNavModel(_service, 1, TotalPages);
     }
 
     public ActionResult OnGet(string author, [FromQuery] int page)
@@ -50,15 +50,20 @@ public class UserTimelineModel : PageModel
         return Page();
     }
 
-    public int FollowingCount(string author)
+    public async Task<int> FollowingCount(string author)
     {
-        var _author = _authorRepository.FindAuthorByName(author);
-        _author.Wait();
-        Console.WriteLine($"Is author null? = {_author == null}");
-        //Console.WriteLine(_author.Result.Following.ToArray()[0]);
-        var _FollowingCount = _author.Result.Following.Count;
-        Console.WriteLine(_FollowingCount+ " is the result of _FollowingCount");
-        return _FollowingCount;
+        var _author = await _authorRepository.FindAuthorByName(author);
+        Console.WriteLine($"Is author {author} null? = {_author == null}");
+        if (_author != null)
+        {
+            var _FollowingCount = _author.Following.Count;
+            Console.WriteLine(_FollowingCount+ " is the result of _FollowingCount");
+            return _FollowingCount;
+        }
+        else
+        {
+            return 420;
+        }
     }
     public int FollowersCount(string author)
     {

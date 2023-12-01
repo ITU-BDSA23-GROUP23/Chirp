@@ -20,25 +20,33 @@ public class CreateCheepModel : PageModel
     private readonly IAuthorRepository _Author_repository;
 
     private readonly ICheepRepository _Cheep_repository;
-    private readonly ILogger<PublicModel> _logger;
 
-    public CreateCheepModel(ICheepService service, ILogger<PublicModel> logger, IAuthorRepository Author_repository, ICheepRepository Cheep_repository)
+    public CreateCheepModel(ICheepService service, IAuthorRepository Author_repository, ICheepRepository Cheep_repository)
     {
         _service = service;
-        _logger = logger;
         _Author_repository = Author_repository;
         _Cheep_repository = Cheep_repository;
 
     }
 
+    public ActionResult OnPostCheep(string c, string message) 
+    {
+        if (c != null)
+        { 
+            createCheep(c, message);
+        }
 
-    public async Task createCheep(string UserName, string message)
+        return RedirectToPage("/");
+    }
+
+    public void createCheep(string UserName, string? message)
+
     {
         var _Author = _Author_repository.FindAuthorByName(UserName);
         _Author.Wait();
         var Author = _Author.Result;
-        //Console.WriteLine("Author:  " +Author);
-        //Console.WriteLine("Message:  " +message);  
+
+  
         if (Author != null)
         {
 
@@ -70,15 +78,11 @@ public class CreateCheepModel : PageModel
                     Console.WriteLine("Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage);
                 }
             }
-
             _Cheep_repository.CreateCheep(cheepDTO, null);
         }
     }
-    public ActionResult OnGet()
+    public ActionResult OnGetPartial()
     {
-
-        return Page();
-
-
+       return Page();
     }
 }

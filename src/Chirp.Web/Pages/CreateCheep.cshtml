@@ -1,23 +1,9 @@
-@page "/CreateCheep"
 @using Chirp.Core
 @using System.Security.Claims
 @model Chirp.Web.Pages.CreateCheepModel
 
-@{
-
-  ViewData["Title"] = "Chirp!";
-  Layout = "Shared/_Layout";
-
-  if (HttpMethods.IsPost(Request.Method))
-  {
-    string Cheep = Request.Form["Cheep"];
-
-    Model.createCheep(@User.Identity?.Name, Cheep);
 
 
-  }
-
-}
 
 <!DOCTYPE html>
 <html>
@@ -25,12 +11,12 @@
         <title>Customer Form</title>
     </head>
     <body>
-      <form method="post">
+      <form method="post" action=@("?c=" + @User.Identity?.Name)>
         @Html.AntiForgeryToken()
         <fieldset>
           <legend style="margin: 0 auto;">Make a Cheep</legend>
           <div style="text-align: center;">
-            <textarea type="text" name="Cheep" value="" maxlength="160"  rows="5" cols="40" size="70%" style="height: 75px; overflow-wrap: break-word; resize: none;" placeholder="Cheep here!"></textarea>
+            <textarea type="text" name="Cheep" value="" maxlength="140"  rows="5" cols="40" size="30%" style="height: 30px; overflow-wrap: break-word;" placeholder="Cheep here!"></textarea>
             <div>
               <label>&nbsp;</label> 
             </div>
@@ -43,3 +29,6 @@
       </form>
     </body>
 </html>
+
+
+

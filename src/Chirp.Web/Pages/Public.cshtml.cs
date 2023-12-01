@@ -17,116 +17,116 @@ namespace Chirp.Web.Pages;
 public class PublicModel : PageModel
 {
     private readonly IAuthorRepository authorRepository;
+    private readonly ICheepRepository cheepRepository;
+    public CreateCheepModel CreateCheep;
     private readonly ICheepService _service;
     private readonly ILogger<PublicModel> _logger;
     public IEnumerable<CheepDTO>? Cheeps { get; set; }
     public PageNavModel PageNav;
     public int TotalPages { get; set; }
 
-    public PublicModel(ICheepService service, ILogger<PublicModel> logger, IAuthorRepository authorRepository)
+    public PublicModel(ICheepService service, ILogger<PublicModel> logger, IAuthorRepository authorRepository, ICheepRepository cheepRepository)
     {
         _service = service;
         _logger = logger;
         this.authorRepository = authorRepository;
-        //Cheeps = service.GetCheeps(null);
+        this.cheepRepository = cheepRepository;
+        PageNav = new PageNavModel(_service, 1, TotalPages);
+        CreateCheep = new CreateCheepModel(_service, authorRepository, cheepRepository);
+        
     }
 
     public ActionResult OnGet([FromQuery] int page)
     {
-        var _Cheeps = _service.GetCheeps(page);
-        _Cheeps.Wait();
-        Cheeps = _Cheeps.Result;
-
         var _TotalPages = _service.GetPageAmount();
         _TotalPages.Wait();
         TotalPages = _TotalPages.Result;
         PageNav = new PageNavModel(_service, page, TotalPages);
+       
+        var _Cheeps = _service.GetCheeps(page);
+        _Cheeps.Wait();
+        Cheeps = _Cheeps.Result;
 
         return Page();
     }
 
-    public async Task<ActionResult> OnPost([FromQuery] int page, [FromQuery] string handler)
+    public async Task<ActionResult> OnPost([FromQuery] int page, [FromQuery] string f, [FromQuery] string uf, [FromQuery] string c)
     {
         Console.WriteLine("OnPost called!");
-        var _Cheeps = _service.GetCheeps(page);
-        _Cheeps.Wait();
+        var _Cheeps = await _service.GetCheeps(page);
+        Cheeps = _Cheeps;
 
-        Cheeps = _Cheeps.Result;
-        var _TotalPages = _service.GetPageAmount();
-        _TotalPages.Wait();
-        TotalPages = _TotalPages.Result;
+        var _TotalPages = await _service.GetPageAmount();
+        TotalPages = _TotalPages;
         PageNav = new PageNavModel(_service, page, TotalPages);
-        /*
-                if (handler == "follow")
-                {
-                    Console.WriteLine("OnPostFollow Called in OnPost");
-                    if(User.Identity.Name != null)
-                    {
-                        string? AuthorName = Request.Form["Follow"];
-                        await FollowAuthor(User.Identity.Name, AuthorName);
-                    }
-                    else
-                    {
-                        string? AuthorName = Request.Form["Follow"];
-                        Console.WriteLine("AuthorName is: " + AuthorName);
-                        await FollowAuthor(AuthorName);
-                    }
-                }
-        */
+        
+        Console.WriteLine($"uf is {uf}");
+        if (f != null)
+        {
+            string? AuthorName = Request.Form["Follow"];
+            await FollowAuthor(f, AuthorName);
+        } else if (uf != null)
+        {
+            string? AuthorName = Request.Form["Unfollow"];
+            await UnfollowAuthor(uf, AuthorName);
+        } else if (c != null) 
+        {
+            string? Message = Request.Form["Cheep"];
+            CreateCheep.OnPostCheep(c, Message);
+            return RedirectToPage("");
+        }
         return Page();
     }
-    public async Task OnPostFollow([FromQuery] int page)
-    {
-        Console.WriteLine("OnPostFollow Called");
-        if (User.Identity.Name != null)
-        {
-            string? AuthorName = Request.Form["Follow"];
-            await FollowAuthor(AuthorName);
-        }
-        else
-        {
-            string? AuthorName = Request.Form["Follow"];
-            Console.WriteLine("AuthorName is: " + AuthorName);
-            await FollowAuthor(AuthorName);
-        }
-        //return RedirectToPage("/");
-    }
-    // for testing purposes only
-    public async Task FollowAuthor(string followerName)
-    {
-        Console.WriteLine("!!!This is a test, calling Followauthor with a temp user (Not logged in)");
-        Console.WriteLine("FollowerName: " + followerName);
-        var _tempFollowing = await authorRepository.FindAuthorByName("Malcolm Janski");
-        Console.WriteLine("Now calling FollowAuthor");
-        await FollowAuthor(followerName, _tempFollowing.Name);
-    }
 
-
+    
+    
     public async Task FollowAuthor(string followerName, string followingName)
     {
         Console.WriteLine($"FollowAuthor called with followerName: {followerName}, followingName: {followingName}");
-
+        
         var _follower = await authorRepository.FindAuthorByName(followerName);
+        if (_follower == null) 
+        {
+            authorRepository.CreateAuthor(new CreateAuthorDTO(followerName, ""));
+            _follower = await authorRepository.FindAuthorByName(followerName);
+        }
+
         var _following = await authorRepository.FindAuthorByName(followingName);
 
-
-        Console.WriteLine($"FollowAuthor is now using the following: {_follower} as follower, and {_following} as following");
-
-        await authorRepository.FollowAuthor(_follower, _following);
+        await authorRepository.FollowAuthor(_following, _follower);
     }
 
     public async Task UnfollowAuthor(string followerName, string followingName)
     {
 
-        //Console.WriteLine($"UnfollowAuthor called with followerName: {followerName}, followingName: {followingName}");
+        Console.WriteLine($"UnfollowAuthor called with followerName: {followerName}, followingName: {followingName}");
 
-        var _follower = authorRepository.FindAuthorByName(followerName);
-        _follower.Wait();
-        var _following = authorRepository.FindAuthorByName(followingName);
-        _following.Wait();
+        var _follower = await authorRepository.FindAuthorByName(followerName);
+        if (_follower == null) 
+        {
+            Console.WriteLine("Follower is null");
+            authorRepository.CreateAuthor(new CreateAuthorDTO(followerName, ""));
+            _follower = await authorRepository.FindAuthorByName(followerName);
+        }
 
-        Console.WriteLine($"UnfollowAuthor is now using the following: {_follower.Result} as follower, and {_following.Result} as following");
+        var _following = await authorRepository.FindAuthorByName(followingName);
 
-        await authorRepository.UnfollowAuthor(_follower.Result, _following.Result);
+        await authorRepository.UnfollowAuthor(_following, _follower);
+    }
+
+    public async Task<bool> IsFollowing(string self, string other)
+    {
+        Console.WriteLine("IsFollowing called");
+        var _self = await authorRepository.FindAuthorByName(self);
+        if (_self == null)
+        {
+            return false;
+        }
+        var _other = await authorRepository.FindAuthorByName(other);
+        if (_other.Followers.Contains(_self.Id))
+        {
+            return true;
+        }
+        return false;
     }
 }
