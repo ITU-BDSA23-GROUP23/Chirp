@@ -56,23 +56,13 @@ public class PublicModel : PageModel
         _TotalPages.Wait();
         TotalPages = _TotalPages.Result;
         PageNav = new PageNavModel(_service, page, TotalPages);
-        /*
-                if (handler == "follow")
-                {
-                    Console.WriteLine("OnPostFollow Called in OnPost");
-                    if(User.Identity.Name != null)
-                    {
-                        string? AuthorName = Request.Form["Follow"];
-                        await FollowAuthor(User.Identity.Name, AuthorName);
-                    }
-                    else
-                    {
-                        string? AuthorName = Request.Form["Follow"];
-                        Console.WriteLine("AuthorName is: " + AuthorName);
-                        await FollowAuthor(AuthorName);
-                    }
-                }
-        */
+        
+        if (username != "")
+        {
+            string? AuthorName = Request.Form["Follow"];
+            await FollowAuthor(username, AuthorName);
+        }
+        
         return Page();
     }
 
@@ -111,12 +101,18 @@ public class PublicModel : PageModel
         Console.WriteLine($"FollowAuthor called with followerName: {followerName}, followingName: {followingName}");
 
         var _follower = await authorRepository.FindAuthorByName(followerName);
+        if (_follower == null) 
+        {
+            authorRepository.CreateAuthor(new CreateAuthorDTO(followerName, ""));
+            _follower = await authorRepository.FindAuthorByName(followerName);
+        }
+
         var _following = await authorRepository.FindAuthorByName(followingName);
 
 
         Console.WriteLine($"FollowAuthor is now using the following: {_follower} as follower, and {_following} as following");
 
-        await authorRepository.FollowAuthor(_follower, _following);
+        await authorRepository.FollowAuthor(_following, _follower);
     }
 
     public async Task UnfollowAuthor(string followerName, string followingName)
