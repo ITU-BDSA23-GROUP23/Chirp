@@ -89,7 +89,7 @@ public class AuthorRepository : IAuthorRepository
             }
 
             Console.WriteLine($"Created AuthorDTO for {author.Name} with {Followers.Count} followers and following {Following.Count}");
-            return new AuthorDTO(author.Name, author.Email, Followers, Following);
+            return new AuthorDTO(author.Name, author.Email, Followers, Following, author.Id);
         }
         return null;
     }
@@ -110,13 +110,20 @@ public class AuthorRepository : IAuthorRepository
     //Copilot with this!
     public async Task UnfollowAuthor(AuthorDTO other, AuthorDTO self)
     {
-        var selfAuthor = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == self.Name);
-        var otherAuthor = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == other.Name);
-
+        var selfAuthor = await dbContext.Authors.Include(f => f.Following).FirstAsync(a => a.Name == self.Name);
+        var otherAuthor = await dbContext.Authors.Include(f => f.Followers).FirstAsync(a => a.Name == other.Name);
+        Console.WriteLine($"selfauthor followinglist? {selfAuthor.Following.Count}");
+        
         if (selfAuthor != null && otherAuthor != null)
         {
-            selfAuthor.Following.Remove(otherAuthor);
-            otherAuthor.Followers.Remove(selfAuthor);
+            if (selfAuthor.Following.Contains(otherAuthor)) 
+            {
+                selfAuthor.Following.Remove(otherAuthor);
+            }
+            if (otherAuthor.Followers.Contains(selfAuthor))
+            {
+                otherAuthor.Followers.Remove(selfAuthor);
+            }
             await dbContext.SaveChangesAsync();
         }
         else

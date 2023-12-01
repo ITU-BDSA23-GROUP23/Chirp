@@ -16,7 +16,7 @@
     </div>
 
     <div>
-        <a>Following: @(Model.FollowingCount(routeName))</a>
+        <a>Following: @(await Model.FollowingCount(routeName))</a>
         <a>Followers: @(Model.FollowersCount(routeName))</a>
     </div>
 
