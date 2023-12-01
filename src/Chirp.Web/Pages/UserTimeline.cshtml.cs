@@ -25,6 +25,7 @@ public class UserTimelineModel : PageModel
     {
         _service = service;
         _logger = logger;
+        PageNav = new PageNavModel(_service, 1, TotalPages);
         //Cheeps = service.GetCheeps(null);
     }
 

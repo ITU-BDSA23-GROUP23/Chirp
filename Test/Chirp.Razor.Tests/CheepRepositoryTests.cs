@@ -35,7 +35,8 @@ public class CheepRepositoryTests : IDisposable
         IAuthorRepository authorRepository = new AuthorRepository(context);
         AuthorDTO author = new AuthorDTO("Jacqualine Gilcoine", "Jacqualine.Gilcoine@gmail.com");
         authorRepository.CreateAuthor(author);
-        cheepRepository.CreateCheep(author, "123Testing");
+        createCheepDTO createcheepDTO = new createCheepDTO(author, "123Testing");
+        cheepRepository.CreateCheep(createcheepDTO);
         // context.Authors.Add(a10);
         // context.Cheeps.Add(c1);
         // context.SaveChanges();

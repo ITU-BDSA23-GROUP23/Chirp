@@ -20,39 +20,39 @@ public class CreateCheepModel : PageModel
     private readonly IAuthorRepository _Author_repository;
 
     private readonly ICheepRepository _Cheep_repository;
-    private readonly ILogger<PublicModel> _logger;
 
-    public CreateCheepModel(ICheepService service, ILogger<PublicModel> logger, IAuthorRepository Author_repository, ICheepRepository Cheep_repository)
+    public CreateCheepModel(ICheepService service, IAuthorRepository Author_repository, ICheepRepository Cheep_repository)
     {
         _service = service;
-        _logger = logger;
         _Author_repository = Author_repository;
         _Cheep_repository = Cheep_repository;
 
     }
 
 
-    public async void createCheep(string UserName, string message)
+    public void createCheep(string UserName, string message)
     {
         var _Author = _Author_repository.FindAuthorByName(UserName);
         _Author.Wait();
         var Author = _Author.Result;
-        //Console.WriteLine("Author:  " +Author);
-        //Console.WriteLine("Message:  " +message);  
-        if(Author!= null) {
-            
-        createCheepDTO cheepDTO = new createCheepDTO(Author, message);
-        createCheepDTOValidator validator = new createCheepDTOValidator();
-        FluentValidation.Results.ValidationResult results = validator.Validate(cheepDTO);
-        if (!results.IsValid)
+  
+        if (Author != null)
         {
-            foreach (var failure in results.Errors)
+
+            createCheepDTO cheepDTO = new createCheepDTO(Author, message);
+            createCheepDTOValidator validator = new createCheepDTOValidator();
+            FluentValidation.Results.ValidationResult results = validator.Validate(cheepDTO);
+            if (!results.IsValid)
             {
-                Console.WriteLine("Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage);
+                foreach (var failure in results.Errors)
+                {
+                    Console.WriteLine("Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage);
+                }
             }
-        }
             _Cheep_repository.CreateCheep(cheepDTO);
-        } else {
+        }
+        else
+        {
             string email = UserName + "email.com";
             Author = new AuthorDTO(UserName, email);
 
@@ -71,11 +71,8 @@ public class CreateCheepModel : PageModel
             _Cheep_repository.CreateCheep(cheepDTO);
         }
     }
-    public ActionResult OnGet()
+    public ActionResult OnGetPartial()
     {
-
-        return Page();
-
-
+       return Page();
     }
 }
