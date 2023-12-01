@@ -29,7 +29,7 @@ public class PageInfoModel : PageModel
     }
 
     // get author name and email
-    public void OnGetAuthor(string author)
+    public async Task OnGetAuthor(string author)
     {
         Console.WriteLine("author is " + author + " in OnGetAuthor");
         var _Author = _Author_repository.FindAuthorByName(author);
@@ -38,7 +38,7 @@ public class PageInfoModel : PageModel
     }
 
     // list of cheeps
-    public ActionResult OnGet(string author, [FromQuery] int page)
+    public async Task<ActionResult> OnGet(string author, [FromQuery] int page)
     {
         var _Cheeps = _service.GetCheepsFromAuthor(author, page);
         _Cheeps.Wait();
@@ -67,24 +67,29 @@ public class PageInfoModel : PageModel
     }
 
 
-    public async Task<IActionResult> OnPostDeleteAuthor()
+    public async Task<IActionResult> OnPost([FromQuery] string h)
     {
-        Console.WriteLine("OnPostDeleteAuthor called.");
+        if (h == "h")
+        {
+            Console.WriteLine("OnPostDeleteAuthor called.");
 
-        var _Author = await _Author_repository.FindAuthorByName(author);
-        var _Followers = await _Author_repository.GetFollowers(author);
-        var _Following = await _Author_repository.GetFollowing(author);
+            // I want to make a break for 10 seconds here
 
-        await _Author_repository.DeleteAuthor(author);
-        Console.WriteLine($"Author {_Author?.Name} deleted.");
+            string authorName = User.Identity.Name; // Author.Name;
 
-        await _Author_repository.RemoveFollowers(_Followers);
-        Console.WriteLine($"Followers deleted.");
+            var _Author = await _Author_repository.FindAuthorByName(authorName);
+            var _Followers = await _Author_repository.GetFollowers(authorName);
+            var _Following = await _Author_repository.GetFollowing(authorName);
 
-        await _Author_repository.RemoveFollowing(_Following);
-        Console.WriteLine($"Following deleted.");
+            await _Author_repository.DeleteAuthor(authorName);
+            Console.WriteLine($"Author {_Author?.Name} deleted.");
 
+            await _Author_repository.RemoveFollowers(_Followers);
+            Console.WriteLine($"Followers deleted.");
+
+            await _Author_repository.RemoveFollowing(_Following);
+            Console.WriteLine($"Following deleted.");
+        }
         return Page();
     }
-
 }
