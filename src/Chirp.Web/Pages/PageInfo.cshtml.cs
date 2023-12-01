@@ -31,6 +31,7 @@ public class PageInfoModel : PageModel
     // get author name and email
     public void OnGetAuthor(string author)
     {
+        Console.WriteLine("author is " + author + " in OnGetAuthor");
         var _Author = _Author_repository.FindAuthorByName(author);
         _Author.Wait();
         Author = _Author.Result;
@@ -66,8 +67,10 @@ public class PageInfoModel : PageModel
     }
 
 
-    public async Task<IActionResult> OnPostDeleteAuthor(string author)
+    public async Task<IActionResult> OnPostDeleteAuthor()
     {
+        string author = Author.Name;
+        Console.WriteLine("author is " + author + " in OnPostDeleteAuthor");
         var _Author = _Author_repository.FindAuthorByName(author);
         _Author.Wait();
         var _Followers = _Author_repository.GetFollowers(author);
