@@ -91,8 +91,10 @@
 </div>
 
 <!--forget me button-->
-<div class="forgetme">
-    <form method="post" asp-page-handler="OnPostDeleteAuthor">
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="forgetme">
+    <form method="post" asp-page-handler="OnPostDeleteAuthor" asp-route-author="@User.Identity.Name">
         <button type="submit" class="btn btn-danger"
             style="height: 30px; width: 100px; background-color: #f44336;">Forget me</button>
     </form>
@@ -102,3 +104,4 @@
         }
     </style>
 </div>
+}
