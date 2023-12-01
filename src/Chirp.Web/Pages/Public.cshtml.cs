@@ -102,12 +102,11 @@ public class PublicModel : PageModel
 
         var _following = await authorRepository.FindAuthorByName(followingName);
 
-        await authorRepository.UnfollowAuthor(_follower, _following);
+        await authorRepository.UnfollowAuthor(_following, _follower);
     }
 
     public async Task<bool> IsFollowing(string self, string other)
     {
-        return true;
         Console.WriteLine("IsFollowing called");
         var _self = await authorRepository.FindAuthorByName(self);
         if (_self == null)

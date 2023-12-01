@@ -112,18 +112,12 @@ public class AuthorRepository : IAuthorRepository
     {
         var selfAuthor = await dbContext.Authors.Include(f => f.Following).FirstAsync(a => a.Name == self.Name);
         var otherAuthor = await dbContext.Authors.Include(f => f.Followers).FirstAsync(a => a.Name == other.Name);
-        Console.WriteLine($"selfauthor followinglist? {selfAuthor.Following.Count}");
+        Console.WriteLine($"selfauthor followinglist? {otherAuthor.Following.Count}");
         
         if (selfAuthor != null && otherAuthor != null)
         {
-            if (selfAuthor.Following.Contains(otherAuthor)) 
-            {
-                selfAuthor.Following.Remove(otherAuthor);
-            }
-            if (otherAuthor.Followers.Contains(selfAuthor))
-            {
-                otherAuthor.Followers.Remove(selfAuthor);
-            }
+            selfAuthor.Following.Remove(selfAuthor.Following.FirstOrDefault(f => f.Name == other.Name));
+            otherAuthor.Followers.Remove(otherAuthor.Followers.FirstOrDefault(f => f.Name == self.Name));
             await dbContext.SaveChangesAsync();
         }
         else
