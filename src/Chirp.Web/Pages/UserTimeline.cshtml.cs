@@ -41,37 +41,20 @@ public class UserTimelineModel : PageModel
         _Cheeps.Wait();
         Cheeps = _Cheeps.Result;
 
-        var _TotalPages = _service.GetPageAmount(author);
-         _TotalPages.Wait();
-         TotalPages = _TotalPages.Result; 
-        TotalPages = 1;
+        try
+        {
+            var _TotalPages = _service.GetPageAmount(author);
+            _TotalPages.Wait();
+            TotalPages = _TotalPages.Result; // CHECK THAT THIS IS AS IT SHOULD BE!!!
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            TotalPages = 1; // CHECK THAT THIS IS AS IT SHOULD BE!!!
+        }
+
         PageNav = new PageNavModel(_service, page, TotalPages);
 
         return Page();
     }
-
-    public async Task<int> FollowingCount(string author)
-    {
-        var _author = await _authorRepository.FindAuthorByName(author);
-        Console.WriteLine($"Is author {author} null? = {_author == null}");
-        if (_author != null)
-        {
-            var _FollowingCount = _author.Following.Count;
-            Console.WriteLine(_FollowingCount+ " is the result of _FollowingCount");
-            return _FollowingCount;
-        }
-        else
-        {
-            return 420;
-        }
-    }
-    public int FollowersCount(string author)
-    {
-        var _author = _authorRepository.FindAuthorByName(author);
-        _author.Wait();
-        var _FollowersCount = _author.Result.Followers.Count;
-        Console.WriteLine(_FollowersCount + " is the result of _FollowersCount");
-        return _FollowersCount;
-    }
-
 }

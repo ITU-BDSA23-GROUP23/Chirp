@@ -50,7 +50,7 @@ public class AuthorRepository : IAuthorRepository
             return 0;
 
             // Sometimes the author hasn't been created yet. In that case, we should return 0.
-            //throw new NullReferenceException($"Author {authorName} does not exist.");
+            // OLD //throw new NullReferenceException($"Author {authorName} does not exist.");
         }
     }
 
@@ -113,7 +113,7 @@ public class AuthorRepository : IAuthorRepository
         var selfAuthor = await dbContext.Authors.Include(f => f.Following).FirstAsync(a => a.Name == self.Name);
         var otherAuthor = await dbContext.Authors.Include(f => f.Followers).FirstAsync(a => a.Name == other.Name);
         Console.WriteLine($"selfauthor followinglist? {otherAuthor.Following.Count}");
-        
+
         if (selfAuthor != null && otherAuthor != null)
         {
             selfAuthor.Following.Remove(selfAuthor.Following.FirstOrDefault(f => f.Name == other.Name));
@@ -147,33 +147,69 @@ public class AuthorRepository : IAuthorRepository
         }
     }
 
+
     public async Task<IEnumerable<AuthorDTO>> GetFollowers(string authorName)
     {
-        var author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == authorName);
+        //Console.WriteLine("followers123");
+        var author = await dbContext.Authors.Include(a => a.Followers).FirstOrDefaultAsync(a => a.Name == authorName);
+        //Console.WriteLine("authorauthor: " + author);
+        //Console.WriteLine("author.Name: " + author.Following);
         if (author != null)
         {
             ICollection<AuthorDTO> Followers = new List<AuthorDTO>();
             foreach (var follower in author.Followers)
             {
+                Console.WriteLine("Adding follower");
                 Followers.Add(AuthorToAuthorDTO(follower));
             }
             return Followers;
         }
         return null;
     }
+
     public async Task<IEnumerable<AuthorDTO>> GetFollowing(string authorName)
     {
-        var author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == authorName);
+        Console.WriteLine("following123");
+        Console.WriteLine(authorName);
+        var author = await dbContext.Authors.Include(a => a.Following).FirstOrDefaultAsync(a => a.Name == authorName);
+        Console.WriteLine("authorauthor: " + author);
+        Console.WriteLine("author.Following: " + author.Following);
         if (author != null)
         {
             ICollection<AuthorDTO> Following = new List<AuthorDTO>();
             foreach (var following in author.Following)
             {
+                Console.WriteLine("Adding following");
                 Following.Add(AuthorToAuthorDTO(following));
             }
+            Console.WriteLine("Returning following");
             return Following;
         }
+        Console.WriteLine("Returning null");
         return null;
+    }
+
+    public async Task ForgetMe(string authorName)
+    {
+        var _Followers = await GetFollowers(authorName);
+        var _Following = await GetFollowing(authorName);
+        Console.WriteLine("Followers: (" + _Followers + ")");
+        Console.WriteLine("Following: (" + _Following + ")");
+
+        if (_Followers != null)
+        {
+            Console.WriteLine("Deleting follolwers");
+            await RemoveFollowers(_Followers, authorName);
+            Console.WriteLine($"Followers deleted.");
+        }
+        if (_Following != null)
+        {
+            Console.WriteLine("Deleting following");
+            await RemoveFollowing(_Following, authorName);
+            Console.WriteLine($"Following deleted.");
+        }
+        await DeleteAuthor(authorName);
+        Console.WriteLine($"Author {authorName} deleted.");
     }
 
     public async Task DeleteAuthor(string authorName)
@@ -189,26 +225,31 @@ public class AuthorRepository : IAuthorRepository
         }
         else
         {
-            throw new NullReferenceException($"Author {authorName} does not exist.");
+            // throw new NullReferenceException($"Author {authorName} does not exist.");
         }
     }
 
-    public async Task RemoveFollowers(IEnumerable<AuthorDTO> result)
+    public async Task RemoveFollowers(IEnumerable<AuthorDTO> result, string DeletingAuthorName)
     {
         var authorNames = result.Select(author => author.Name).ToList();
         var authors = await dbContext.Authors
             .Where(a => authorNames.Contains(a.Name))
             .ToListAsync();
 
+        // Deletes the author that is trying to delete itselft from the app, from each of its followers' following lists.
         foreach (var author in authors)
         {
-            author.Followers.Clear();
+            author.Following.Remove(author.Following.FirstOrDefault(f => f.Name == DeletingAuthorName));
         }
+
+        var DelitingAuthor = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == DeletingAuthorName);
+
+        DelitingAuthor.Followers.Clear();
 
         await dbContext.SaveChangesAsync();
     }
 
-    public async Task RemoveFollowing(IEnumerable<AuthorDTO> result)
+    public async Task RemoveFollowing(IEnumerable<AuthorDTO> result, string DeletingAuthorName)
     {
         var authorNames = result.Select(author => author.Name).ToList();
         var authors = await dbContext.Authors
@@ -217,9 +258,12 @@ public class AuthorRepository : IAuthorRepository
 
         foreach (var author in authors)
         {
-            author.Following.Clear();
+            author.Followers.Remove(author.Followers.FirstOrDefault(f => f.Name == DeletingAuthorName));
         }
 
+        var DelitingAuthor = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == DeletingAuthorName);
+
+        DelitingAuthor.Following.Clear();
         await dbContext.SaveChangesAsync();
     }
 }

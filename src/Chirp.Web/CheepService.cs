@@ -40,6 +40,7 @@ public class CheepService : ICheepService
 
     public async Task<IEnumerable<CheepDTO>> GetCheepsFromAuthor(string authorName, int page)
     {
+        Console.WriteLine(authorName + "4321");
         return await cheepRepository.GetCheeps(page, authorName: authorName);
     }
 

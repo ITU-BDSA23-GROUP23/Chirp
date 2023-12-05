@@ -23,14 +23,28 @@
 
 <!-- Display followers and following count -->
 <div class="followers">
-    <a>Followers: @Model.FollowersCount(User.Identity.Name)</a>
-    <a>Following: @Model.FollowingCount(User.Identity.Name)</a>
+    <a>Followers: @Model.FollowersCount(User.Identity?.Name)</a>
+    <a>Following: @Model.FollowingCount(User.Identity?.Name)</a>
 </div>
 
+<!--forget me button-->
+
+<div class="forgetme">
+    <form method="post" action="?h=h">
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-danger"
+            style="height: 30px; width: 100px; background-color: #f44336;">Forget me</button>
+    </form>
+    <style>
+        .forgetme {
+            text-align: center;
+        }
+    </style>
+</div>
 
 <!--display followers and following-->
 <div class="followers">
-    <h3>Followers</h3>
+    <h3>List of followers</h3>
     <ul>
         @if (Model.Followers != null)
         {
@@ -44,7 +58,7 @@
     </ul>
 </div>
 <div class="following">
-    <h3>Following</h3>
+    <h3>List of people you follow</h3>
     <ul>
         @if (Model.Following != null)
         {
@@ -53,11 +67,6 @@
                 <li>
                     <a href="/@following.Name">@following.Name</a>
                 </li>
-                {
-                    <li>
-                        <a href="/@following.Name">@following.Name</a>
-                    </li>
-                }
             }
         }
     </ul>
@@ -88,19 +97,4 @@
     {
         <em>There are no cheeps so far.</em>
     }
-</div>
-
-<!--forget me button-->
-
-<div class="forgetme">
-    <form method="post" action="?h=h">
-        @Html.AntiForgeryToken()
-        <button type="submit" class="btn btn-danger"
-            style="height: 30px; width: 100px; background-color: #f44336;">Forget me</button>
-    </form>
-    <style>
-        .forgetme {
-            text-align: center;
-        }
-    </style>
 </div>
