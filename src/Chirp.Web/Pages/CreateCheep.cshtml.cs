@@ -15,15 +15,12 @@ public class CreateCheepModel : PageModel
 {
 
 
-    private readonly ICheepService _service;
-
     private readonly IAuthorRepository _Author_repository;
 
     private readonly ICheepRepository _Cheep_repository;
 
-    public CreateCheepModel(ICheepService service, IAuthorRepository Author_repository, ICheepRepository Cheep_repository)
+    public CreateCheepModel(IAuthorRepository Author_repository, ICheepRepository Cheep_repository)
     {
-        _service = service;
         _Author_repository = Author_repository;
         _Cheep_repository = Cheep_repository;
 

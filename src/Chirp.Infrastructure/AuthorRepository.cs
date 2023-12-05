@@ -146,4 +146,6 @@ public class AuthorRepository : IAuthorRepository
             throw new NullReferenceException($"Author {self.Name} or {other.Name} does not exist.");
         }
     }
+
+    
 }
