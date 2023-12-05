@@ -10,6 +10,7 @@ public interface ICheepRepository
     void CreateCheep(createCheepDTO cheepDTO, DateTime? Timestamp);
 
     Task<int> GetPageAmount(String? authorName = null);
+    Task ReactToCheep(string type, Guid cheepId);
 
     //Task<IEnumerable<CheepDTO>> CheepsToCheepDTOs(Task<List<cheep>> cheeps);
     // void Add(Cheep entity);

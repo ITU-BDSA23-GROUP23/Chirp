@@ -51,15 +51,21 @@
                                     <input type="submit" name="submit" value="Follow" class="submit"/>
                                 </form>
                             }
-                            <form methor="post" action=@("?r=" + @cheep)>
-                                @Html.AntiForgeryToken()
-                                <input hidden type="text" name="Like" value="@cheep"/>
-                                <input type="submit" name="submit" value="&#128077;"/>
-                                <input hidden type="text" name="Dislike" value="@cheep"/>
-                                <input type="submit" name="submit" value="&#128078;"/>
-                                <input hidden type="text" name="Love" value="@cheep"/>
-                                <input type="submit" name="submit" value="&#128525;"/>
-                            </form>
+                            <div style="display:flex; flex-direction: row;">
+                                <form name="Reaction" method="post" action=@("?li=")>
+                                    @Html.AntiForgeryToken()
+                                    <input hidden type="text" name="Like" value="@cheep.Id"/>
+                                    <input type="submit" name="submit" value="&#128077;" class="submit"/>
+                                </form>
+                                <form name="Reaction" method="post" action=@("?di=")>
+                                    <input hidden type="text" name="Dislike" value="@cheep.Id"/>
+                                    <input type="submit" name="submit" value="&#128078;" class="submit"/>
+                                </form>
+                                <form name="Reaction" method="post" action=@("?lo=")>
+                                    <input hidden type="text" name="Love" value="@cheep.Id"/>
+                                    <input type="submit" name="submit" value="&#128525;" class="submit"/>
+                                </form>
+                            </div>
                         }
                     </p>
                 </li>

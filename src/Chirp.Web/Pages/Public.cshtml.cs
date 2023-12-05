@@ -48,8 +48,9 @@ public class PublicModel : PageModel
         return Page();
     }
  
-    public async Task<ActionResult> OnPost([FromQuery] int page, [FromQuery] string f, [FromQuery] string uf, [FromQuery] string c)
+    public async Task<ActionResult> OnPost([FromQuery] int page, [FromQuery] string f, [FromQuery] string uf, [FromQuery] string c, [FromQuery] string li, [FromQuery] string di, [FromQuery] string lo)
     {
+     
         Console.WriteLine("OnPost called!");
         var _Cheeps = await cheepRepository.GetCheeps(page);
         Cheeps = _Cheeps;
@@ -57,8 +58,26 @@ public class PublicModel : PageModel
         var _TotalPages = await cheepRepository.GetPageAmount();
         TotalPages = _TotalPages;
         PageNav = new PageNavModel(page, TotalPages);
-        
+        li = HttpContext.Request.Query["li"].ToString();
+        di = HttpContext.Request.Query["di"].ToString();
+        lo = HttpContext.Request.Query["lo"].ToString();
+        if (string.IsNullOrEmpty(li))
+        {
+            li = Request.Form["Like"];
+        }
+
+        if (string.IsNullOrEmpty(di))
+        {
+            di = Request.Form["Dislike"];
+        }
+
+        if (string.IsNullOrEmpty(lo))
+        {
+            lo = Request.Form["Love"];
+        }
+        Console.WriteLine($"li is {li}");
         Console.WriteLine($"uf is {uf}");
+        
         if (f != null)
         {
             string? AuthorName = Request.Form["Follow"];
@@ -72,7 +91,22 @@ public class PublicModel : PageModel
             string? Message = Request.Form["Cheep"];
             CreateCheep.OnPostCheep(c, Message);
             return RedirectToPage("");
+        } 
+        else if(li != null)
+        {
+            Console.WriteLine("Li is: " + li);
+            Guid liGuid = Guid.Parse(li);
+            await cheepRepository.ReactToCheep("Like", liGuid);
+        } else if (di != null)
+        {   
+            Guid diGuid = Guid.Parse(di);
+            await cheepRepository.ReactToCheep("Dislike", diGuid);
+        } else if (lo != null)
+        {
+            Guid loGuid = Guid.Parse(lo);
+            await cheepRepository.ReactToCheep("Love", loGuid);
         }
+        
         return Page();
     }
 

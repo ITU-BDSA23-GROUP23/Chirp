@@ -23,7 +23,7 @@ namespace Chirp.Infrastructure
 
         public DbSet<Author> Authors { get; set; }
         public DbSet<Cheep> Cheeps { get; set; }
-        public DbSet<Reactions> Reactions { get; set; }
+        public DbSet<Reaction> Reactions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -34,11 +34,11 @@ namespace Chirp.Infrastructure
             // modelBuilder.Entity<Author>().HasIndex(a => a.Email).IsUnique(); // makes no sense to have unique email when many of them would be null, as we currently don't have the email when creating Authors. 
             modelBuilder.Entity<Author>().ToTable("Authors");
             modelBuilder.Entity<Cheep>().ToTable("Cheeps");
-            modelBuilder.Entity<Reactions>().ToTable("Reactions");
+            modelBuilder.Entity<Reaction>().ToTable("Reactions");
 
             modelBuilder.Entity<Cheep>().Property(a => a.Message).HasMaxLength(160);
             modelBuilder.Entity<Author>().Property(a => a.Name).HasMaxLength(39); // Same as github max username length.
-            modelBuilder.Entity<Reactions>().HasKey(r => new { r.ChirpId, r.AuthorId });
+            modelBuilder.Entity<Reaction>().HasKey(r => new { r.ChirpId, r.AuthorId });
             
 
 

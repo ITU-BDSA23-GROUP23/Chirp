@@ -1,6 +1,6 @@
 namespace Chirp.Infrastructure
 {
-    public class Reactions
+    public class Reaction
     {
 
         public int ChirpId { get; set; }

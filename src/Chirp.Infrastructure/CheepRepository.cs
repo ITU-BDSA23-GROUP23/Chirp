@@ -112,10 +112,21 @@ public class CheepRepository : ICheepRepository
 
             ICollection<AuthorDTO>? following = new List<AuthorDTO>();
 
-            cheepDTOs.Add(new CheepDTO(cheep.Message, cheep.Author.Name, formattedDateTime, (ICollection<ReactionDTO>?)cheep.Reactions, following));
+            cheepDTOs.Add(new CheepDTO(cheep.Message, cheep.Author.Name, formattedDateTime, (ICollection<ReactionDTO>?)cheep.Reactions, following, cheep.Id));
         }
 
         return cheepDTOs;
+    }
+
+    public async Task ReactToCheep(string type, Guid cheepId)
+    {
+        
+        Cheep? cheep = await dbContext.Cheeps.FindAsync(cheepId);
+
+        cheep.Reactions.Add(new Reaction()
+        {
+            ReactionType = type
+        });
     }
 
     // public void Add(Cheep entity)
