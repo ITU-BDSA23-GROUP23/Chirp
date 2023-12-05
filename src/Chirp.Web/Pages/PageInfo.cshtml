@@ -43,41 +43,58 @@
 </div>
 
 <!--display followers and following-->
-<div class="followers">
-    <h3>List of followers</h3>
-    <ul>
+<div style="display: flex; justify-content: space-between;">
+    <div class="followers">
+        <h3>Followers</h3>
         @if (Model.Followers != null)
         {
             @foreach (var follower in Model.Followers)
             {
-                <li>
+                <div style="list-style-type: none;">
                     <a href="/@follower.Name">@follower.Name</a>
-                </li>
+                </div>
+            }
+            if (Model.Followers.Count() == 0)
+            {
+                <em>You have no followers.</em>
             }
         }
-    </ul>
-</div>
-<div class="following">
-    <h3>List of people you follow</h3>
-    <ul>
+        else
+        {
+            <em>You have no followers.</em>
+        }
+    </div>
+    <div class="following">
+        <h3>Following</h3>
         @if (Model.Following != null)
         {
             @foreach (var following in Model.Following)
             {
-                <li>
+                <div style="list-style-type: none; margin-top: 3px;">
                     <a href="/@following.Name">@following.Name</a>
-                </li>
+                </div>
+            }
+            if (Model.Following.Count() == 0)
+            {
+                <em>You are not following anyone.</em>
             }
         }
-    </ul>
+        else
+        {
+            <em>You are not following anyone.</em>
+        }
+    </div>
 </div>
 
 <!--display cheeps for the user-->
 <div class="cheeps">
-    <legend style="margin: 0 auto;">My Cheeps</legend>
 
     @if (Model.Cheeps != null && Model.Cheeps.Any(c => c.AuthorName == User.Identity.Name))
     {
+        <p>To view all your cheeps, go to: <a href="/@User.Identity.Name">my timeline</a></p>
+
+        <legend style="margin: 0 auto;">Most recent cheeps:</legend>
+
         <ul id="messagelist" class="cheeps">
             @foreach (var cheep in Model.Cheeps.Where(c => c.AuthorName == User.Identity.Name))
             {
@@ -95,6 +112,11 @@
     }
     else
     {
-        <em>There are no cheeps so far.</em>
+
+        <div style="margin-top: 20px;">
+            <legend style="margin: 0 auto;">Most recent cheeps:</legend>
+            <div style="margin-top: 5px;"></div>
+            <em>You have no cheeps so far.</em>
+        </div>
     }
 </div>

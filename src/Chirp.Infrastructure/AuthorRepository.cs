@@ -169,11 +169,11 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task<IEnumerable<AuthorDTO>> GetFollowing(string authorName)
     {
-        Console.WriteLine("following123");
-        Console.WriteLine(authorName);
+        //Console.WriteLine("following123"); FOR DEBUGGING
+        //Console.WriteLine(authorName); FOR DEBUGGING
         var author = await dbContext.Authors.Include(a => a.Following).FirstOrDefaultAsync(a => a.Name == authorName);
-        Console.WriteLine("authorauthor: " + author);
-        Console.WriteLine("author.Following: " + author.Following);
+        //Console.WriteLine("authorauthor: " + author); FOR DEBUGGING
+        //Console.WriteLine("author.Following: " + author.Following); FOR DEBUGGING
         if (author != null)
         {
             ICollection<AuthorDTO> Following = new List<AuthorDTO>();
