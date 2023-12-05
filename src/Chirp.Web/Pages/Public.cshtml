@@ -51,7 +51,15 @@
                                     <input type="submit" name="submit" value="Follow" class="submit"/>
                                 </form>
                             }
-
+                            <form methor="post" action=@("?r=" + @cheep)>
+                                @Html.AntiForgeryToken()
+                                <input hidden type="text" name="Like" value="@cheep"/>
+                                <input type="submit" name="submit" value="&#128077;"/>
+                                <input hidden type="text" name="Dislike" value="@cheep"/>
+                                <input type="submit" name="submit" value="&#128078;"/>
+                                <input hidden type="text" name="Love" value="@cheep"/>
+                                <input type="submit" name="submit" value="&#128525;"/>
+                            </form>
                         }
                     </p>
                 </li>
