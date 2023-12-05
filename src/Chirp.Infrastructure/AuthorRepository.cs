@@ -28,11 +28,16 @@ public class AuthorRepository : IAuthorRepository
         dbContext.SaveChanges();
     }
 
+    public async Task<string> GetAuthorName(Guid id)
+    {
+        return (await dbContext.Authors.FirstAsync(a => a.Id == id)).Name;
+    }
+
     public async Task<long> GetCheepAmount(string authorName)
     {
         long? CheepAmount;
 
-        Author? Author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == authorName);
+        Author? Author = await dbContext.Authors.Include(a => a.Cheeps).FirstOrDefaultAsync(a => a.Name == authorName);
         if (Author != null)
         {
             CheepAmount = Author.Cheeps.ToList().Count;

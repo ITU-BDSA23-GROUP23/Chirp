@@ -1,11 +1,12 @@
-﻿@page "/ForYou"
+﻿@page "/{authorName}/ForYou"
 @using Chirp.Core
 @using Chirp.Web.Pages.Shared
 @using System.Security.Claims
-@model Chirp.Web.Pages.PublicModel
+@model Chirp.Web.Pages.ForYouModel
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
+    var authorName = (string)HttpContext.GetRouteValue("authorName");
 }
 
 <div>
@@ -19,8 +20,6 @@
     {
         <ul id="messagelist" class="cheeps">
             @foreach (var cheep in Model.Cheeps)
-            @if (await Model.IsFollowing(User.Identity?.Name, @cheep.AuthorName))
-            {
                 {
                     <li>
                         <p>
@@ -29,31 +28,13 @@
                         </strong>
                         @cheep.Message
                         <small>&mdash; @cheep.TimeStamp</small>
-                        @* Add follow and Unfollow buttons to the cheeps *@
-                        @if (User.Identity.IsAuthenticated && cheep.AuthorName != User.Identity.Name)
-                        {
-                        @if (await Model.IsFollowing(User.Identity?.Name, @cheep.AuthorName))
-                        {
-                        <form method="post" action=@("?uf=" + @User.Identity?.Name)>
+                        <form method="post">
                             @Html.AntiForgeryToken()
                             <input hidden type="text" name="Unfollow" value="@cheep.AuthorName">
                             <input type="submit" value="Unfollow" class/>
-                        </form>
-                        }
-                        else
-                        {
-                        <form method="post" action=@("?f=" + @User.Identity?.Name)>
-                            @Html.AntiForgeryToken()
-                            <input hidden type="text" name="Follow" value="@cheep.AuthorName"/>
-                            <input type="submit" name="submit" value="Follow" class="submit"/>
-                        </form>
-                        }
-
-                        }
                         </p>
                     </li>
                 }
-            }
         </ul>
     }
     else
