@@ -24,7 +24,7 @@ public class AuthorRepositoryTests : IDisposable
     public void CreateAuthorTest()
     {
         //Arrange
-        AuthorDTO authorDTO = new("Thorbjørnen", "tpep@bjørn.dk");
+        CreateAuthorDTO authorDTO = new("Thorbjørnen", "tpep@bjørn.dk");
         IAuthorRepository authorRepository = new AuthorRepository(context);
         //Act
         authorRepository.CreateAuthor(authorDTO);
@@ -39,7 +39,7 @@ public class AuthorRepositoryTests : IDisposable
     public void CreateAuthorEmailFailTest()
     {
         //Arrange
-        AuthorDTO authorDTO = new("Thorbjørnen", "tpepbjørn.dk");
+        CreateAuthorDTO authorDTO = new("Thorbjørnen", "tpepbjørn.dk");
         IAuthorRepository authorRepository = new AuthorRepository(context);
         //Act
         authorRepository.CreateAuthor(authorDTO);
@@ -55,7 +55,7 @@ public class AuthorRepositoryTests : IDisposable
     public async Task FindAuthorByEmail()
     {
         //Arrange
-        AuthorDTO authorDTO = new("Thorbjørnen1", "tpep1@bjørn.dk");
+        CreateAuthorDTO authorDTO = new("Thorbjørnen1", "tpep1@bjørn.dk");
         IAuthorRepository authorRepository = new AuthorRepository(context);
         authorRepository.CreateAuthor(authorDTO);
 
@@ -71,7 +71,7 @@ public class AuthorRepositoryTests : IDisposable
     public async Task FindAuthorByName()
     {
         //Arrange
-        AuthorDTO authorDTO = new("Thorbjørnen2", "tpep2@bjørn.dk");
+        CreateAuthorDTO authorDTO = new("Thorbjørnen2", "tpep2@bjørn.dk");
         IAuthorRepository authorRepository = new AuthorRepository(context);
         authorRepository.CreateAuthor(authorDTO);
 
