@@ -28,10 +28,11 @@
                         </strong>
                         @cheep.Message
                         <small>&mdash; @cheep.TimeStamp</small>
-                        <form method="post">
+                        <form method="post" action=@("?uf=" + @User.Identity?.Name)>
                             @Html.AntiForgeryToken()
                             <input hidden type="text" name="Unfollow" value="@cheep.AuthorName">
                             <input type="submit" value="Unfollow" class/>
+                        </form>
                         </p>
                     </li>
                 }

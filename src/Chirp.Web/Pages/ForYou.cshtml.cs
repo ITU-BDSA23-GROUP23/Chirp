@@ -51,7 +51,7 @@ public class ForYouModel : PageModel
         string? AuthorName = Request.Form["Unfollow"];
         await UnfollowAuthor(uf, AuthorName);
         
-        return RedirectToPage($"?page=1");
+        return await OnGet(authorName, page);
     }
 
     public async Task UnfollowAuthor(string followerName, string followingName)
