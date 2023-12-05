@@ -12,18 +12,18 @@
 <body>
     <div class="page">
         <h1><img src="/images/icon1.png" alt="Icon1" />Chirp!</h1>
-
-        <div class="navigation">
-            @if (User.Identity.IsAuthenticated)
-            {
-                <div>
-                    <a href="/@(User.Identity.Name)">my timeline</a> |
-                    <a href="/">public timeline</a> |
-                    <a href="/PageInfo">About me</a> |
-                    <a href="/MicrosoftIdentity/Account/SignOut" style="float: right;">logout [@(User.Identity.Name)]</a>
-                    @* <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="MicrosoftIdentity" asp-controller="Account"
-                asp-action="SignOut">Sign out</a>
+     <div class=navigation>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div>
+                <a href="/@(User.Identity.Name)">my timeline</a> |
+                <a href="/">public timeline</a> |
+                <a href="/@(User.Identity.Name)/ForYou"> For You </a> |
+                <a href="/PageInfo">About me</a> |
+                <a href="/MicrosoftIdentity/Account/SignOut" style="float: right;">logout [@(User.Identity.Name)]</a> 
+                
+                @* <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut">Sign out</a>
                 </li> *@
                     @* <a asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut">logout
                 [@(User.Identity.Name)]</a> *@

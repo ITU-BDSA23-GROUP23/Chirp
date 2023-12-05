@@ -40,7 +40,6 @@ builder.Services.AddRazorPages()
 
 builder.Services.AddTransient<ICheepRepository, CheepRepository>();
 builder.Services.AddTransient<IAuthorRepository, AuthorRepository>();
-builder.Services.AddScoped<ICheepService, CheepService>();
 
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();

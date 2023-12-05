@@ -19,5 +19,6 @@ namespace Chirp.Infrastructure
                 Task DeleteAuthor(string authorName);
                 Task RemoveFollowers(IEnumerable<AuthorDTO> result, string TheDeletedAuthorName);
                 Task RemoveFollowing(IEnumerable<AuthorDTO> result, string TheDeletedAuthorName);
+                Task<string> GetAuthorName(Guid id);
         }
 }

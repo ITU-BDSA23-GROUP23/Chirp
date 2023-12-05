@@ -7,29 +7,25 @@
 
 <!DOCTYPE html>
 <html>
-
-<head>
-  <title>Customer Form</title>
-</head>
-
-<body>
-  <form method="post" action=@("?c=" + @User.Identity?.Name)>
-    @Html.AntiForgeryToken()
-    <fieldset>
-      <legend style="margin: 0 auto;">Make a Cheep</legend>
-      <div style="text-align: center;">
-        <textarea type="text" name="Cheep" value="" maxlength="160" rows="5" cols="40" size="30%"
-          style="height: 30px; overflow-wrap: break-word; resize: none;" placeholder="Cheep here!"></textarea>
-        <div>
-          <label>&nbsp;</label>
-        </div>
-        <input type="submit" value="Submit" class="submit" style="height: 50px; width: 75px;" />
-      </div>
-      <div>
-        <label>&nbsp;</label>
-      </div>
-    </fieldset>
-  </form>
-</body>
-
+    <head>
+        <title>Customer Form</title>
+    </head>
+    <body>
+      <form method="post" action=@("?c=" + @User.Identity?.Name)>
+        @Html.AntiForgeryToken()
+        <fieldset>
+          <legend style="margin: 0 auto;">Make a Cheep</legend>
+          <div style="text-align: center;">
+            <textarea type="text" name="Cheep" value="" maxlength="160"  rows="5" cols="40" size="30%" style="height: 30px; overflow-wrap: break-word;" placeholder="Cheep here!"></textarea>
+            <div>
+              <label>&nbsp;</label> 
+            </div>
+            <input type="submit" value="Submit" class="submit" style="height: 50px; width: 75px;"/>
+          </div>
+          <div>
+            <label>&nbsp;</label>
+          </div>
+        </fieldset>
+      </form>
+    </body>
 </html>

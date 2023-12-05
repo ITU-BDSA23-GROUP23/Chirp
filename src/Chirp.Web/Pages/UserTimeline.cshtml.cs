@@ -13,7 +13,6 @@ namespace Chirp.Web.Pages;
 [AllowAnonymous]
 public class UserTimelineModel : PageModel
 {
-    private readonly ICheepService _service;
     public IEnumerable<CheepDTO>? Cheeps { get; set; }
 
     public int TotalPages { get; set; }
@@ -22,14 +21,16 @@ public class UserTimelineModel : PageModel
 
     private readonly IAuthorRepository _authorRepository;
 
+    private readonly ICheepRepository _cheepRepository;
+
     private readonly ILogger<UserTimelineModel> _logger;
 
-    public UserTimelineModel(ICheepService service, ILogger<UserTimelineModel> logger, IAuthorRepository authorRepository)
+    public UserTimelineModel(ILogger<UserTimelineModel> logger, IAuthorRepository authorRepository, ICheepRepository cheepRepository)
     {
-        _service = service;
         _logger = logger;
         _authorRepository = authorRepository;
-        PageNav = new PageNavModel(_service, 1, TotalPages);
+        _cheepRepository = cheepRepository;
+        PageNav = new PageNavModel(1, TotalPages);
     }
 
     public ActionResult OnGet(string author, [FromQuery] int page)
@@ -37,23 +38,24 @@ public class UserTimelineModel : PageModel
 
         //Cheeps = _service.GetCheeps(page);
         //Cheeps = _service.GetCheeps(author);
-        var _Cheeps = _service.GetCheepsFromAuthor(author, page);
+        var _Cheeps = _cheepRepository.GetCheeps(page, authorName: author);
         _Cheeps.Wait();
         Cheeps = _Cheeps.Result;
+        
 
         try
         {
-            var _TotalPages = _service.GetPageAmount(author);
-            _TotalPages.Wait();
-            TotalPages = _TotalPages.Result; // CHECK THAT THIS IS AS IT SHOULD BE!!!
+
+            var _TotalPages = _cheepRepository.GetPageAmount(author);
+             _TotalPages.Wait();
+             TotalPages = _TotalPages.Result; 
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            TotalPages = 1; // CHECK THAT THIS IS AS IT SHOULD BE!!!
+            TotalPages = 1;
         }
-
-        PageNav = new PageNavModel(_service, page, TotalPages);
+        PageNav = new PageNavModel(page, TotalPages);
 
         return Page();
     }

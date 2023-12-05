@@ -16,49 +16,47 @@ namespace Chirp.Web.Pages;
 [AllowAnonymous]
 public class PublicModel : PageModel
 {
-    private readonly IAuthorRepository authorRepository;
-    private readonly ICheepRepository cheepRepository;
+    protected readonly IAuthorRepository authorRepository;
+    protected readonly ICheepRepository cheepRepository;
     public CreateCheepModel CreateCheep;
-    private readonly ICheepService _service;
     private readonly ILogger<PublicModel> _logger;
     public IEnumerable<CheepDTO>? Cheeps { get; set; }
     public PageNavModel PageNav;
     public int TotalPages { get; set; }
 
-    public PublicModel(ICheepService service, ILogger<PublicModel> logger, IAuthorRepository authorRepository, ICheepRepository cheepRepository)
+    public PublicModel(ILogger<PublicModel> logger, IAuthorRepository authorRepository, ICheepRepository cheepRepository)
     {
-        _service = service;
         _logger = logger;
         this.authorRepository = authorRepository;
         this.cheepRepository = cheepRepository;
-        PageNav = new PageNavModel(_service, 1, TotalPages);
-        CreateCheep = new CreateCheepModel(_service, authorRepository, cheepRepository);
+        PageNav = new PageNavModel(1, TotalPages);
+        CreateCheep = new CreateCheepModel(authorRepository, cheepRepository);
         
     }
 
-    public ActionResult OnGet([FromQuery] int page)
+    public virtual async Task<ActionResult> OnGet([FromQuery] int page)
     {
-        var _TotalPages = _service.GetPageAmount();
+        var _TotalPages = cheepRepository.GetPageAmount();
         _TotalPages.Wait();
         TotalPages = _TotalPages.Result;
-        PageNav = new PageNavModel(_service, page, TotalPages);
+        PageNav = new PageNavModel(page, TotalPages);
        
-        var _Cheeps = _service.GetCheeps(page);
+        var _Cheeps = cheepRepository.GetCheeps(page);
         _Cheeps.Wait();
         Cheeps = _Cheeps.Result;
 
         return Page();
     }
-
+ 
     public async Task<ActionResult> OnPost([FromQuery] int page, [FromQuery] string f, [FromQuery] string uf, [FromQuery] string c)
     {
         Console.WriteLine("OnPost called!");
-        var _Cheeps = await _service.GetCheeps(page);
+        var _Cheeps = await cheepRepository.GetCheeps(page);
         Cheeps = _Cheeps;
 
-        var _TotalPages = await _service.GetPageAmount();
+        var _TotalPages = await cheepRepository.GetPageAmount();
         TotalPages = _TotalPages;
-        PageNav = new PageNavModel(_service, page, TotalPages);
+        PageNav = new PageNavModel(page, TotalPages);
         
         Console.WriteLine($"uf is {uf}");
         if (f != null)

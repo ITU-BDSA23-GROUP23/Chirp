@@ -19,7 +19,7 @@ public class PageInfoModel : PageModel
 
     private readonly ILogger<PublicModel> _logger;
 
-    public PageInfoModel(ICheepService service, ILogger<PublicModel> logger, IAuthorRepository Author_repository, ICheepRepository Cheep_repository)
+    public PageInfoModel(ILogger<PublicModel> logger, IAuthorRepository Author_repository, ICheepRepository Cheep_repository)
     {
         _logger = logger;
         _Author_repository = Author_repository;
