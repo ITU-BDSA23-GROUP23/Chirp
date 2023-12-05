@@ -12,15 +12,12 @@ namespace Chirp.Web.Pages.Shared;
 public class PageNavModel : PageModel
 {
 
-    private readonly ICheepService _service;
-
     public int TotalPages { get; set; }
 
     public int CurrentPage { get; set; } = 1;
 
-    public PageNavModel(ICheepService service, int page, int maxPages)
+   public PageNavModel(int page, int maxPages)
     {
-        _service = service;
         TotalPages = maxPages;
 
         if (page > 1) {

@@ -19,20 +19,18 @@ public class PublicModel : PageModel
     private readonly IAuthorRepository authorRepository;
     private readonly ICheepRepository cheepRepository;
     public CreateCheepModel CreateCheep;
-    private readonly ICheepService _service;
     private readonly ILogger<PublicModel> _logger;
     public IEnumerable<CheepDTO>? Cheeps { get; set; }
     public PageNavModel PageNav;
     public int TotalPages { get; set; }
 
-    public PublicModel(ICheepService service, ILogger<PublicModel> logger, IAuthorRepository authorRepository, ICheepRepository cheepRepository)
+    public PublicModel(ILogger<PublicModel> logger, IAuthorRepository authorRepository, ICheepRepository cheepRepository)
     {
-        _service = service;
         _logger = logger;
         this.authorRepository = authorRepository;
         this.cheepRepository = cheepRepository;
-        PageNav = new PageNavModel(_service, 1, TotalPages);
-        CreateCheep = new CreateCheepModel(_service, authorRepository, cheepRepository);
+        PageNav = new PageNavModel(1, TotalPages);
+        CreateCheep = new CreateCheepModel(authorRepository, cheepRepository);
         
     }
 
@@ -41,7 +39,7 @@ public class PublicModel : PageModel
         var _TotalPages = _service.GetPageAmount();
         _TotalPages.Wait();
         TotalPages = _TotalPages.Result;
-        PageNav = new PageNavModel(_service, page, TotalPages);
+        PageNav = new PageNavModel(page, TotalPages);
        
         var _Cheeps = _service.GetCheeps(page);
         _Cheeps.Wait();

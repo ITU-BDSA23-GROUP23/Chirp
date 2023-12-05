@@ -13,7 +13,6 @@ namespace Chirp.Web.Pages;
 [AllowAnonymous]
 public class UserTimelineModel : PageModel
 {
-    private readonly ICheepService _service;
     public IEnumerable<CheepDTO>? Cheeps { get; set; }
 
     public int TotalPages { get; set; }
@@ -24,12 +23,11 @@ public class UserTimelineModel : PageModel
 
     private readonly ILogger<UserTimelineModel> _logger;
 
-    public UserTimelineModel(ICheepService service, ILogger<UserTimelineModel> logger, IAuthorRepository authorRepository)
+    public UserTimelineModel(ILogger<UserTimelineModel> logger, IAuthorRepository authorRepository)
     {
-        _service = service;
         _logger = logger;
         _authorRepository = authorRepository;
-        PageNav = new PageNavModel(_service, 1, TotalPages);
+        PageNav = new PageNavModel(1, TotalPages);
     }
 
     public ActionResult OnGet(string author, [FromQuery] int page)
@@ -45,7 +43,7 @@ public class UserTimelineModel : PageModel
          _TotalPages.Wait();
          TotalPages = _TotalPages.Result; 
         TotalPages = 1;
-        PageNav = new PageNavModel(_service, page, TotalPages);
+        PageNav = new PageNavModel(page, TotalPages);
 
         return Page();
     }
