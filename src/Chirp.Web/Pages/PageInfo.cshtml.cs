@@ -39,13 +39,21 @@ public class PageInfoModel : PageModel
     public async Task<ActionResult> OnGet(string authorName, [FromQuery] int page)
     {
         authorName = User.Identity.Name;
-        var _Cheeps = _Cheep_repository.GetCheeps(authorName: authorName);
-        _Cheeps.Wait();
-        Cheeps = _Cheeps.Result;
-        Console.WriteLine(authorName + "54321");
-        await OnGetFollowers(authorName);
-        await OnGetFollowing(authorName);
+        try
+        {
+            var _Cheeps = _Cheep_repository.GetCheeps(authorName: authorName);
+            _Cheeps.Wait();
+            Cheeps = _Cheeps.Result;
+            Console.WriteLine(authorName + "54321");
+            await OnGetFollowers(authorName);
+            await OnGetFollowing(authorName);
+        }
+        catch (AggregateException e)
+        {
+            Console.WriteLine(e);
+        }
         return Page();
+       
     }
 
     public int FollowingCount(string authorName)

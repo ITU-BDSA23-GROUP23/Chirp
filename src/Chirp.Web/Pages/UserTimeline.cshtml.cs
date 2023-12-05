@@ -35,14 +35,20 @@ public class UserTimelineModel : PageModel
 
     public ActionResult OnGet(string author, [FromQuery] int page)
     {
-
+        
         //Cheeps = _service.GetCheeps(page);
         //Cheeps = _service.GetCheeps(author);
-        var _Cheeps = _cheepRepository.GetCheeps(page, authorName: author);
-        _Cheeps.Wait();
-        Cheeps = _Cheeps.Result;
+        try 
+        {
+            var _Cheeps = _cheepRepository.GetCheeps(page, authorName: author);
+            _Cheeps.Wait();
+            Cheeps = _Cheeps.Result;
+        }
+        catch (AggregateException e)
+        {
+            Console.WriteLine(e);
+        }
         
-
         try
         {
 
