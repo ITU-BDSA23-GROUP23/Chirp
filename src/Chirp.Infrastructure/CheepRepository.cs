@@ -54,6 +54,21 @@ public class CheepRepository : ICheepRepository
         return CheepAmount;
     }
 
+    public async Task<int> GetPageAmount(String? authorName = null)
+    {
+        long cheepAmount;
+        if (authorName == null)
+        {
+            cheepAmount = await GetCheepsAmount();
+        }
+        else
+        {
+            cheepAmount = await GetCheepsAmount(authorName);
+        }
+        return (int)Math.Ceiling((double)cheepAmount / 32);
+    }
+
+
     public void CreateCheep(createCheepDTO cheepDTO, DateTime? Timestamp = null)
     {
         Author author = dbContext.Authors.First(a => a.Name == cheepDTO.Author.Name);

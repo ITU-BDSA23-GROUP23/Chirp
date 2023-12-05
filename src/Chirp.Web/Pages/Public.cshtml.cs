@@ -36,27 +36,27 @@ public class PublicModel : PageModel
 
     public ActionResult OnGet([FromQuery] int page)
     {
-        var _TotalPages = _service.GetPageAmount();
+        var _TotalPages = cheepRepository.GetPageAmount();
         _TotalPages.Wait();
         TotalPages = _TotalPages.Result;
         PageNav = new PageNavModel(page, TotalPages);
        
-        var _Cheeps = _service.GetCheeps(page);
+        var _Cheeps = cheepRepository.GetCheeps(page);
         _Cheeps.Wait();
         Cheeps = _Cheeps.Result;
 
         return Page();
     }
-
+ 
     public async Task<ActionResult> OnPost([FromQuery] int page, [FromQuery] string f, [FromQuery] string uf, [FromQuery] string c)
     {
         Console.WriteLine("OnPost called!");
-        var _Cheeps = await _service.GetCheeps(page);
+        var _Cheeps = await cheepRepository.GetCheeps(page);
         Cheeps = _Cheeps;
 
-        var _TotalPages = await _service.GetPageAmount();
+        var _TotalPages = await cheepRepository.GetPageAmount();
         TotalPages = _TotalPages;
-        PageNav = new PageNavModel(_service, page, TotalPages);
+        PageNav = new PageNavModel(page, TotalPages);
         
         Console.WriteLine($"uf is {uf}");
         if (f != null)
