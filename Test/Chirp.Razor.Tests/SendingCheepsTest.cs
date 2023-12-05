@@ -29,12 +29,21 @@ public class SendingCheepsTest
         string Message = "o";
         ICheepRepository cheepRepository = new CheepRepository(context);
         IAuthorRepository authorRepository = new AuthorRepository(context);
-        AuthorDTO author = new AuthorDTO("Thorstein", "tpep123@gmail.com");
+        CreateAuthorDTO author = new CreateAuthorDTO("Thorstein", "tpep123@gmail.com");
 
         authorRepository.CreateAuthor(author);
-        createCheepDTO createcheepDTO = new createCheepDTO(author, Message);
+       
+        var Aurthor = authorRepository.FindAuthorByName("Thorstein").Result;
+        createCheepDTO createcheepDTO = new createCheepDTO(Aurthor, Message);
+        
+        createCheepDTOValidator validator = new createCheepDTOValidator();
+        FluentValidation.Results.ValidationResult results = validator.Validate(createcheepDTO);
+        
         //Act
-        cheepRepository.CreateCheep(createcheepDTO);
+         if (results.IsValid)
+            {
+                cheepRepository.CreateCheep(createcheepDTO, null);
+            }
 
         //Assert
         var cheeps = await cheepRepository.GetCheeps();
@@ -58,13 +67,21 @@ public class SendingCheepsTest
         string Message = "";
         ICheepRepository cheepRepository = new CheepRepository(context);
         IAuthorRepository authorRepository = new AuthorRepository(context);
-        AuthorDTO author = new AuthorDTO("Thorstein", "tpep123@gmail.com");
+        CreateAuthorDTO author = new CreateAuthorDTO("Thorstein", "tpep123@gmail.com");
+       
 
         authorRepository.CreateAuthor(author);
-        createCheepDTO createcheepDTO = new createCheepDTO(author, Message);
-
+        
+        var Aurthor = authorRepository.FindAuthorByName("Thorstein").Result;
+        createCheepDTO createcheepDTO = new createCheepDTO(Aurthor, Message);
+        createCheepDTOValidator validator = new createCheepDTOValidator();
+        FluentValidation.Results.ValidationResult results = validator.Validate(createcheepDTO);
+        
         //Act
-        cheepRepository.CreateCheep(createcheepDTO);
+         if (results.IsValid)
+            {
+                cheepRepository.CreateCheep(createcheepDTO, null);
+            }
         var cheeps = await cheepRepository.GetCheeps(authorName: author.Name);
 
         //Assert
@@ -78,12 +95,19 @@ public class SendingCheepsTest
         string Message = "mommopmsemfmpmsopemfpsempfmspklfslfldsnfkldsnfldsnlfnsdlfndslkfndslkfndslfndslfndlskfnkldsnfldsnfldsnfldsnfkldsnflkdsnflkdsknlkadfnvlkfdnvlfnvlksfdnklnfslknsflff";
         ICheepRepository cheepRepository = new CheepRepository(context);
         IAuthorRepository authorRepository = new AuthorRepository(context);
-        AuthorDTO author = new AuthorDTO("Thorstein", "tpep123@gmail.com");
+        CreateAuthorDTO author = new CreateAuthorDTO("Thorstein", "tpep123@gmail.com");
 
         authorRepository.CreateAuthor(author);
-        createCheepDTO createcheepDTO = new createCheepDTO(author, Message);
+        var Aurthor = authorRepository.FindAuthorByName("Thorstein").Result;
+        createCheepDTO createcheepDTO = new createCheepDTO(Aurthor, Message);
+        createCheepDTOValidator validator = new createCheepDTOValidator();
+        FluentValidation.Results.ValidationResult results = validator.Validate(createcheepDTO);
         //Act
-        cheepRepository.CreateCheep(createcheepDTO);
+         if (results.IsValid)
+            {
+                cheepRepository.CreateCheep(createcheepDTO, null);
+            }
+        
         var cheeps = await cheepRepository.GetCheeps(authorName: author.Name);
 
         //Assert
@@ -97,14 +121,19 @@ public class SendingCheepsTest
         string Message = "mommopmsemfmpmsopemfpsempfmspklfslfldsnfkldsnfldsnlfnsdlfndslkfndslkfndslfndslfndlskfnkldsnfldsnfldsnfldsnfkldsnflkdsnflkdsknlkadfnvlkfdnvlfnvlksfdnklnfslknsflf";
         ICheepRepository cheepRepository = new CheepRepository(context);
         IAuthorRepository authorRepository = new AuthorRepository(context);
-        AuthorDTO author = new AuthorDTO("Thorstein", "tpep123@gmail.com");
+        CreateAuthorDTO author = new CreateAuthorDTO("Thorstein", "tpep123@gmail.com");
 
         authorRepository.CreateAuthor(author);
-
-        createCheepDTO createcheepDTO = new createCheepDTO(author, Message);
-
+        var Aurthor = authorRepository.FindAuthorByName("Thorstein").Result;
+        createCheepDTO createcheepDTO = new createCheepDTO(Aurthor, Message);
+        createCheepDTOValidator validator = new createCheepDTOValidator();
+        
+        FluentValidation.Results.ValidationResult results = validator.Validate(createcheepDTO);
         //Act
-        cheepRepository.CreateCheep(createcheepDTO);
+         if (results.IsValid)
+            {
+                cheepRepository.CreateCheep(createcheepDTO, null);
+            }
         var cheeps = await cheepRepository.GetCheeps(authorName: author.Name);
 
         //Assert
@@ -118,13 +147,14 @@ public class SendingCheepsTest
         string Message = "abcæøå";
         ICheepRepository cheepRepository = new CheepRepository(context);
         IAuthorRepository authorRepository = new AuthorRepository(context);
-        AuthorDTO author = new AuthorDTO("Thorstein", "tpep123@gmail.com");
+        CreateAuthorDTO author = new CreateAuthorDTO("Thorstein", "tpep123@gmail.com");
 
         authorRepository.CreateAuthor(author);
-        createCheepDTO createcheepDTO = new createCheepDTO(author, Message);
+        var Aurthor = authorRepository.FindAuthorByName("Thorstein").Result;
+        createCheepDTO createcheepDTO = new createCheepDTO(Aurthor, Message);
         
         //Act
-        cheepRepository.CreateCheep(createcheepDTO);
+        cheepRepository.CreateCheep(createcheepDTO, null);
         var cheeps = await cheepRepository.GetCheeps();
 
         //Assert
