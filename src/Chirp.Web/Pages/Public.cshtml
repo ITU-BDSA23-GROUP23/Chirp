@@ -9,30 +9,28 @@
 }
 
 <div>
-    <div style="justify-content: space-between;">
-        <h2> Public Timeline </h2>
-
-        @if (User.Identity.IsAuthenticated) 
+    <div class="follow-buttons">
+        @if (User.Identity.IsAuthenticated)
         {
             @(await Html.PartialAsync("CreateCheep", @Model.CreateCheep))
         }
-        
-        @(await Html.PartialAsync("Shared/PageNav", @Model.PageNav))
-    
+    </div>
 
     @if (Model.Cheeps != null && Model.Cheeps.Any())
     {
-        <ul id="messagelist" class="cheeps">
+        <ul class="cheeps">
             @foreach (var cheep in Model.Cheeps)
             {
-                <li>
-                    <p>
+                <li class="cheep-item">
+                    <div class="cheep-content">
                         <strong>
                             <a href="/@cheep.AuthorName">@cheep.AuthorName</a>
                         </strong>
-                        @cheep.Message
-                        <small>&mdash; @cheep.TimeStamp</small>
-                        @* Add follow and Unfollow buttons to the cheeps *@
+                        <p>
+                            @cheep.Message
+                            <br />
+                            <small>&mdash; @cheep.TimeStamp</small>
+                        </p>
                         @if (User.Identity.IsAuthenticated && cheep.AuthorName != User.Identity.Name)
                         {
                             @if (await Model.IsFollowing(User.Identity?.Name, @cheep.AuthorName))
@@ -40,20 +38,19 @@
                                 <form method="post" action=@("?uf=" + @User.Identity?.Name)>
                                     @Html.AntiForgeryToken()
                                     <input hidden type="text" name="Unfollow" value="@cheep.AuthorName">
-                                    <input type="submit" value="Unfollow" class/>
+                                    <input type="submit" value="Unfollow" class="btn-unfollow" />
                                 </form>
                             }
                             else
                             {
                                 <form method="post" action=@("?f=" + @User.Identity?.Name)>
                                     @Html.AntiForgeryToken()
-                                    <input hidden type="text" name="Follow" value="@cheep.AuthorName"/>
-                                    <input type="submit" name="submit" value="Follow" class="submit"/>
+                                    <input hidden type="text" name="Follow" value="@cheep.AuthorName" />
+                                    <input type="submit" name="submit" value="Follow" class="btn-follow" />
                                 </form>
                             }
-
                         }
-                    </p>
+                    </div>
                 </li>
             }
         </ul>
@@ -64,5 +61,4 @@
     }
 
     @(await Html.PartialAsync("Shared/PageNav", @Model.PageNav))
-    
 </div>
