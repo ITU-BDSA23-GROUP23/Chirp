@@ -7,7 +7,8 @@ using System.ComponentModel.DataAnnotations;
 using FluentValidation;
 using FluentValidation.Results;
 
-
+/// This class is used as a repostiory of functions/methods that we use to interact with the Database when dealing with Cheeps 
+/// This class has methods like getCheeps, Create cheep, and eveything we use later to get or update data that has to do with cheep/cheeps  
 public class CheepRepository : ICheepRepository
 {
     private readonly ChirpDBContext dbContext;
