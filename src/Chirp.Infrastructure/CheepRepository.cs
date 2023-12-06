@@ -38,6 +38,13 @@ public class CheepRepository : ICheepRepository
         return CheepsToCheepDTOs(_Cheeps.ToList());
     }
 
+    public async Task<Cheep> GetCheepById(Guid id)
+    {
+        Cheep cheep = await dbContext.Cheeps.FirstAsync(c => c.Id == id);
+        Console.WriteLine(cheep.ToString());
+        return cheep;
+    }
+
     public async Task<IEnumerable<CheepDTO>> GetCheeps(int page = 1, int pageSize = 32, string? authorName = null)
     {
         IQueryable<Cheep> Cheeps;
@@ -133,10 +140,35 @@ public class CheepRepository : ICheepRepository
 
             ICollection<AuthorDTO>? following = new List<AuthorDTO>();
 
-            cheepDTOs.Add(new CheepDTO(cheep.Message, cheep.Author.Name, formattedDateTime, (ICollection<ReactionDTO>?)cheep.Reactions, following));
+            cheepDTOs.Add(new CheepDTO(cheep.Message, cheep.Author.Name, formattedDateTime, (ICollection<ReactionDTO>?)cheep.Reactions, following, cheep.Id));
         }
 
         return cheepDTOs;
+    }
+
+    public async Task<ReactionDTO> GetReactions(Guid cheepId, int type)
+    {
+        return ReactionsToReactionDTO((await dbContext.Cheeps.Include(c => c.Reactions).FirstOrDefaultAsync(c => c.Id == cheepId)).Reactions, type);
+    }
+
+    public async Task ReactToCheep(string? author, string type, Guid cheepId)
+    {
+        
+        Cheep? cheep = await dbContext.Cheeps.Include(c => c.Reactions).FirstAsync(c => c.Id == cheepId);
+
+        cheep.Reactions.Add(new Reaction()
+        {
+            ReactionType = type,
+            Author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == author)
+        });
+        await dbContext.SaveChangesAsync();
+    }
+
+    public ReactionDTO ReactionsToReactionDTO(ICollection<Reaction> reactions, int type)
+    {
+        int count = reactions.Where(r => r.ReactionType == ((Reactiontype)type).ToString()).Count();
+
+        return new ReactionDTO((Reactiontype)type, count);
     }
 
     // public void Add(Cheep entity)

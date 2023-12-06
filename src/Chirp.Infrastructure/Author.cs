@@ -21,7 +21,7 @@ namespace Chirp.Infrastructure
 
         public required virtual ICollection<Author> Following { get; set; }
 
-        public ICollection<Reactions>? Reactions { get; set; }
+        public ICollection<Reaction>? Reactions { get; set; }
         public required ICollection<Cheep> Cheeps { get; set; }
     }
 }

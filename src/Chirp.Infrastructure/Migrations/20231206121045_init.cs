@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Chirp.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Migrations : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -71,23 +71,23 @@ namespace Chirp.Infrastructure.Migrations
                 name: "Reactions",
                 columns: table => new
                 {
-                    ChirpId = table.Column<int>(type: "int", nullable: false),
-                    AuthorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CheepId = table.Column<int>(type: "int", nullable: false),
+                    AuthorId = table.Column<int>(type: "int", nullable: false),
                     ReactionType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CheepId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    AuthorId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CheepId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Reactions", x => new { x.ChirpId, x.AuthorId });
+                    table.PrimaryKey("PK_Reactions", x => new { x.CheepId, x.AuthorId });
                     table.ForeignKey(
-                        name: "FK_Reactions_Authors_AuthorId",
-                        column: x => x.AuthorId,
+                        name: "FK_Reactions_Authors_AuthorId1",
+                        column: x => x.AuthorId1,
                         principalTable: "Authors",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Reactions_Cheeps_CheepId",
-                        column: x => x.CheepId,
+                        name: "FK_Reactions_Cheeps_CheepId1",
+                        column: x => x.CheepId1,
                         principalTable: "Cheeps",
                         principalColumn: "Id");
                 });
@@ -109,14 +109,14 @@ namespace Chirp.Infrastructure.Migrations
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reactions_AuthorId",
+                name: "IX_Reactions_AuthorId1",
                 table: "Reactions",
-                column: "AuthorId");
+                column: "AuthorId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reactions_CheepId",
+                name: "IX_Reactions_CheepId1",
                 table: "Reactions",
-                column: "CheepId");
+                column: "CheepId1");
         }
 
         /// <inheritdoc />

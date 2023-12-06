@@ -3,6 +3,7 @@ using Chirp.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Authorization;
+using Chirp.Web.Pages.Shared;
 
 namespace Chirp.Web.Pages;
 
@@ -54,6 +55,13 @@ public class PageInfoModel : PageModel
         }
         return Page();
        
+    }
+
+
+
+    public CheepModel GenerateCheepModel(CheepDTO cheep)
+    {
+        return new CheepModel(_Author_repository, _Cheep_repository, cheep);
     }
 
     public int FollowingCount(string authorName)
