@@ -23,6 +23,7 @@ public class PublicModel : PageModel
     public IEnumerable<CheepDTO>? Cheeps { get; set; }
     public PageNavModel PageNav;
     public int TotalPages { get; set; }
+    public string? author { get; set; }
 
     public PublicModel(ILogger<PublicModel> logger, IAuthorRepository authorRepository, ICheepRepository cheepRepository)
     {
@@ -93,15 +94,17 @@ public class PublicModel : PageModel
         else if(li != null)
         {
             Guid liGuid = Guid.Parse(li);
-            await cheepRepository.ReactToCheep("Like", liGuid);
+            await cheepRepository.ReactToCheep(author, "Like", liGuid);
         } else if (di != null)
         {   
+            Console.WriteLine("Dislike called \n \n \n \n \n \n \n");
             Guid diGuid = Guid.Parse(di);
-            await cheepRepository.ReactToCheep("Dislike", diGuid);
+            await cheepRepository.ReactToCheep(author, "Dislike", diGuid);
         } else if (lo != null)
         {
+            Console.WriteLine("Love called \n \n \n \n \n \n \n");
             Guid loGuid = Guid.Parse(lo);
-            await cheepRepository.ReactToCheep("Love", loGuid);
+            await cheepRepository.ReactToCheep(author, "Love", loGuid);
         }
         
         return Page();

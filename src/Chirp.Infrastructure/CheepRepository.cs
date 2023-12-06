@@ -151,15 +151,17 @@ public class CheepRepository : ICheepRepository
         return ReactionsToReactionDTO((await dbContext.Cheeps.Include(c => c.Reactions).FirstOrDefaultAsync(c => c.Id == cheepId)).Reactions, type);
     }
 
-    public async Task ReactToCheep(string type, Guid cheepId)
+    public async Task ReactToCheep(string? author, string type, Guid cheepId)
     {
         
         Cheep? cheep = await dbContext.Cheeps.Include(c => c.Reactions).FirstAsync(c => c.Id == cheepId);
 
         cheep.Reactions.Add(new Reaction()
         {
-            ReactionType = type
+            ReactionType = type,
+            Author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == author)
         });
+        await dbContext.SaveChangesAsync();
     }
 
     public ReactionDTO ReactionsToReactionDTO(ICollection<Reaction> reactions, int type)

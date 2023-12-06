@@ -11,7 +11,7 @@ public interface ICheepRepository
     void CreateCheep(createCheepDTO cheepDTO, DateTime? Timestamp);
 
     Task<int> GetPageAmount(String? authorName = null);
-    Task ReactToCheep(string type, Guid cheepId);
+    Task ReactToCheep(string? author, string type, Guid cheepId);
 
     Task<ReactionDTO> GetReactions(Guid cheepId, int type);
 

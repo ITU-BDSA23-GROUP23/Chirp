@@ -6,6 +6,7 @@
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
+    Model.author = User.Identity?.Name;
 }
 
 <div>
@@ -62,6 +63,7 @@
                                     @(await Model.GetReactionCount(cheep.Id, Reactiontype.Dislike))
                                 </small>
                                 <form name="Reaction" method="post" action=@("?di=")>
+                                    @Html.AntiForgeryToken()
                                     <input hidden type="text" name="Dislike" value="@cheep.Id"/>
                                     <input type="submit" name="submit" value="&#128078;" class="submit"/>
                                 </form>
@@ -69,6 +71,7 @@
                                     @(await Model.GetReactionCount(cheep.Id, Reactiontype.Love))
                                 </small>
                                 <form name="Reaction" method="post" action=@("?lo=")>
+                                    @Html.AntiForgeryToken()
                                     <input hidden type="text" name="Love" value="@cheep.Id"/>
                                     <input type="submit" name="submit" value="&#128525;" class="submit"/>
                                 </form>
