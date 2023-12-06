@@ -17,5 +17,12 @@ namespace Chirp.Infrastructure
         public required DateTime TimeStamp { get; set; }
 
         public ICollection<Reaction>? Reactions { get; set; }
+
+        public string ToString()
+        {
+            return $"Cheep: id:{Id}, Message: {Message} Timestamp: {TimeStamp}";
+        }
     }
+
+    
 }

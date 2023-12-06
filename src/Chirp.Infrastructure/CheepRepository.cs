@@ -38,6 +38,13 @@ public class CheepRepository : ICheepRepository
         return CheepsToCheepDTOs(_Cheeps.ToList());
     }
 
+    public async Task<Cheep> GetCheepById(Guid id)
+    {
+        Cheep cheep = await dbContext.Cheeps.FirstAsync(c => c.Id == id);
+        Console.WriteLine(cheep.ToString());
+        return cheep;
+    }
+
     public async Task<IEnumerable<CheepDTO>> GetCheeps(int page = 1, int pageSize = 32, string? authorName = null)
     {
         IQueryable<Cheep> Cheeps;
@@ -142,12 +149,14 @@ public class CheepRepository : ICheepRepository
     public async Task ReactToCheep(string type, Guid cheepId)
     {
         
-        Cheep? cheep = await dbContext.Cheeps.FindAsync(cheepId);
+        Cheep? cheep = await dbContext.Cheeps.Include(c => c.Reactions).FirstAsync(c => c.Id == cheepId);
+;
 
         cheep.Reactions.Add(new Reaction()
         {
             ReactionType = type
         });
+        Console.WriteLine("Reacted to cheep with id: " + cheepId + " with type: " + type + "\n \n \n \n \n \n \n \n");
     }
 
     // public void Add(Cheep entity)
