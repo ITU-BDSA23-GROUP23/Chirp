@@ -5,13 +5,14 @@ using Chirp.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.Sqlite;
 using Humanizer;
+using Azure;
 
 public class PageInfoTests
 {
     ChirpDBContext context;
     SqliteConnection _connection;
 
-    public PageInfoTests(ChirpDBContext dbContext)
+    public PageInfoTests()
     {
         _connection = new SqliteConnection("Filename=:memory:");
         _connection.Open();
@@ -46,23 +47,63 @@ public class PageInfoTests
     }
 
     [Fact]
-    public void FollowingCountTest()
+    public async Task FollowingCountTest()
     {
         // Arrange
+        AuthorRepository authorRepository = new AuthorRepository(context);
+
+        string author1Name = "ArthurAuthor1";
+        authorRepository.CreateAuthor(new CreateAuthorDTO(author1Name, ""));
+        // Author 2
+        string author2Name = "BalderAuthor2";
+        authorRepository.CreateAuthor(new CreateAuthorDTO(author2Name, ""));
+        // Author 3
+        string author3ame = "CamillaAuthor3";
+        authorRepository.CreateAuthor(new CreateAuthorDTO(author3ame, ""));
+
+        var author1 = await authorRepository.FindAuthorByName(author1Name);
+        var author2 = await authorRepository.FindAuthorByName(author2Name);
+        var author3 = await authorRepository.FindAuthorByName(author3ame);
+
+        await authorRepository.FollowAuthor(author2, author1);
+        await authorRepository.FollowAuthor(author3, author1);
+        await authorRepository.FollowAuthor(author1, author2);
 
         // Act
+        var author1FollowingCount = authorRepository.GetFollowingCount(author1Name);
 
         // Assert
+        Assert.Equal(2, author1FollowingCount);
     }
 
     [Fact]
-    public void FollowersCountTest()
+    public async Task FollowersCountTest()
     {
         // Arrange
+        AuthorRepository authorRepository = new AuthorRepository(context);
+
+        string author1Name = "ArthurAuthor1";
+        authorRepository.CreateAuthor(new CreateAuthorDTO(author1Name, ""));
+        // Author 2
+        string author2Name = "BalderAuthor2";
+        authorRepository.CreateAuthor(new CreateAuthorDTO(author2Name, ""));
+        // Author 3
+        string author3ame = "CamillaAuthor3";
+        authorRepository.CreateAuthor(new CreateAuthorDTO(author3ame, ""));
+
+        var author1 = await authorRepository.FindAuthorByName(author1Name);
+        var author2 = await authorRepository.FindAuthorByName(author2Name);
+        var author3 = await authorRepository.FindAuthorByName(author3ame);
+
+        await authorRepository.FollowAuthor(author2, author1);
+        await authorRepository.FollowAuthor(author3, author1);
+        await authorRepository.FollowAuthor(author1, author2);
 
         // Act
+        var author1FollowingCount = authorRepository.GetFollowersCount(author1Name);
 
         // Assert
+        Assert.Equal(1, author1FollowingCount);
     }
 
     [Fact]
