@@ -10,6 +10,8 @@
 }
 
 <div>
+    <h2>Public Timeline</h2>
+    @(await Html.PartialAsync("Shared/PageNav", @Model.PageNav))
     <div class="follow-buttons">
         @if (User.Identity.IsAuthenticated)
         {
@@ -22,63 +24,7 @@
         <ul class="cheeps">
             @foreach (var cheep in Model.Cheeps)
             {
-                <li class="cheep-item">
-                    <div class="cheep-content">
-                        <strong>
-                            <a href="/@cheep.AuthorName">@cheep.AuthorName</a>
-                        </strong>
-                        <p>
-                            @cheep.Message
-                            <br />
-                            <small>&mdash; @cheep.TimeStamp</small>
-                        </p>
-                        @if (User.Identity.IsAuthenticated && cheep.AuthorName != User.Identity.Name)
-                        {
-                            @if (await Model.IsFollowing(User.Identity?.Name, @cheep.AuthorName))
-                            {
-                                <form method="post" action=@("?uf=" + @User.Identity?.Name)>
-                                    @Html.AntiForgeryToken()
-                                    <input hidden type="text" name="Unfollow" value="@cheep.AuthorName">
-                                    <input type="submit" value="Unfollow" class="btn-unfollow" />
-                                </form>
-                            }
-                            else
-                            {
-                                <form method="post" action=@("?f=" + @User.Identity?.Name)>
-                                    @Html.AntiForgeryToken()
-                                    <input hidden type="text" name="Follow" value="@cheep.AuthorName" />
-                                    <input type="submit" name="submit" value="Follow" class="btn-follow" />
-                                </form>
-                            }
-                            <div style="display:flex; flex-direction: row;">
-                                <small> 
-                                    @(await Model.GetReactionCount(cheep.Id, Reactiontype.Like))
-                                </small>
-                                <form name="Reaction" method="post" action=@("?li=")>
-                                    @Html.AntiForgeryToken()
-                                    <input hidden type="text" name="Like" value="@cheep.Id"/>
-                                    <input type="submit" name="submit" value="&#128077;" class="submit"/>
-                                </form>
-                                <small>
-                                    @(await Model.GetReactionCount(cheep.Id, Reactiontype.Dislike))
-                                </small>
-                                <form name="Reaction" method="post" action=@("?di=")>
-                                    @Html.AntiForgeryToken()
-                                    <input hidden type="text" name="Dislike" value="@cheep.Id"/>
-                                    <input type="submit" name="submit" value="&#128078;" class="submit"/>
-                                </form>
-                                <small>
-                                    @(await Model.GetReactionCount(cheep.Id, Reactiontype.Love))
-                                </small>
-                                <form name="Reaction" method="post" action=@("?lo=")>
-                                    @Html.AntiForgeryToken()
-                                    <input hidden type="text" name="Love" value="@cheep.Id"/>
-                                    <input type="submit" name="submit" value="&#128525;" class="submit"/>
-                                </form>
-                            </div>
-                        }
-                    </div>
-                </li>
+            @(await Html.PartialAsync("Shared/Cheep", @Model.GenerateCheepModel(cheep)))
             }
         </ul>
     }
