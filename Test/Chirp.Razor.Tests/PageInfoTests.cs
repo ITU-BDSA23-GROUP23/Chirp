@@ -55,7 +55,6 @@ public class PageInfoTests : IDisposable
     public async Task FollowingCountTest()
     {
         // Arrange
-        AuthorRepository authorRepository = new AuthorRepository(context);
 
         string author1Name = "ArthurAuthor1";
         authorRepository.CreateAuthor(new CreateAuthorDTO(author1Name, ""));
@@ -85,8 +84,6 @@ public class PageInfoTests : IDisposable
     public async Task FollowersCountTest()
     {
         // Arrange
-        AuthorRepository authorRepository = new AuthorRepository(context);
-
         string author1Name = "ArthurAuthor1";
         authorRepository.CreateAuthor(new CreateAuthorDTO(author1Name, ""));
         // Author 2
