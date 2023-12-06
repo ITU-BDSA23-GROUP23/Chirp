@@ -13,24 +13,12 @@ using Humanizer;
 using SQLitePCL;
 
 namespace Chirp.Web.Pages.Shared;
-[AllowAnonymous]
-public class CheepModel : PageModel
+public class Methods
 {
-    protected readonly IAuthorRepository authorRepository;
-    protected readonly ICheepRepository cheepRepository;
-    public readonly CheepDTO cheep;
-
-    public CheepModel(IAuthorRepository authorRepository, ICheepRepository cheepRepository, CheepDTO cheep)
-    {
-        this.authorRepository = authorRepository;
-        this.cheepRepository = cheepRepository;
-        this.cheep = cheep;
-    }
-
-
     
+   
     
-    public async Task FollowAuthor(string followerName, string followingName)
+    public static async Task FollowAuthor(IAuthorRepository authorRepository, string followerName, string followingName)
     {
         Console.WriteLine($"FollowAuthor called with followerName: {followerName}, followingName: {followingName} \n \n \n \n \n \n \n \n");
         
@@ -46,7 +34,7 @@ public class CheepModel : PageModel
         await authorRepository.FollowAuthor(_following, _follower);
     }
 
-    public async Task UnfollowAuthor(string followerName, string followingName)
+    public static async Task UnfollowAuthor(IAuthorRepository authorRepository, string followerName, string followingName)
     {
 
         Console.WriteLine($"UnfollowAuthor called with followerName: {followerName}, followingName: {followingName}");
@@ -64,7 +52,7 @@ public class CheepModel : PageModel
         await authorRepository.UnfollowAuthor(_following, _follower);
     }
 
-    public async Task<bool> IsFollowing(string self, string other)
+    public static async Task<bool> IsFollowing(IAuthorRepository authorRepository, CheepRepository cheepRepository, string self, string other)
     {
         Console.WriteLine("IsFollowing called");
         var _self = await authorRepository.FindAuthorByName(self);
@@ -80,10 +68,4 @@ public class CheepModel : PageModel
         return false;
     }
 
-    public async Task<int> GetReactionCount(Reactiontype type)
-    {
-        var reaction = await cheepRepository.GetReactions(cheep.Id, (int)type);
-
-        return reaction.Count;
-    }
 }

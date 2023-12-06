@@ -2,9 +2,6 @@
 @using Chirp.Web.Pages.Shared
 @using System.Security.Claims
 @model Chirp.Web.Pages.Shared.CheepModel
-@{
-    Model.author = User.Identity?.Name;
-}
 
 <li class="cheep-item">
     <div class="cheep-content">
@@ -22,7 +19,7 @@
             {
                 <form method="post" action=@("?uf=" + @User.Identity?.Name)>
                     @Html.AntiForgeryToken()
-                    <input hidden type="text" name="Unfollow" value="@Model.cheep.AuthorName">
+                    <input hidden type="text" name="UnFollow" value="@Model.cheep.AuthorName"/>
                     <input type="submit" value="Unfollow" class="btn-unfollow" />
                 </form>
             }
@@ -30,7 +27,7 @@
             {
                 <form method="post" action=@("?f=" + @User.Identity?.Name)>
                     @Html.AntiForgeryToken()
-                    <input hidden type="text" name="Follow" value="@Model.cheep.AuthorName" />
+                    <input hidden type="text" name="Follow" value="@Model.cheep.AuthorName"/>
                     <input type="submit" name="submit" value="Follow" class="btn-follow" />
                 </form>
             }
@@ -55,6 +52,35 @@
                     @(await Model.GetReactionCount(Reactiontype.Love))
                 </small>
                 <form name="Reaction" method="post" action=@("?lo=")>
+                    @Html.AntiForgeryToken()
+                    <input hidden type="text" name="Love" value="@Model.cheep.Id"/>
+                    <input type="submit" name="submit" value="&#128525;" class="submit"/>
+                </form>
+            </div>
+        } 
+        else 
+        {
+            <div style="display:flex; flex-direction: row;">
+                <small> 
+                    @(await Model.GetReactionCount(Reactiontype.Like))
+                </small>
+                <form name="Reaction">
+                    @Html.AntiForgeryToken()
+                    <input hidden type="text" name="Like" value="@Model.cheep.Id"/>
+                    <input type="submit" name="submit" value="&#128077;" class="submit"/>
+                </form>
+                <small>
+                    @(await Model.GetReactionCount(Reactiontype.Dislike))
+                </small>
+                <form name="Reaction">
+                    @Html.AntiForgeryToken()
+                    <input hidden type="text" name="Dislike" value="@Model.cheep.Id"/>
+                    <input type="submit" name="submit" value="&#128078;" class="submit"/>
+                </form>
+                <small>
+                    @(await Model.GetReactionCount(Reactiontype.Love))
+                </small>
+                <form name="Reaction">
                     @Html.AntiForgeryToken()
                     <input hidden type="text" name="Love" value="@Model.cheep.Id"/>
                     <input type="submit" name="submit" value="&#128525;" class="submit"/>

@@ -48,26 +48,59 @@ public class PublicModel : PageModel
 
         return Page();
     }
- 
+
+
     public async Task<ActionResult> OnPost([FromQuery] int page, [FromQuery] string f, [FromQuery] string uf, [FromQuery] string c, [FromQuery] string li, [FromQuery] string di, [FromQuery] string lo)
     {
-     
-        var _Cheeps = await cheepRepository.GetCheeps(page);
-        Cheeps = _Cheeps;
+        await OnGet(page);
 
-        var _TotalPages = await cheepRepository.GetPageAmount();
-        TotalPages = _TotalPages;
-        PageNav = new PageNavModel(page, TotalPages);
-        if (c != null) 
+        li = HttpContext.Request.Query["li"].ToString();
+        di = HttpContext.Request.Query["di"].ToString();
+        lo = HttpContext.Request.Query["lo"].ToString();
+        if (string.IsNullOrEmpty(li))
+        {
+            li = Request.Form["Like"];
+        }
+
+        if (string.IsNullOrEmpty(di))
+        {
+            di = Request.Form["Dislike"];
+        }
+
+        if (string.IsNullOrEmpty(lo))
+        {
+            lo = Request.Form["Love"];
+        }
+        
+        if (f != null)
+        {
+            await Methods.FollowAuthor(authorRepository, f, Request.Form["Follow"]);
+        } else if (uf != null)
+        {
+            await Methods.UnfollowAuthor(authorRepository, uf, Request.Form["Unfollow"]);
+        } 
+        else if(li != null)
+        {
+            Guid liGuid = Guid.Parse(li);
+            await cheepRepository.ReactToCheep(author, "Like", liGuid);
+        } else if (di != null)
+        {   
+            Guid diGuid = Guid.Parse(di);
+            await cheepRepository.ReactToCheep(author, "Dislike", diGuid);
+        } else if (lo != null)
+        {
+            Guid loGuid = Guid.Parse(lo);
+            await cheepRepository.ReactToCheep(author, "Love", loGuid);
+        } else if (c != null) 
         {
             string? Message = Request.Form["Cheep"];
             CreateCheep.OnPostCheep(c, Message);
             return RedirectToPage("");
-        } 
+        }
         
         return Page();
     }
-
+ 
     public CheepModel GenerateCheepModel(CheepDTO cheep)
     {
         return new CheepModel(authorRepository, cheepRepository, cheep);

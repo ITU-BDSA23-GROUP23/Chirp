@@ -14,6 +14,7 @@ public class ForYouModel : PageModel
     private readonly ICheepRepository cheepRepository;
     public PageNavModel PageNav;
     public IEnumerable<CheepDTO> Cheeps;
+    public string author;
 
     public ForYouModel(IAuthorRepository authorRepository, ICheepRepository cheepRepository) 
         {
@@ -24,7 +25,6 @@ public class ForYouModel : PageModel
 
     public async Task<ActionResult> OnGet(string authorName, [FromQuery] int page)
     {
-        Console.WriteLine("ForYouPage for author: " + authorName);
         
         var TotalPages = await cheepRepository.GetPageAmount();
         try
@@ -51,31 +51,59 @@ public class ForYouModel : PageModel
         return Page();
     } 
 
-    public async Task<IActionResult> OnPost(string authorName, [FromQuery] int page, [FromQuery] string uf)
+
+    public async Task<ActionResult> OnPost(string authorName, [FromQuery] int page, [FromQuery] string f, [FromQuery] string uf, [FromQuery] string c, [FromQuery] string li, [FromQuery] string di, [FromQuery] string lo)
     {
+        await OnGet(authorName, page);
+
+        li = HttpContext.Request.Query["li"].ToString();
+        di = HttpContext.Request.Query["di"].ToString();
+        lo = HttpContext.Request.Query["lo"].ToString();
+        if (string.IsNullOrEmpty(li))
+        {
+            li = Request.Form["Like"];
+        }
+
+        if (string.IsNullOrEmpty(di))
+        {
+            di = Request.Form["Dislike"];
+        }
+
+        if (string.IsNullOrEmpty(lo))
+        {
+            lo = Request.Form["Love"];
+        }
         
-        Console.WriteLine("UF NOT NULL!!!!");
-        string? AuthorName = Request.Form["Unfollow"];
-        await UnfollowAuthor(uf, AuthorName);
+        if (f != null)
+        {
+            await Methods.FollowAuthor(authorRepository, f, Request.Form["Follow"]);
+        } else if (uf != null)
+        {
+            await Methods.UnfollowAuthor(authorRepository, uf, Request.Form["Unfollow"]);
+        } 
+        else if(li != null)
+        {
+            Guid liGuid = Guid.Parse(li);
+            await cheepRepository.ReactToCheep(author, "Like", liGuid);
+        } else if (di != null)
+        {   
+            Guid diGuid = Guid.Parse(di);
+            await cheepRepository.ReactToCheep(author, "Dislike", diGuid);
+        } else if (lo != null)
+        {
+            Guid loGuid = Guid.Parse(lo);
+            await cheepRepository.ReactToCheep(author, "Love", loGuid);
+        }
         
         return await OnGet(authorName, page);
     }
 
-    public async Task UnfollowAuthor(string followerName, string followingName)
+
+
+    public CheepModel GenerateCheepModel(CheepDTO cheep)
     {
-
-        Console.WriteLine($"UnfollowAuthor called with followerName: {followerName}, followingName: {followingName}");
-
-        var _follower = await authorRepository.FindAuthorByName(followerName);
-        if (_follower == null) 
-        {
-            Console.WriteLine("Follower is null");
-            authorRepository.CreateAuthor(new CreateAuthorDTO(followerName, ""));
-            _follower = await authorRepository.FindAuthorByName(followerName);
-        }
-
-        var _following = await authorRepository.FindAuthorByName(followingName);
-
-        await authorRepository.UnfollowAuthor(_following, _follower);
+        return new CheepModel(authorRepository, cheepRepository, cheep);
     }
+
+
 }
