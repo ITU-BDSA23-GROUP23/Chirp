@@ -13,6 +13,12 @@ namespace Chirp.Infrastructure
                 Task<long> GetCheepAmount(string authorName);
                 Task UnfollowAuthor(AuthorDTO self, AuthorDTO other);
                 Task FollowAuthor(AuthorDTO self, AuthorDTO other);
+                Task<IEnumerable<AuthorDTO>> GetFollowers(string authorName);
+                Task<IEnumerable<AuthorDTO>> GetFollowing(string authorName);
+                Task ForgetMe(string authorName);
+                Task DeleteAuthor(string authorName);
+                Task RemoveFollowers(IEnumerable<AuthorDTO> result, string TheDeletedAuthorName);
+                Task RemoveFollowing(IEnumerable<AuthorDTO> result, string TheDeletedAuthorName);
                 Task<string> GetAuthorName(Guid id);
         }
 }

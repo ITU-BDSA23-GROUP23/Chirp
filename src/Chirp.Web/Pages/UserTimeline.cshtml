@@ -15,10 +15,7 @@
         @(await Html.PartialAsync("Shared/PageNav", Model.PageNav))
     </div>
 
-    <div>
-        <a>Following: @(await Model.FollowingCount(routeName))</a>
-        <a>Followers: @(Model.FollowersCount(routeName))</a>
-    </div>
+
 
     @if (Model.Cheeps != null && Model.Cheeps.Any())
     {

@@ -27,20 +27,27 @@ public class ForYouModel : PageModel
         Console.WriteLine("ForYouPage for author: " + authorName);
         
         var TotalPages = await cheepRepository.GetPageAmount();
-         
-        var followingAuthors = (await authorRepository.FindAuthorByName(authorName)).Following;
-
-        long totalCheeps = 0;
-
-        foreach (var author in followingAuthors)
+        try
         {
-           totalCheeps += await authorRepository.GetCheepAmount(await authorRepository.GetAuthorName(author)); 
+            var followingAuthors = (await authorRepository.FindAuthorByName(authorName)).Following;
+
+            long totalCheeps = 0;
+
+            foreach (var author in followingAuthors)
+            {
+               totalCheeps += await authorRepository.GetCheepAmount(await authorRepository.GetAuthorName(author)); 
+            }
+
+            PageNav = new PageNavModel(page, (int)Math.Ceiling((double)totalCheeps / 32));
+
+            Cheeps = await cheepRepository.GetCheepsFromAuthors(followingAuthors, page, 32);
+
+
         }
-
-        PageNav = new PageNavModel(page, (int)Math.Ceiling((double)totalCheeps / 32));
-
-        Cheeps = await cheepRepository.GetCheepsFromAuthors(followingAuthors, page, 32);
-
+        catch (NullReferenceException e)
+        {
+            Console.WriteLine(e);
+        }
         return Page();
     } 
 
