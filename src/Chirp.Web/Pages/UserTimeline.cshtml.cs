@@ -35,44 +35,34 @@ public class UserTimelineModel : PageModel
 
     public ActionResult OnGet(string author, [FromQuery] int page)
     {
-
+        
         //Cheeps = _service.GetCheeps(page);
         //Cheeps = _service.GetCheeps(author);
-        var _Cheeps = _cheepRepository.GetCheeps(page, authorName: author);
-        _Cheeps.Wait();
-        Cheeps = _Cheeps.Result;
+        try 
+        {
+            var _Cheeps = _cheepRepository.GetCheeps(page, authorName: author);
+            _Cheeps.Wait();
+            Cheeps = _Cheeps.Result;
+        }
+        catch (AggregateException e)
+        {
+            Console.WriteLine(e);
+        }
+        
+        try
+        {
 
-        var _TotalPages = _cheepRepository.GetPageAmount(author);
-         _TotalPages.Wait();
-         TotalPages = _TotalPages.Result; 
-        TotalPages = 1;
+            var _TotalPages = _cheepRepository.GetPageAmount(author);
+             _TotalPages.Wait();
+             TotalPages = _TotalPages.Result; 
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            TotalPages = 1;
+        }
         PageNav = new PageNavModel(page, TotalPages);
 
         return Page();
     }
-
-    public async Task<int> FollowingCount(string author)
-    {
-        var _author = await _authorRepository.FindAuthorByName(author);
-        Console.WriteLine($"Is author {author} null? = {_author == null}");
-        if (_author != null)
-        {
-            var _FollowingCount = _author.Following.Count;
-            Console.WriteLine(_FollowingCount+ " is the result of _FollowingCount");
-            return _FollowingCount;
-        }
-        else
-        {
-            return 420;
-        }
-    }
-    public int FollowersCount(string author)
-    {
-        var _author = _authorRepository.FindAuthorByName(author);
-        _author.Wait();
-        var _FollowersCount = _author.Result.Followers.Count;
-        Console.WriteLine(_FollowersCount + " is the result of _FollowersCount");
-        return _FollowersCount;
-    }
-
 }

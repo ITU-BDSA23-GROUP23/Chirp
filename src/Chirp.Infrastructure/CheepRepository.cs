@@ -17,13 +17,34 @@ public class CheepRepository : ICheepRepository
         this.dbContext = dbContext;
     }
 
+    public async Task<IEnumerable<CheepDTO>> GetCheepsFromAuthors(ICollection<Guid> authorIds, int page = 1, int pageSize = 32)
+    {
+        IEnumerable<Author> authors = await dbContext.Authors.Include(a => a.Cheeps).Where(a => authorIds.Contains(a.Id)).ToListAsync();
+
+        List<Cheep> Cheeps = new List<Cheep>();
+
+        foreach (Author author in authors)
+        {
+            Cheeps.AddRange(author.Cheeps);
+        }
+
+        var _Cheeps = Cheeps.AsQueryable();
+
+        _Cheeps = _Cheeps.OrderByDescending(t => t.TimeStamp)
+            .Skip(CalculateSkippedCheeps(page, pageSize))
+            .Take(pageSize)
+            .Include(c => c.Author);
+
+        return CheepsToCheepDTOs(_Cheeps.ToList());
+    }
+
     public async Task<IEnumerable<CheepDTO>> GetCheeps(int page = 1, int pageSize = 32, string? authorName = null)
     {
         IQueryable<Cheep> Cheeps;
 
         if (authorName != null)
         {
-            Cheeps = dbContext.Cheeps.Where(c => c.Author.Name == authorName);
+            Cheeps = (await dbContext.Authors.Include(a => a.Cheeps).FirstAsync(c => c.Name == authorName)).Cheeps.AsQueryable();
         }
         else
         {
@@ -35,7 +56,7 @@ public class CheepRepository : ICheepRepository
             .Take(pageSize)
             .Include(c => c.Author);
 
-        return await CheepsToCheepDTOs(Cheeps.ToListAsync());
+        return CheepsToCheepDTOs(Cheeps.ToList());
     }
 
     public async Task<long> GetCheepsAmount(string? authorName = null)
@@ -101,10 +122,10 @@ public class CheepRepository : ICheepRepository
         return (page - 1) * pageSize;
     }
 
-    private async Task<IEnumerable<CheepDTO>> CheepsToCheepDTOs(Task<List<Cheep>> cheeps)
+    private IEnumerable<CheepDTO> CheepsToCheepDTOs(List<Cheep> cheeps)
     {
         var cheepDTOs = new List<CheepDTO>();
-        foreach (var cheep in await cheeps)
+        foreach (var cheep in cheeps)
         {
             DateTime cheepDateTimeUtc = cheep.TimeStamp.ToUniversalTime();
 

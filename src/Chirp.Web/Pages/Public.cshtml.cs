@@ -16,8 +16,8 @@ namespace Chirp.Web.Pages;
 [AllowAnonymous]
 public class PublicModel : PageModel
 {
-    private readonly IAuthorRepository authorRepository;
-    private readonly ICheepRepository cheepRepository;
+    protected readonly IAuthorRepository authorRepository;
+    protected readonly ICheepRepository cheepRepository;
     public CreateCheepModel CreateCheep;
     private readonly ILogger<PublicModel> _logger;
     public IEnumerable<CheepDTO>? Cheeps { get; set; }
@@ -34,7 +34,7 @@ public class PublicModel : PageModel
         
     }
 
-    public ActionResult OnGet([FromQuery] int page)
+    public virtual async Task<ActionResult> OnGet([FromQuery] int page)
     {
         var _TotalPages = cheepRepository.GetPageAmount();
         _TotalPages.Wait();

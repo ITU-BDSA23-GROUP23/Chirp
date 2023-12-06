@@ -1,8 +1,34 @@
 body {
-  background: #eccaca;
-  font-family: 'Trebuchet MS', sans-serif;
-  font-size: 14px;
+  background: url('/images/background.jpeg') center center no-repeat;
+  background-size: cover;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 16px;
+  margin: 0;
 }
+
+.page {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid #cc6e6e;
+  border-radius: 10px;
+  width: 700px;
+  margin: 30px auto;
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+h1 {
+  background: #cc6e6e;
+  margin: 0;
+  padding: 10px 14px;
+  color: white;
+  letter-spacing: 1px;
+  text-shadow: 0 0 3px #772424;
+  font-weight: normal;
+  font-size: 80px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
 
 a {
   color: #26776F;
@@ -16,44 +42,44 @@ input[type="text"],
 input[type="password"] {
   background: white;
   border: 1px solid #e6c0bf;
-  padding: 2px;
+  padding: 8px;
   font-family: 'Trebuchet MS', sans-serif;
   font-size: 14px;
-  border-radius: 2px;
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
+  border-radius: 4px;
   color: #571010;
 }
 
 input[type="submit"] {
   background: #571010;
   border: 1px solid #3b0707;
-  padding: 1px 3px;
+  padding: 8px 16px;
   font-family: 'Trebuchet MS', sans-serif;
   font-size: 14px;
   font-weight: bold;
-  border-radius: 2px;
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
+  border-radius: 4px;
   color: white;
 }
 
 div.page {
   background: white;
   border: 1px solid #cc6e6e;
+  border-radius: 8px;
   width: 700px;
   margin: 30px auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 div.page h1 {
   background: #cc6e6e;
   margin: 0;
-  padding: 10px 14px;
+  padding: 20px;
   color: white;
   letter-spacing: 1px;
   text-shadow: 0 0 3px #772424;
   font-weight: normal;
-  font-size: 80px;
+  font-size: 36px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
 
 div.page h1 img {
@@ -62,11 +88,11 @@ div.page h1 img {
 
 div.page div.navigation {
   background: #DEE9E8;
-  padding: 4px 10px;
+  padding: 10px;
   border-top: 1px solid #ccc;
   border-bottom: 1px solid #eee;
   color: #888;
-  font-size: 12px;
+  font-size: 14px;
   letter-spacing: 0.5px;
 }
 
@@ -82,24 +108,24 @@ div.page h2 {
 }
 
 div.page div.body {
-  padding: 10px;
+  padding: 20px;
 }
 
 div.page div.footer {
   background: #eee;
   color: #888;
-  padding: 5px 10px;
-  font-size: 12px;
+  padding: 10px;
+  font-size: 14px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
 
 div.page div.followstatus {
   border: 1px solid #ccc;
   background: #E3EBEA;
-  border-radius: 2px;
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
-  padding: 3px;
-  font-size: 13px;
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 14px;
 }
 
 div.page ul.cheeps {
@@ -109,14 +135,13 @@ div.page ul.cheeps {
 }
 
 div.page ul.cheeps li {
-  margin: 10px 0;
-  padding: 5px;
+  margin: 20px 0;
+  padding: 20px;
   background: #F0FAF9;
   border: 1px solid #DBF3F1;
-  border-radius: 2px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
+  border-radius: 8px;
   min-height: 48px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
 div.page ul.cheeps p {
@@ -125,7 +150,7 @@ div.page ul.cheeps p {
 
 div.page ul.cheeps li img {
   float: left;
-  padding: 0 10px 0 0;
+  padding: 0 20px 0 0;
 }
 
 div.page ul.cheeps li small {
@@ -134,18 +159,17 @@ div.page ul.cheeps li small {
 }
 
 div.page div.cheepbox {
-  margin: 10px 0;
-  padding: 5px;
+  margin: 20px 0;
+  padding: 20px;
   background: #F0FAF9;
   border: 1px solid #e29494;
-  border-radius: 2px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
 div.page div.cheepbox h3 {
   margin: 0;
-  font-size: 1em;
+  font-size: 1.5em;
   color: #7e2c2c;
 }
 
@@ -154,46 +178,50 @@ div.page div.cheepbox p {
 }
 
 div.page div.cheepbox input[type="text"] {
-  width: 585px;
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-bottom: 10px;
 }
 
 div.page div.cheepbox input[type="submit"] {
-  width: 70px;
-  margin-left: 5px;
+  width: 100%;
+  padding: 10px;
+  background: #571010;
+  border: 1px solid #3b0707;
+  font-weight: bold;
+  border-radius: 4px;
+  color: white;
 }
 
 div.message {
   list-style: none;
-  margin: 10px 10px 0 10px;
-
+  margin: 20px 20px 0 20px;
+  padding: 20px;
   background: #f3b9b9;
   border: 1px solid #ce8181;
-  border-radius: 2px;
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
-  padding: 4px;
-  font-size: 13px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  font-size: 14px;
 }
 
 ul.message li {
   background: #f3b9b9;
   border: 1px solid #ce8181;
-  border-radius: 2px;
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
-  padding: 4px;
-  font-size: 13px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  padding: 20px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  font-size: 14px;
 }
 
 div.error {
-  margin: 10px 0;
+  margin: 20px 0;
+  padding: 20px;
   background: #FAE4E4;
   border: 1px solid #DD6F6F;
-  border-radius: 2px;
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
-  padding: 4px;
-  font-size: 13px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  font-size: 14px;
 }
 
 div.topics {
@@ -201,13 +229,14 @@ div.topics {
   height: 250px;
   background: #ffffff;
   border: 1px solid #e29494;
-  border-radius: 2px;
+  border-radius: 8px;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   margin-left: 460px;
-  padding: 10px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 ul.topic {
@@ -217,12 +246,11 @@ ul.topic {
 }
 
 li.topic {
-  margin: 10px 0;
-  padding: 5px;
+  margin: 20px 0;
+  padding: 20px;
   background: #F0FAF9;
   border: 1px solid #DBF3F1;
-  border-radius: 2px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
+  border-radius: 8px;
   min-height: 20px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
