@@ -75,8 +75,6 @@ public class PublicModel : PageModel
         {
             lo = Request.Form["Love"];
         }
-        Console.WriteLine($"li is {li}");
-        Console.WriteLine($"uf is {uf}");
         
         if (f != null)
         {
@@ -94,7 +92,6 @@ public class PublicModel : PageModel
         } 
         else if(li != null)
         {
-            Console.WriteLine("Li is: " + li);
             Guid liGuid = Guid.Parse(li);
             await cheepRepository.ReactToCheep("Like", liGuid);
         } else if (di != null)
@@ -160,5 +157,12 @@ public class PublicModel : PageModel
             return true;
         }
         return false;
+    }
+
+    public async Task<int> GetReactionCount(Guid cheepId, Reactiontype type)
+    {
+        var reaction = await cheepRepository.GetReactions(cheepId, (int)type);
+
+        return reaction.Count;
     }
 }

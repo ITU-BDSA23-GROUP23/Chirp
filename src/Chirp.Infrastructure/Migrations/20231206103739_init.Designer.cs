@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chirp.Infrastructure.Migrations
 {
     [DbContext(typeof(ChirpDBContext))]
-    [Migration("20231201120054_Migrations")]
-    partial class Migrations
+    [Migration("20231206103739_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -87,7 +87,7 @@ namespace Chirp.Infrastructure.Migrations
                     b.ToTable("Cheeps", (string)null);
                 });
 
-            modelBuilder.Entity("Chirp.Infrastructure.Reactions", b =>
+            modelBuilder.Entity("Chirp.Infrastructure.Reaction", b =>
                 {
                     b.Property<int>("ChirpId")
                         .HasColumnType("int");
@@ -136,7 +136,7 @@ namespace Chirp.Infrastructure.Migrations
                     b.Navigation("Author");
                 });
 
-            modelBuilder.Entity("Chirp.Infrastructure.Reactions", b =>
+            modelBuilder.Entity("Chirp.Infrastructure.Reaction", b =>
                 {
                     b.HasOne("Chirp.Infrastructure.Author", "Author")
                         .WithMany("Reactions")

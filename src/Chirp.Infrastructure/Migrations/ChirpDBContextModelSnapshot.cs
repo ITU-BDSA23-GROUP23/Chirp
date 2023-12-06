@@ -84,7 +84,7 @@ namespace Chirp.Infrastructure.Migrations
                     b.ToTable("Cheeps", (string)null);
                 });
 
-            modelBuilder.Entity("Chirp.Infrastructure.Reactions", b =>
+            modelBuilder.Entity("Chirp.Infrastructure.Reaction", b =>
                 {
                     b.Property<int>("ChirpId")
                         .HasColumnType("int");
@@ -133,7 +133,7 @@ namespace Chirp.Infrastructure.Migrations
                     b.Navigation("Author");
                 });
 
-            modelBuilder.Entity("Chirp.Infrastructure.Reactions", b =>
+            modelBuilder.Entity("Chirp.Infrastructure.Reaction", b =>
                 {
                     b.HasOne("Chirp.Infrastructure.Author", "Author")
                         .WithMany("Reactions")

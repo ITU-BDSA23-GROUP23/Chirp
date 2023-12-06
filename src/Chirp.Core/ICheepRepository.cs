@@ -13,6 +13,8 @@ public interface ICheepRepository
     Task<int> GetPageAmount(String? authorName = null);
     Task ReactToCheep(string type, Guid cheepId);
 
+    Task<ReactionDTO> GetReactions(Guid cheepId, int type);
+
     //Task<IEnumerable<CheepDTO>> CheepsToCheepDTOs(Task<List<cheep>> cheeps);
     // void Add(Cheep entity);
     // void Update(Cheep entity);
