@@ -5,6 +5,12 @@ using NuGet.Protocol.Plugins;
 using Chirp.Infrastructure;
 using SQLitePCL;
 
+
+/// <summary>
+/// This class is used as a repostiory of functions/methods that we use to interact with the Database when dealing with Authors 
+/// This class has methods like findAuthor, Create author, and eveything we use later to get or update data that has to do with an Author  
+/// </summary>
+
 public class AuthorRepository : IAuthorRepository
 {
     private readonly ChirpDBContext dbContext;
