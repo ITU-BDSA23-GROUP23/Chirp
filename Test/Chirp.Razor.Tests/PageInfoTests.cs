@@ -56,7 +56,6 @@ public class PageInfoTests : IDisposable
 
         await authorRepository.FollowAuthor(author2, author1);
         await authorRepository.FollowAuthor(author3, author1);
-        await authorRepository.FollowAuthor(author1, author2);
 
         // Act
         var author1Following = await authorRepository.GetFollowing(author1Name);
@@ -82,8 +81,6 @@ public class PageInfoTests : IDisposable
         var author2 = await authorRepository.FindAuthorByName(author2Name);
         var author3 = await authorRepository.FindAuthorByName(author3ame);
 
-        await authorRepository.FollowAuthor(author2, author1);
-        await authorRepository.FollowAuthor(author3, author1);
         await authorRepository.FollowAuthor(author1, author2);
         await authorRepository.FollowAuthor(author1, author3);
 
@@ -150,7 +147,95 @@ public class PageInfoTests : IDisposable
         // Assert
         Assert.Equal(1, author1FollowingCount);
     }
+    [Fact]
+    public async Task DeleteAuthorTest()
+    {
+        // Arrange
+        string author1Name = "ArthurAuthor1";
+        authorRepository.CreateAuthor(new CreateAuthorDTO(author1Name, ""));
+        // Author 2
+        string author2Name = "BalderAuthor2";
+        authorRepository.CreateAuthor(new CreateAuthorDTO(author2Name, ""));
+        // Author 3
+        string author3ame = "CamillaAuthor3";
+        authorRepository.CreateAuthor(new CreateAuthorDTO(author3ame, ""));
 
+        var author1 = await authorRepository.FindAuthorByName(author1Name);
+        var author2 = await authorRepository.FindAuthorByName(author2Name);
+        var author3 = await authorRepository.FindAuthorByName(author3ame);
+
+        await authorRepository.FollowAuthor(author2, author1);
+        await authorRepository.FollowAuthor(author3, author1);
+        await authorRepository.FollowAuthor(author1, author2);
+
+        // Act
+        await authorRepository.DeleteAuthor(author1Name);
+
+        // Assert
+        Assert.Null(await authorRepository.FindAuthorByName(author1Name));
+        Assert.Equal(0, authorRepository.GetFollowersCount(author1Name));
+        Assert.Equal(0, authorRepository.GetFollowingCount(author1Name));
+    }
+
+    [Fact]
+    public async Task RemoveFollowersTest()
+    {
+        // Arrange
+        string author1Name = "ArthurAuthor1";
+        authorRepository.CreateAuthor(new CreateAuthorDTO(author1Name, ""));
+        // Author 2
+        string author2Name = "BalderAuthor2";
+        authorRepository.CreateAuthor(new CreateAuthorDTO(author2Name, ""));
+        // Author 3
+        string author3ame = "CamillaAuthor3";
+        authorRepository.CreateAuthor(new CreateAuthorDTO(author3ame, ""));
+
+        var author1 = await authorRepository.FindAuthorByName(author1Name);
+        var author2 = await authorRepository.FindAuthorByName(author2Name);
+        var author3 = await authorRepository.FindAuthorByName(author3ame);
+
+        await authorRepository.FollowAuthor(author2, author1);
+        await authorRepository.FollowAuthor(author3, author1);
+        await authorRepository.FollowAuthor(author1, author2);
+
+        // Act
+        var author1Followers = await authorRepository.GetFollowers(author1Name);
+        await authorRepository.RemoveFollowers(author1Followers, author1Name);
+
+        // Assert
+        Assert.Equal(0, authorRepository.GetFollowersCount(author1Name));
+    }
+
+    [Fact]
+    public async Task RemoveFollowingTest()
+    {
+        // Arrange
+        string author1Name = "ArthurAuthor1";
+        authorRepository.CreateAuthor(new CreateAuthorDTO(author1Name, ""));
+        // Author 2
+        string author2Name = "BalderAuthor2";
+        authorRepository.CreateAuthor(new CreateAuthorDTO(author2Name, ""));
+        // Author 3
+        string author3ame = "CamillaAuthor3";
+        authorRepository.CreateAuthor(new CreateAuthorDTO(author3ame, ""));
+
+        var author1 = await authorRepository.FindAuthorByName(author1Name);
+        var author2 = await authorRepository.FindAuthorByName(author2Name);
+        var author3 = await authorRepository.FindAuthorByName(author3ame);
+
+        await authorRepository.FollowAuthor(author2, author1);
+        await authorRepository.FollowAuthor(author3, author1);
+        await authorRepository.FollowAuthor(author1, author2);
+
+        // Act
+        var author1Following = await authorRepository.GetFollowing(author1Name);
+        await authorRepository.RemoveFollowing(author1Following, author1Name);
+
+        // Assert
+        Assert.Equal(0, authorRepository.GetFollowingCount(author1Name));
+    }
+
+    //Integration test
     [Fact]
     public async Task ForgetMeTest()
     {
