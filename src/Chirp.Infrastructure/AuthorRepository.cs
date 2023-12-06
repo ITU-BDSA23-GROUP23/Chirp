@@ -299,5 +299,19 @@ public class AuthorRepository : IAuthorRepository
             return FollowersCount;
         }
     }
+
+    public bool IsFollowing(string authorNameOther, string authorNameSelf)
+    {
+        var _authorOther = FindAuthorByName(authorNameOther).Result;
+        var _authorSelf = FindAuthorByName(authorNameSelf).Result;
+        if (_authorSelf.Following?.Contains(_authorOther.Id) ?? false)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
 

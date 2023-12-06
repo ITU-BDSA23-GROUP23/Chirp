@@ -22,5 +22,6 @@ namespace Chirp.Infrastructure
                 Task<string> GetAuthorName(Guid id);
                 int GetFollowingCount(string authorName);
                 int GetFollowersCount(string authorName);
+                bool IsFollowing(string authorNameOther, string authorNameSelf);
         }
 }
