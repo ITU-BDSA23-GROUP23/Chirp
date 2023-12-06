@@ -39,17 +39,6 @@ public class PageInfoTests : IDisposable
 
     }
 
-    [Fact]
-    public void OnGetTest()
-    {
-        // Arrange
-
-
-        // Act
-
-
-        // Assert
-    }
 
     [Fact]
     public async Task FollowingCountTest()
