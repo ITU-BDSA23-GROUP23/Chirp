@@ -213,6 +213,13 @@ public class AuthorRepository : IAuthorRepository
             await RemoveFollowing(_Following, authorName);
             Console.WriteLine($"Following deleted.");
         }
+
+        // Deleting reactions connected to the author.
+        await DeleteReactionsByAuthor(authorName);
+        await DeleteReactionsForCheepsByAuthor(authorName);
+
+        // Deleting cheeps connected to the author, and the author itself.
+        await DeleteAuthorCheeps(authorName);
         await DeleteAuthor(authorName);
         Console.WriteLine($"Author {authorName} deleted.");
     }
@@ -222,8 +229,6 @@ public class AuthorRepository : IAuthorRepository
         var author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == authorName);
         if (author != null)
         {
-            // Delete the Cheeps
-            dbContext.Cheeps.RemoveRange(dbContext.Cheeps.Where(c => c.Author.Name == authorName));
             // Delete the Author
             dbContext.Authors.Remove(author);
             await dbContext.SaveChangesAsync();
@@ -232,6 +237,12 @@ public class AuthorRepository : IAuthorRepository
         {
             // throw new NullReferenceException($"Author {authorName} does not exist.");
         }
+    }
+
+    public async Task DeleteAuthorCheeps(string authorName)
+    {
+        dbContext.Cheeps.RemoveRange(dbContext.Cheeps.Where(c => c.Author.Name == authorName));
+        await dbContext.SaveChangesAsync();
     }
 
     public async Task RemoveFollowers(IEnumerable<AuthorDTO> result, string DeletingAuthorName)
@@ -267,9 +278,39 @@ public class AuthorRepository : IAuthorRepository
         }
 
         var DelitingAuthor = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == DeletingAuthorName);
-
         DelitingAuthor.Following.Clear();
         await dbContext.SaveChangesAsync();
+    }
+
+    public async Task DeleteReactionsForCheepsByAuthor(string AuthorName)
+    {
+        var Cheeps = await dbContext.Cheeps.Where(c => c.Author.Name == AuthorName).ToListAsync();
+        // We get the reaction for each cheep, then get the author of the reaction, and then remove the reaction from the author's reactions.
+        foreach (var cheep in Cheeps)
+        {
+            var Reactions = await dbContext.Reactions.Where(r => r.Cheep.Id == cheep.Id).ToListAsync();
+            foreach (var reaction in Reactions)
+            {
+                var Author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Reactions.Contains(reaction));
+                Author.Reactions.Remove(reaction);
+            }
+        }
+        // Deletes the reactions from the database.
+        foreach (var cheep in Cheeps)
+        {
+            dbContext.Reactions.RemoveRange(dbContext.Reactions.Where(r => r.Cheep.Id == cheep.Id));
+        }
+        await dbContext.SaveChangesAsync();
+    }
+
+    public async Task DeleteReactionsByAuthor(string AuthorName)
+    {
+        var Author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == AuthorName);
+        if (Author != null)
+        {
+            Author.Reactions.Clear();
+            await dbContext.SaveChangesAsync();
+        }
     }
 
     public int GetFollowingCount(string authorName)
