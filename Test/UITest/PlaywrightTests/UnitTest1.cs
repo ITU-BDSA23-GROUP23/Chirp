@@ -8,6 +8,16 @@ using System.Threading.Tasks;
 
 namespace PlaywrightTests;
 
+/// <summary>
+/// A lot of this code has been generated with the use of playwright's codegen
+/// https://playwright.dev/dotnet/docs/codegen-intro
+/// For the login part we have made a github account for the test
+/// Sometimes the login will require a Verification code from the email 
+/// The email and password are the same for the email as for the github
+/// The page to login is one.com
+/// </summary>
+
+
 [Parallelizable(ParallelScope.Self)]
 [TestFixture]
 public class Tests : PageTest
