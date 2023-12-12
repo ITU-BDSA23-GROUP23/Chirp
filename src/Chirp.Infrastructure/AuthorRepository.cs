@@ -204,6 +204,8 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task ForgetMe(string authorName)
     {
+        // For testing: var Author = await dbContext.Authors.Include(r => r.Reactions).FirstOrDefaultAsync(a => a.Name == authorName);
+        // For testing: Console.WriteLine($"Author {authorName} has {Author.Reactions.Count} reactions.");
         var _Followers = await GetFollowers(authorName);
         var _Following = await GetFollowing(authorName);
         Console.WriteLine("Followers: (" + _Followers + ")");
@@ -221,6 +223,13 @@ public class AuthorRepository : IAuthorRepository
             await RemoveFollowing(_Following, authorName);
             Console.WriteLine($"Following deleted.");
         }
+
+        // Deleting reactions connected to the author.
+        await DeleteReactionsForCheepsByAuthor(authorName);
+        await DeleteReactionsByAuthor(authorName);
+
+        // Deleting cheeps connected to the author, and the author itself.
+        await DeleteAuthorCheeps(authorName);
         await DeleteAuthor(authorName);
         Console.WriteLine($"Author {authorName} deleted.");
     }
@@ -230,8 +239,6 @@ public class AuthorRepository : IAuthorRepository
         var author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == authorName);
         if (author != null)
         {
-            // Delete the Cheeps
-            dbContext.Cheeps.RemoveRange(dbContext.Cheeps.Where(c => c.Author.Name == authorName));
             // Delete the Author
             dbContext.Authors.Remove(author);
             await dbContext.SaveChangesAsync();
@@ -240,6 +247,12 @@ public class AuthorRepository : IAuthorRepository
         {
             // throw new NullReferenceException($"Author {authorName} does not exist.");
         }
+    }
+
+    public async Task DeleteAuthorCheeps(string authorName)
+    {
+        dbContext.Cheeps.RemoveRange(dbContext.Cheeps.Where(c => c.Author.Name == authorName));
+        await dbContext.SaveChangesAsync();
     }
 
     public async Task RemoveFollowers(IEnumerable<AuthorDTO> result, string DeletingAuthorName)
@@ -278,6 +291,51 @@ public class AuthorRepository : IAuthorRepository
 
         DelitingAuthor!.Following.Clear();
         await dbContext.SaveChangesAsync();
+    }
+
+    public async Task DeleteReactionsForCheepsByAuthor(string AuthorName)
+    {
+        var Cheeps = await dbContext.Cheeps.Where(c => c.Author.Name == AuthorName).ToListAsync();
+        // We get the reaction for each cheep, then get the author of the reaction, and then remove the reaction from the author's reactions.
+        foreach (var cheep in Cheeps)
+        {
+            var Reactions = await dbContext.Reactions.Where(r => r.Cheep.Id == cheep.Id).ToListAsync();
+            foreach (var reaction in Reactions)
+            {
+                var Author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Reactions.Contains(reaction));
+                Author.Reactions.Remove(reaction);
+            }
+        }
+        // Deletes the reactions from the database.
+        foreach (var cheep in Cheeps)
+        {
+            dbContext.Reactions.RemoveRange(dbContext.Reactions.Where(r => r.Cheep.Id == cheep.Id));
+        }
+        await dbContext.SaveChangesAsync();
+    }
+
+    public async Task DeleteReactionsByAuthor(string AuthorName)
+    {
+        Console.WriteLine($"Deleting reactions by author {AuthorName}");
+        var Author = await dbContext.Authors.Include(r => r.Reactions).FirstOrDefaultAsync(a => a.Name == AuthorName);
+        if (Author != null)
+        {
+            Console.WriteLine($"Author {AuthorName} has {Author.Reactions.Count} reactions.");
+            var reactionsToRemove = dbContext.Reactions.Include(c => c.Cheep).Include(a => a.Author).Where(r => r.Author.Name == AuthorName);
+            Author.Reactions = new List<Reaction>();
+            // We remove the specific reactions from their cheeps.
+            foreach (var reaction in reactionsToRemove)
+            {
+                Console.WriteLine($"Removing reaction {reaction.ReactionId} from cheep {reaction.Cheep.Id}");
+                reaction.Cheep.Reactions.Remove(reaction);
+            }
+
+            dbContext.Reactions.RemoveRange(reactionsToRemove);
+
+            // Author.Reactions.Clear(); For some reason, this doesn't work. Instead we set Reactions to a new empty list.
+
+            await dbContext.SaveChangesAsync();
+        }
     }
 
     public int GetFollowingCount(string authorName)
