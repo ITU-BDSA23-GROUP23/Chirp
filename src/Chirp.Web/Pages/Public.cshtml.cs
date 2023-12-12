@@ -57,23 +57,23 @@ public class PublicModel : PageModel
     {
         await OnGet(page);
 
-        li = HttpContext.Request.Query["li"].ToString();
-        di = HttpContext.Request.Query["di"].ToString();
-        lo = HttpContext.Request.Query["lo"].ToString();
-        if (string.IsNullOrEmpty(li))
-        {
-            li = Request.Form["Like"];
-        }
+        // li = HttpContext.Request.Query["li"].ToString();
+        // di = HttpContext.Request.Query["di"].ToString();
+        // lo = HttpContext.Request.Query["lo"].ToString();
+        // if (string.IsNullOrEmpty(li))
+        // {
+        //     li = Request.Form["Like"];
+        // }
 
-        if (string.IsNullOrEmpty(di))
-        {
-            di = Request.Form["Dislike"];
-        }
+        // if (string.IsNullOrEmpty(di))
+        // {
+        //     di = Request.Form["Dislike"];
+        // }
 
-        if (string.IsNullOrEmpty(lo))
-        {
-            lo = Request.Form["Love"];
-        }
+        // if (string.IsNullOrEmpty(lo))
+        // {
+        //     lo = Request.Form["Love"];
+        // }
         
         if (f != null)
         {
@@ -82,19 +82,20 @@ public class PublicModel : PageModel
         {
             await Methods.UnfollowAuthor(authorRepository, uf, Request.Form["Unfollow"]);
         } 
-        else if(li != null)
-        {
-            Guid liGuid = Guid.Parse(li);
-            await cheepRepository.ReactToCheep(author, "Like", liGuid);
-        } else if (di != null)
-        {   
-            Guid diGuid = Guid.Parse(di);
-            await cheepRepository.ReactToCheep(author, "Dislike", diGuid);
-        } else if (lo != null)
-        {
-            Guid loGuid = Guid.Parse(lo);
-            await cheepRepository.ReactToCheep(author, "Love", loGuid);
-        } else if (c != null) 
+        // else if(li != null)
+        // {
+        //     Guid liGuid = Guid.Parse(li);
+        //     await cheepRepository.ReactToCheep(author, "Like", liGuid);
+        // } else if (di != null)
+        // {   
+        //     Guid diGuid = Guid.Parse(di);
+        //     await cheepRepository.ReactToCheep(author, "Dislike", diGuid);
+        // } else if (lo != null)
+        // {
+        //     Guid loGuid = Guid.Parse(lo);
+        //     await cheepRepository.ReactToCheep(author, "Love", loGuid);
+        // } 
+        else if (c != null) 
         {
             string? Message = Request.Form["Cheep"];
             CreateCheep.OnPostCheep(c, Message);
