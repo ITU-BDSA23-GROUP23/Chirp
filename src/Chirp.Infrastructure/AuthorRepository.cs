@@ -271,5 +271,47 @@ public class AuthorRepository : IAuthorRepository
         DelitingAuthor.Following.Clear();
         await dbContext.SaveChangesAsync();
     }
+
+    public int GetFollowingCount(string authorName)
+    {
+        var _author = FindAuthorByName(authorName).Result;
+        if (_author == null)
+        {
+            return 0;
+        }
+        else
+        {
+            int FollowingCount = _author?.Following?.Count ?? 0;
+            return FollowingCount;
+        }
+    }
+
+    public int GetFollowersCount(string authorName)
+    {
+        var _author = FindAuthorByName(authorName).Result;
+        if (_author == null)
+        {
+            return 0;
+        }
+        else
+        {
+            int FollowersCount = _author?.Followers?.Count ?? 0;
+            return FollowersCount;
+        }
+    }
+
+    public bool IsFollowing(string authorNameOther, string authorNameSelf)
+    {
+        var _authorOther = FindAuthorByName(authorNameOther).Result;
+        var _authorSelf = FindAuthorByName(authorNameSelf).Result;
+        if (_authorSelf.Following?.Contains(_authorOther.Id) ?? false)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
-    
+

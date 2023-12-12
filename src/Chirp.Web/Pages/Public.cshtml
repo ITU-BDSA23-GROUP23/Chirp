@@ -6,11 +6,14 @@
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
+    Model.author = User.Identity?.Name;
 }
 
 @* file that has HTML markup with C# code using Razor syntax. *@
 
 <div>
+    <h2>Public Timeline</h2>
+    @(await Html.PartialAsync("Shared/PageNav", @Model.PageNav))
     <div class="follow-buttons">
         @if (User.Identity.IsAuthenticated)
         {
@@ -23,37 +26,7 @@
         <ul class="cheeps">
             @foreach (var cheep in Model.Cheeps)
             {
-                <li class="cheep-item">
-                    <div class="cheep-content">
-                        <strong>
-                            <a href="/@cheep.AuthorName">@cheep.AuthorName</a>
-                        </strong>
-                        <p>
-                            @cheep.Message
-                            <br />
-                            <small>&mdash; @cheep.TimeStamp</small>
-                        </p>
-                        @if (User.Identity.IsAuthenticated && cheep.AuthorName != User.Identity.Name)
-                        {
-                            @if (await Model.IsFollowing(User.Identity?.Name, @cheep.AuthorName))
-                            {
-                                <form method="post" action=@("?uf=" + @User.Identity?.Name)>
-                                    @Html.AntiForgeryToken()
-                                    <input hidden type="text" name="Unfollow" value="@cheep.AuthorName">
-                                    <input type="submit" value="Unfollow" class="btn-unfollow" />
-                                </form>
-                            }
-                            else
-                            {
-                                <form method="post" action=@("?f=" + @User.Identity?.Name)>
-                                    @Html.AntiForgeryToken()
-                                    <input hidden type="text" name="Follow" value="@cheep.AuthorName" />
-                                    <input type="submit" name="submit" value="Follow" class="btn-follow" />
-                                </form>
-                            }
-                        }
-                    </div>
-                </li>
+            @(await Html.PartialAsync("Shared/Cheep", @Model.GenerateCheepModel(cheep)))
             }
         </ul>
     }

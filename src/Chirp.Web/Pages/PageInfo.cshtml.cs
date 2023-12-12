@@ -3,6 +3,7 @@ using Chirp.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Authorization;
+using Chirp.Web.Pages.Shared;
 
 namespace Chirp.Web.Pages;
 
@@ -53,36 +54,24 @@ public class PageInfoModel : PageModel
             Console.WriteLine(e);
         }
         return Page();
-       
+
+    }
+
+
+
+    public CheepModel GenerateCheepModel(CheepDTO cheep)
+    {
+        return new CheepModel(_Author_repository, _Cheep_repository, cheep);
     }
 
     public int FollowingCount(string authorName)
     {
-        var _author = _Author_repository.FindAuthorByName(authorName).Result;
-        Console.WriteLine($"Is author null? = {_author == null}");
-        //Console.WriteLine(_author.Following.ToArray()[0]);    
-        int _FollowingCount = _author?.Following?.Count ?? 0;
-        Console.WriteLine(_FollowingCount + " is the result of _FollowingCount");
-        return _FollowingCount;
+        return _Author_repository.GetFollowingCount(authorName);
     }
 
     public int FollowersCount(string authorName)
     {
-        var _author = _Author_repository.FindAuthorByName(authorName);
-        _author.Wait();
-        if (_author.Result == null)
-        {
-            Console.WriteLine("Author is null");
-            return 0;
-        }
-        else
-        {
-            Console.WriteLine("Author is not null1");
-            var _FollowersCount = _author.Result.Followers.Count;
-            Console.WriteLine("Author is not null2");
-            Console.WriteLine(_FollowersCount + " is the result of _FollowersCount");
-            return _FollowersCount;
-        }
+        return _Author_repository.GetFollowersCount(authorName);
     }
 
     public async Task OnGetFollowers(string authorName)

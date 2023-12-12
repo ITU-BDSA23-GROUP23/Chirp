@@ -83,6 +83,49 @@ public class AuthorRepositoryTests : IDisposable
         Assert.True(foundAuthor.Name == "Thorbjørnen2");
     }
 
+    [Fact]
+    //make a followauthor test
+    public async Task FollowAuthorTest()
+    {
+        // Arrange
+        IAuthorRepository authorRepository = new AuthorRepository(context);
+        string author1Name = "ArthurAuthor1";
+        authorRepository.CreateAuthor(new CreateAuthorDTO(author1Name, ""));
+        // Author 2
+        string author2Name = "BalderAuthor2";
+        authorRepository.CreateAuthor(new CreateAuthorDTO(author2Name, ""));
+
+        var author1 = await authorRepository.FindAuthorByName(author1Name);
+        var author2 = await authorRepository.FindAuthorByName(author2Name);
+
+        // Act
+        await authorRepository.FollowAuthor(author1, author2);
+
+        // Assert
+        Assert.True(authorRepository.IsFollowing(author1Name, author2Name));
+    }
+    [Fact]
+    public async Task UnfollowAuthorTest()
+    {
+        // Arrange
+        IAuthorRepository authorRepository = new AuthorRepository(context);
+        string author1Name = "ArthurAuthor1";
+        authorRepository.CreateAuthor(new CreateAuthorDTO(author1Name, ""));
+        // Author 2
+        string author2Name = "BalderAuthor2";
+        authorRepository.CreateAuthor(new CreateAuthorDTO(author2Name, ""));
+
+        var author1 = await authorRepository.FindAuthorByName(author1Name);
+        var author2 = await authorRepository.FindAuthorByName(author2Name);
+
+        // Act
+        await authorRepository.FollowAuthor(author1, author2);
+        await authorRepository.UnfollowAuthor(author1, author2);
+
+        // Assert
+        Assert.False(authorRepository.IsFollowing(author1Name, author2Name));
+    }
+
     public void Dispose()
     {
         context.Dispose();
