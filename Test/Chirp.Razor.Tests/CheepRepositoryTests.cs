@@ -31,8 +31,8 @@ public class CheepRepositoryTests : IDisposable
     {
         // var a10 = new Author() { Name = "Jacqualine Gilcoine", Email = "Jacqualine.Gilcoine@gmail.com", Cheeps = new List<Cheep>() };
         // var c1 = new Cheep() { Author = a10, Message = "123Testing", TimeStamp = DateTime.Parse("2023-08-01 13:14:37") };
-        ICheepRepository cheepRepository = new CheepRepository(context);
         IAuthorRepository authorRepository = new AuthorRepository(context);
+        ICheepRepository cheepRepository = new CheepRepository(context, authorRepository);
         CreateAuthorDTO author = new CreateAuthorDTO("Jacqualine Gilcoine", "Jacqualine.Gilcoine@gmail.com");
         authorRepository.CreateAuthor(author);
         var Aurthor = authorRepository.FindAuthorByName("Jacqualine Gilcoine").Result;
@@ -52,9 +52,8 @@ public class CheepRepositoryTests : IDisposable
     public async Task GetCheepsAmountTest()
     {
         DbInitializer.Initialize(context);
-        ICheepRepository cheepRepository = new CheepRepository(context);
         var authorRepository = new AuthorRepository(context);
-
+        ICheepRepository cheepRepository = new CheepRepository(context, authorRepository);
         var cheeps = await cheepRepository.GetCheepsAmount("Mellie Yost");
         var authorCheeps = await authorRepository.GetCheepAmount("Mellie Yost");
 

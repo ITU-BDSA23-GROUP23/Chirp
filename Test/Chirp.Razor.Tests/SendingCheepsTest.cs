@@ -27,8 +27,8 @@ public class SendingCheepsTest
     {
         //Arrange
         string Message = "o";
-        ICheepRepository cheepRepository = new CheepRepository(context);
         IAuthorRepository authorRepository = new AuthorRepository(context);
+        ICheepRepository cheepRepository = new CheepRepository(context, authorRepository);
         CreateAuthorDTO author = new CreateAuthorDTO("Thorstein", "tpep123@gmail.com");
 
         authorRepository.CreateAuthor(author);
@@ -65,8 +65,8 @@ public class SendingCheepsTest
     {
         //Arrange
         string Message = "";
-        ICheepRepository cheepRepository = new CheepRepository(context);
         IAuthorRepository authorRepository = new AuthorRepository(context);
+        ICheepRepository cheepRepository = new CheepRepository(context, authorRepository);
         CreateAuthorDTO author = new CreateAuthorDTO("Thorstein", "tpep123@gmail.com");
        
 
@@ -93,8 +93,8 @@ public class SendingCheepsTest
     {
         //Arrange
         string Message = "mommopmsemfmpmsopemfpsempfmspklfslfldsnfkldsnfldsnlfnsdlfndslkfndslkfndslfndslfndlskfnkldsnfldsnfldsnfldsnfkldsnflkdsnflkdsknlkadfnvlkfdnvlfnvlksfdnklnfslknsflff";
-        ICheepRepository cheepRepository = new CheepRepository(context);
         IAuthorRepository authorRepository = new AuthorRepository(context);
+        ICheepRepository cheepRepository = new CheepRepository(context, authorRepository);
         CreateAuthorDTO author = new CreateAuthorDTO("Thorstein", "tpep123@gmail.com");
 
         authorRepository.CreateAuthor(author);
@@ -119,8 +119,9 @@ public class SendingCheepsTest
     {
         //Arrange
         string Message = "mommopmsemfmpmsopemfpsempfmspklfslfldsnfkldsnfldsnlfnsdlfndslkfndslkfndslfndslfndlskfnkldsnfldsnfldsnfldsnfkldsnflkdsnflkdsknlkadfnvlkfdnvlfnvlksfdnklnfslknsflf";
-        ICheepRepository cheepRepository = new CheepRepository(context);
         IAuthorRepository authorRepository = new AuthorRepository(context);
+        ICheepRepository cheepRepository = new CheepRepository(context, authorRepository);
+        
         CreateAuthorDTO author = new CreateAuthorDTO("Thorstein", "tpep123@gmail.com");
 
         authorRepository.CreateAuthor(author);
@@ -145,8 +146,8 @@ public class SendingCheepsTest
     {
         //Arrange
         string Message = "abcæøå";
-        ICheepRepository cheepRepository = new CheepRepository(context);
-        IAuthorRepository authorRepository = new AuthorRepository(context);
+        IAuthorRepository authorRepository = new AuthorRepository(context);        
+        ICheepRepository cheepRepository = new CheepRepository(context, authorRepository);
         CreateAuthorDTO author = new CreateAuthorDTO("Thorstein", "tpep123@gmail.com");
 
         authorRepository.CreateAuthor(author);
