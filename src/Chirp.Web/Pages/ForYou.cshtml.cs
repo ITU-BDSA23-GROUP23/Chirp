@@ -13,8 +13,8 @@ public class ForYouModel : PageModel
     private readonly IAuthorRepository authorRepository;
     private readonly ICheepRepository cheepRepository;
     public PageNavModel PageNav;
-    public IEnumerable<CheepDTO> Cheeps;
-    public string author;
+    public IEnumerable<CheepDTO>? Cheeps;
+    public string? author;
 
     public ForYouModel(IAuthorRepository authorRepository, ICheepRepository cheepRepository) 
         {
@@ -29,11 +29,11 @@ public class ForYouModel : PageModel
         var TotalPages = await cheepRepository.GetPageAmount();
         try
         {
-            var followingAuthors = (await authorRepository.FindAuthorByName(authorName)).Following;
+            var followingAuthors = (await authorRepository.FindAuthorByName(authorName))!.Following;
 
             long totalCheeps = 0;
 
-            foreach (var author in followingAuthors)
+            foreach (var author in followingAuthors!)
             {
                totalCheeps += await authorRepository.GetCheepAmount(await authorRepository.GetAuthorName(author)); 
             }
@@ -54,32 +54,37 @@ public class ForYouModel : PageModel
 
     public async Task<ActionResult> OnPost(string authorName, [FromQuery] int page, [FromQuery] string f, [FromQuery] string uf, [FromQuery] string c, [FromQuery] string li, [FromQuery] string di, [FromQuery] string lo)
     {
-        await OnGet(authorName, page);
 
+        if(string.IsNullOrEmpty(author))
+        {
+            author = User.Identity?.Name!;
+        }
+
+        await OnGet(authorName, page);
         li = HttpContext.Request.Query["li"].ToString();
         di = HttpContext.Request.Query["di"].ToString();
         lo = HttpContext.Request.Query["lo"].ToString();
         if (string.IsNullOrEmpty(li))
         {
-            li = Request.Form["Like"];
+            li = Request.Form["Like"]!;
         }
 
         if (string.IsNullOrEmpty(di))
         {
-            di = Request.Form["Dislike"];
+            di = Request.Form["Dislike"]!;
         }
 
         if (string.IsNullOrEmpty(lo))
         {
-            lo = Request.Form["Love"];
+            lo = Request.Form["Love"]!;
         }
         
         if (f != null)
         {
-            await Methods.FollowAuthor(authorRepository, f, Request.Form["Follow"]);
+            await Methods.FollowAuthor(authorRepository, f, Request.Form["Follow"]!);
         } else if (uf != null)
         {
-            await Methods.UnfollowAuthor(authorRepository, uf, Request.Form["Unfollow"]);
+            await Methods.UnfollowAuthor(authorRepository, uf, Request.Form["Unfollow"]!);
         } 
         else if(li != null)
         {
@@ -95,7 +100,7 @@ public class ForYouModel : PageModel
             await cheepRepository.ReactToCheep(author, "Love", loGuid);
         }
         
-        return await OnGet(authorName, page);
+        return Page();
     }
 
 

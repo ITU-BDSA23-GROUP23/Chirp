@@ -23,8 +23,8 @@
 
 <!-- Display followers and following count -->
 <div class="followers">
-    <a>Followers: @Model.FollowersCount(User.Identity?.Name)</a>
-    <a>Following: @Model.FollowingCount(User.Identity?.Name)</a>
+    <a>Followers: @Model.FollowersCount(User.Identity?.Name!)</a>
+    <a>Following: @Model.FollowingCount(User.Identity?.Name!)</a>
 </div>
 
 <!--forget me button-->
@@ -89,14 +89,14 @@
 <!--display cheeps for the user-->
 <div class="cheeps">
 
-    @if (Model.Cheeps != null && Model.Cheeps.Any(c => c.AuthorName == User.Identity.Name))
+    @if (Model.Cheeps != null && Model.Cheeps.Any(c => c.AuthorName == User.Identity?.Name))
     {
-        <p>To view all your cheeps, go to: <a href="/@User.Identity.Name">my timeline</a></p>
+        <p>To view all your cheeps, go to: <a href="/@User.Identity?.Name">my timeline</a></p>
 
         <legend style="margin: 0 auto;">Most recent cheeps:</legend>
 
         <ul id="messagelist" class="cheeps">
-            @foreach (var cheep in Model.Cheeps.Where(c => c.AuthorName == User.Identity.Name))
+            @foreach (var cheep in Model.Cheeps.Where(c => c.AuthorName == User.Identity?.Name))
             {
                 @(await Html.PartialAsync("Shared/Cheep", @Model.GenerateCheepModel(cheep)))
             }

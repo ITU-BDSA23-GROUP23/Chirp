@@ -1,17 +1,19 @@
 using Microsoft.EntityFrameworkCore;
 using Chirp.Core;
 using Chirp.Infrastructure;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.ComponentModel.DataAnnotations;
 using FluentValidation;
-using FluentValidation.Results;
 
 
+/// </summary>
+/// This class is used as a repostiory of functions/methods that we use to interact with the Database when dealing with Cheeps 
+/// This class has methods like getCheeps, Create cheep, and eveything we use later to get or update data that has to do with cheep/cheeps  
+/// </summary>
 public class CheepRepository : ICheepRepository
 {
     private readonly ChirpDBContext dbContext;
 
+    private AuthorRepository authorRepository;
     public CheepRepository(ChirpDBContext dbContext)
     {
         this.dbContext = dbContext;
@@ -79,7 +81,7 @@ public class CheepRepository : ICheepRepository
             CheepAmount = dbContext.Cheeps.Where(c => true).Count();
         }
 
-        return CheepAmount;
+        return await Task.FromResult(CheepAmount);
     }
 
     public async Task<int> GetPageAmount(String? authorName = null)
@@ -109,7 +111,8 @@ public class CheepRepository : ICheepRepository
         {
             Author = author,
             Message = cheepDTO.Message,
-            TimeStamp = Timestamp == null ? DateTime.Now : (DateTime)Timestamp
+            TimeStamp = Timestamp == null ? DateTime.Now : (DateTime)Timestamp,
+            Reactions = new List<Reaction>(),
         };
 
         if (author.Cheeps == null)
@@ -148,19 +151,28 @@ public class CheepRepository : ICheepRepository
 
     public async Task<ReactionDTO> GetReactions(Guid cheepId, int type)
     {
-        return ReactionsToReactionDTO((await dbContext.Cheeps.Include(c => c.Reactions).FirstOrDefaultAsync(c => c.Id == cheepId)).Reactions, type);
+        return ReactionsToReactionDTO((await dbContext.Cheeps.Include(c => c.Reactions).FirstOrDefaultAsync(c => c.Id == cheepId))!.Reactions, type);
     }
 
     public async Task ReactToCheep(string? author, string type, Guid cheepId)
     {
 
         Cheep? cheep = await dbContext.Cheeps.Include(c => c.Reactions).FirstAsync(c => c.Id == cheepId);
+        Author _Author = await dbContext.Authors.Include(a => a.Reactions).FirstOrDefaultAsync(a => a.Name == author);
 
-        cheep.Reactions.Add(new Reaction()
+        Console.WriteLine("(String) Author is" + author);
+        Console.WriteLine("Author: " + _Author.Name);
+        Console.WriteLine("Reactions: " + _Author.Reactions + " Type: " + _Author.Reactions.GetType());
+        Reaction reaction = new Reaction()
         {
             ReactionType = type,
-            Author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == author)
-        });
+            Cheep = cheep,
+            Author = _Author
+        };
+
+        cheep.Reactions.Add(reaction);
+        _Author.Reactions.Add(reaction);
+
         await dbContext.SaveChangesAsync();
     }
 

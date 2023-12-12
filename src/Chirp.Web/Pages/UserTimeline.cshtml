@@ -6,7 +6,7 @@
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
     var routeName = (string)HttpContext.GetRouteValue("author");
-    Model.author = User.Identity?.Name;
+    Model._author = User.Identity?.Name;
     <p>Author: @routeName</p> <!-- Add this line to check the value -->
 }
 
@@ -16,7 +16,7 @@
         @(await Html.PartialAsync("Shared/PageNav", Model.PageNav))
     </div>
 
-
+    @(await Html.PartialAsync("CreateCheep", @Model.CreateCheep))
 
     @if (Model.Cheeps != null && Model.Cheeps.Any())
     {

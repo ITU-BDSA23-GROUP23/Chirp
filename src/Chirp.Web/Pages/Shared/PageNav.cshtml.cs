@@ -1,11 +1,6 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using Microsoft.Identity.Web.Resource;
-using AspNetCore;
-
 namespace Chirp.Web.Pages.Shared;
 
 //Model for page navigation needs to be instanced in other models

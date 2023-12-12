@@ -3,11 +3,7 @@ using Chirp.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using Microsoft.Identity.Web.Resource;
 using Chirp.Web.Pages.Shared;
-using System.Runtime.CompilerServices;
 
 namespace Chirp.Web.Pages;
 [AllowAnonymous]
@@ -21,11 +17,13 @@ public class UserTimelineModel : PageModel
 
     private readonly IAuthorRepository authorRepository;
 
+    public CreateCheepModel CreateCheep;
+
     private readonly ICheepRepository cheepRepository;
 
     private readonly ILogger<UserTimelineModel> _logger;
-
-    public string author;
+    
+    public string? _author;
 
     public UserTimelineModel(ILogger<UserTimelineModel> logger, IAuthorRepository authorRepository, ICheepRepository cheepRepository)
     {
@@ -33,13 +31,18 @@ public class UserTimelineModel : PageModel
         this.authorRepository = authorRepository;
         this.cheepRepository = cheepRepository;
         PageNav = new PageNavModel(1, TotalPages);
+        CreateCheep = new CreateCheepModel(authorRepository, cheepRepository);
     }
 
-    public ActionResult OnGet(string author, [FromQuery] int page)
+    public async Task<ActionResult> OnGet(string author, [FromQuery] int page)
     {
         
         //Cheeps = _service.GetCheeps(page);
         //Cheeps = _service.GetCheeps(author);
+        if(page == 0)
+        {
+            page = 1;
+        }
         try 
         {
             var _Cheeps = cheepRepository.GetCheeps(page, authorName: author);
@@ -49,7 +52,7 @@ public class UserTimelineModel : PageModel
         catch (AggregateException e)
         {
             Console.WriteLine(e);
-        }
+        }   
         
         try
         {
@@ -70,9 +73,16 @@ public class UserTimelineModel : PageModel
 
 
 
-
-    public async Task<ActionResult> OnPost([FromQuery] int page, [FromQuery] string f, [FromQuery] string uf, [FromQuery] string c, [FromQuery] string li, [FromQuery] string di, [FromQuery] string lo)
+    public async Task<ActionResult> OnPost(string author, [FromQuery] int page, [FromQuery] string f, [FromQuery] string uf, [FromQuery] string c, [FromQuery] string? li, [FromQuery] string? di, [FromQuery] string? lo)
     {
+
+        await OnGet(author, page);
+
+        if(string.IsNullOrEmpty(_author))
+        {
+            _author = User.Identity?.Name!;
+        }
+
         li = HttpContext.Request.Query["li"].ToString();
         di = HttpContext.Request.Query["di"].ToString();
         lo = HttpContext.Request.Query["lo"].ToString();
@@ -93,25 +103,29 @@ public class UserTimelineModel : PageModel
         
         if (f != null)
         {
-            await Methods.FollowAuthor(authorRepository, f, Request.Form["Follow"]);
+            await Methods.FollowAuthor(authorRepository, f, Request.Form["Follow"].ToString());
         } else if (uf != null)
         {
-            await Methods.UnfollowAuthor(authorRepository, uf, Request.Form["Unfollow"]);
+            await Methods.UnfollowAuthor(authorRepository, uf, Request.Form["Unfollow"].ToString());
         } 
         else if(li != null)
         {
             Guid liGuid = Guid.Parse(li);
-            await cheepRepository.ReactToCheep(author, "Like", liGuid);
+            await cheepRepository.ReactToCheep(_author, "Like", liGuid);
         } else if (di != null)
         {   
             Guid diGuid = Guid.Parse(di);
-            await cheepRepository.ReactToCheep(author, "Dislike", diGuid);
+            await cheepRepository.ReactToCheep(_author, "Dislike", diGuid);
         } else if (lo != null)
         {
             Guid loGuid = Guid.Parse(lo);
-            await cheepRepository.ReactToCheep(author, "Love", loGuid);
+            await cheepRepository.ReactToCheep(_author, "Love", loGuid);
+        } else if (c != null) 
+        {
+            string Message = Request.Form["Cheep"].ToString();
+            CreateCheep.OnPostCheep(c, Message);
+            return RedirectToPage("");
         }
-        
         return Page();
     }
 

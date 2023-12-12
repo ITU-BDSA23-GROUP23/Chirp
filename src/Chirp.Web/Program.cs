@@ -2,11 +2,7 @@ using Chirp.Core;
 using Microsoft.EntityFrameworkCore;
 using Chirp.Web.data;
 using Chirp.Infrastructure;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 
@@ -16,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 
-var sqlServerString = Environment.GetEnvironmentVariable(builder.Configuration.GetConnectionString("ChirpDBSource"));
+var sqlServerString = Environment.GetEnvironmentVariable(builder.Configuration.GetConnectionString("ChirpDBSource")!);
 
 Console.WriteLine("Using sql connection string: " + sqlServerString);
 
