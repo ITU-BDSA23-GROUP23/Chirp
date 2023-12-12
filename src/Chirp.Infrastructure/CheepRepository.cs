@@ -159,16 +159,26 @@ public class CheepRepository : ICheepRepository
         
         Cheep? cheep = await dbContext.Cheeps.Include(c => c.Reactions).FirstAsync(c => c.Id == cheepId);
         Author _Author = await dbContext.Authors.Include(a => a.Reactions).FirstOrDefaultAsync(a => a.Name == author);
-
-        Console.WriteLine("(String) Author is" + author);
-        Console.WriteLine("Author: " + _Author.Name);
-        Console.WriteLine("Reactions: " + _Author.Reactions + " Type: " + _Author.Reactions.GetType());
+        
         Reaction reaction = new Reaction()
         {
             ReactionType = type,
             Cheep = cheep,
             Author = _Author
         };
+
+        // Checks if the author has already reacted to the cheep
+        if (_Author.Reactions.Where(r => r.Cheep.Id == cheepId).Count() > 0)
+        {
+            Reaction oldReaction = _Author.Reactions.Where(r => r.Cheep.Id == cheepId).First();
+            _Author.Reactions.Remove(oldReaction);
+            cheep.Reactions.Remove(oldReaction);
+            if (oldReaction.ReactionType == type)
+            {
+                await dbContext.SaveChangesAsync();
+                return;
+            }
+        }
         
         cheep.Reactions.Add(reaction);
         _Author.Reactions.Add(reaction);
