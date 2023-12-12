@@ -55,7 +55,6 @@ public class ForYouModel : PageModel
     public async Task<ActionResult> OnPost(string authorName, [FromQuery] int page, [FromQuery] string f, [FromQuery] string uf, [FromQuery] string c, [FromQuery] string li, [FromQuery] string di, [FromQuery] string lo)
     {
         await OnGet(authorName, page);
-
         li = HttpContext.Request.Query["li"].ToString();
         di = HttpContext.Request.Query["di"].ToString();
         lo = HttpContext.Request.Query["lo"].ToString();
@@ -95,7 +94,7 @@ public class ForYouModel : PageModel
             await cheepRepository.ReactToCheep(author, "Love", loGuid);
         }
         
-        return await OnGet(authorName, page);
+        return Page();
     }
 
 

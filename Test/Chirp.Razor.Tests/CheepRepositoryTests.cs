@@ -62,8 +62,6 @@ public class CheepRepositoryTests : IDisposable
         Assert.Equal(authorCheeps, 7);
     }
 
-
-
     // [Fact]
     // public void CalculateSkippedCheepsTest()
     // {

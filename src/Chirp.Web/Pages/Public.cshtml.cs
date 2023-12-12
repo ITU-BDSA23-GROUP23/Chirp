@@ -82,19 +82,19 @@ public class PublicModel : PageModel
         {
             await Methods.UnfollowAuthor(authorRepository, uf, Request.Form["Unfollow"]);
         } 
-        // else if(li != null)
-        // {
-        //     Guid liGuid = Guid.Parse(li);
-        //     await cheepRepository.ReactToCheep(author, "Like", liGuid);
-        // } else if (di != null)
-        // {   
-        //     Guid diGuid = Guid.Parse(di);
-        //     await cheepRepository.ReactToCheep(author, "Dislike", diGuid);
-        // } else if (lo != null)
-        // {
-        //     Guid loGuid = Guid.Parse(lo);
-        //     await cheepRepository.ReactToCheep(author, "Love", loGuid);
-        // } 
+        else if(li != null)
+        {
+            Guid liGuid = Guid.Parse(li);
+            await cheepRepository.ReactToCheep(author, "Like", liGuid);
+        } else if (di != null)
+        {   
+            Guid diGuid = Guid.Parse(di);
+            await cheepRepository.ReactToCheep(author, "Dislike", diGuid);
+        } else if (lo != null)
+        {
+            Guid loGuid = Guid.Parse(lo);
+            await cheepRepository.ReactToCheep(author, "Love", loGuid);
+        } 
         else if (c != null) 
         {
             string? Message = Request.Form["Cheep"];
