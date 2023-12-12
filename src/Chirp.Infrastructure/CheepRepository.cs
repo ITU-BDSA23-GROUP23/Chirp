@@ -97,7 +97,7 @@ public class CheepRepository : ICheepRepository
     }
 
 
-    public void CreateCheep(createCheepDTO cheepDTO, DateTime? Timestamp = null)
+    public async Task CreateCheep(createCheepDTO cheepDTO, DateTime? Timestamp = null)
     {
         Author author = dbContext.Authors.First(a => a.Name == cheepDTO.Author.Name);
         if (author == null)
@@ -153,7 +153,7 @@ public class CheepRepository : ICheepRepository
 
     public async Task ReactToCheep(string? author, string type, Guid cheepId)
     {
-        
+
         Cheep? cheep = await dbContext.Cheeps.Include(c => c.Reactions).FirstAsync(c => c.Id == cheepId);
 
         cheep.Reactions.Add(new Reaction()

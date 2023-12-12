@@ -28,14 +28,14 @@ public class CheepModel : PageModel
     }
 
 
-    
-    
+
+
     public async Task FollowAuthor(string followerName, string followingName)
     {
         Console.WriteLine($"FollowAuthor called with followerName: {followerName}, followingName: {followingName} \n \n \n \n \n \n \n \n");
-        
+
         var _follower = await authorRepository.FindAuthorByName(followerName);
-        if (_follower == null) 
+        if (_follower == null)
         {
             authorRepository.CreateAuthor(new CreateAuthorDTO(followerName, ""));
             _follower = await authorRepository.FindAuthorByName(followerName);
@@ -52,7 +52,7 @@ public class CheepModel : PageModel
         Console.WriteLine($"UnfollowAuthor called with followerName: {followerName}, followingName: {followingName}");
 
         var _follower = await authorRepository.FindAuthorByName(followerName);
-        if (_follower == null) 
+        if (_follower == null)
         {
             Console.WriteLine("Follower is null");
             authorRepository.CreateAuthor(new CreateAuthorDTO(followerName, ""));

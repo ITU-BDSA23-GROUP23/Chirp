@@ -26,24 +26,24 @@ public class CreateCheepModel : PageModel
 
     }
 
-    public ActionResult OnPostCheep(string c, string message) 
+    public ActionResult OnPostCheep(string c, string message)
     {
         if (c != null)
-        { 
+        {
             createCheep(c, message);
         }
 
         return RedirectToPage("/");
     }
 
-    public void createCheep(string UserName, string? message)
+    public async void createCheep(string UserName, string? message)
 
     {
         var _Author = _Author_repository.FindAuthorByName(UserName);
         _Author.Wait();
         var Author = _Author.Result;
 
-  
+
         if (Author != null)
         {
 
@@ -75,11 +75,11 @@ public class CreateCheepModel : PageModel
                     Console.WriteLine("Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage);
                 }
             }
-            _Cheep_repository.CreateCheep(cheepDTO, null);
+            await _Cheep_repository.CreateCheep(cheepDTO, null);
         }
     }
     public ActionResult OnGetPartial()
     {
-       return Page();
+        return Page();
     }
 }

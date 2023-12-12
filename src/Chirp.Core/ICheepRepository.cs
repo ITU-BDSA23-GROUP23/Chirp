@@ -8,7 +8,7 @@ public interface ICheepRepository
     Task<IEnumerable<CheepDTO>> GetCheeps(int page = 1, int pageSize = 32, string? authorName = null);
     Task<IEnumerable<CheepDTO>> GetCheepsFromAuthors(ICollection<Guid> authorsId, int page = 1, int pageSize = 32);
     Task<long> GetCheepsAmount(string? authorName = null);
-    void CreateCheep(createCheepDTO cheepDTO, DateTime? Timestamp);
+    Task CreateCheep(createCheepDTO cheepDTO, DateTime? Timestamp);
 
     Task<int> GetPageAmount(String? authorName = null);
     Task ReactToCheep(string? author, string type, Guid cheepId);

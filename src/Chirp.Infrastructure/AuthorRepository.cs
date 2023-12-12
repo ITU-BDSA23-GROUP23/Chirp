@@ -196,6 +196,8 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task ForgetMe(string authorName)
     {
+        // For testing: var Author = await dbContext.Authors.Include(r => r.Reactions).FirstOrDefaultAsync(a => a.Name == authorName);
+        // For testing: Console.WriteLine($"Author {authorName} has {Author.Reactions.Count} reactions.");
         var _Followers = await GetFollowers(authorName);
         var _Following = await GetFollowing(authorName);
         Console.WriteLine("Followers: (" + _Followers + ")");
