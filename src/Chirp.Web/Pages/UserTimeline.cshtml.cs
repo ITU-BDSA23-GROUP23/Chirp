@@ -21,6 +21,8 @@ public class UserTimelineModel : PageModel
 
     private readonly IAuthorRepository authorRepository;
 
+    public CreateCheepModel CreateCheep;
+
     private readonly ICheepRepository cheepRepository;
 
     private readonly ILogger<UserTimelineModel> _logger;
@@ -33,6 +35,7 @@ public class UserTimelineModel : PageModel
         this.authorRepository = authorRepository;
         this.cheepRepository = cheepRepository;
         PageNav = new PageNavModel(1, TotalPages);
+        CreateCheep = new CreateCheepModel(authorRepository, cheepRepository);
     }
 
     public ActionResult OnGet(string author, [FromQuery] int page)
@@ -110,6 +113,11 @@ public class UserTimelineModel : PageModel
         {
             Guid loGuid = Guid.Parse(lo);
             await cheepRepository.ReactToCheep(author, "Love", loGuid);
+        } else if (c != null) 
+        {
+            string? Message = Request.Form["Cheep"];
+            CreateCheep.OnPostCheep(c, Message);
+            return RedirectToPage("");
         }
         
         return Page();
