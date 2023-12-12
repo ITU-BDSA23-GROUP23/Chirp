@@ -103,6 +103,8 @@ public class PageInfoModel : PageModel
             var _Author = await _Author_repository.FindAuthorByName(authorName);
 
             await _Author_repository.ForgetMe(authorName);
+
+            return Redirect("~/MicrosoftIdentity/Account/SignOut");
         }
         return Page();
     }
