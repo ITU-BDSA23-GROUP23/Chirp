@@ -16,7 +16,7 @@
         @(await Html.PartialAsync("Shared/PageNav", Model.PageNav))
     </div>
 
-
+    @(await Html.PartialAsync("CreateCheep", @Model.CreateCheep))
 
     @if (Model.Cheeps != null && Model.Cheeps.Any())
     {
