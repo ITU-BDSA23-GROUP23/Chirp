@@ -1,8 +1,19 @@
 ---
-title: "Your Report Title"
-author: "Your Name"
+title: "Chirp! Project Report"
+author:
+  - "Edward Rostomian"
+  - "Thorbjørn Pepe"
+  - "Author 3"
+  - "Author 4"
+  - "Author 5"
 date: \today
 ---
+
+\newpage
+
+# Table of Contents
+
+\tableofcontents
 
 \newpage
 
