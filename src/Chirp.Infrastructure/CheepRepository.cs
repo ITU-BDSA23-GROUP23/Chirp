@@ -175,7 +175,6 @@ public class CheepRepository : ICheepRepository
             Cheep = cheep,
             Author = _Author
         };
-
         // Checks if the author has already reacted to the cheep
         if (_Author.Reactions.Where(r => r.Cheep.Id == cheepId).Count() > 0)
         {
@@ -188,7 +187,6 @@ public class CheepRepository : ICheepRepository
                 return;
             }
         }
-        
         cheep.Reactions.Add(reaction);
         _Author.Reactions.Add(reaction);
 
