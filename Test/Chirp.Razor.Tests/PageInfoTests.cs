@@ -300,10 +300,10 @@ public class PageInfoTests : IDisposable
         var author1FollowINGAfter = await authorRepository.GetFollowing(author1Name);
         var author2FollowINGAfter = await authorRepository.GetFollowing(author2Name);
         var author3FollowINGAfter = await authorRepository.GetFollowing(author3Name);
-
+        
         // Check that author 2 and author 3 is no longer following or followers of author 1.
-        Assert.Null(author1FollowERSAfter);
-        Assert.Null(author1FollowINGAfter);
+        Assert.Empty(author1FollowERSAfter);
+        Assert.Empty(author1FollowINGAfter);
 
         // Now i want to go through author2FollowERSAfter and author3FollowERSAfter and check that they are not following author 1.
         // Check that there is no list left of author 1 following author 1 and author 2.
