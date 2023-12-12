@@ -1,14 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Chirp.Core;
 using Chirp.Infrastructure;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.ComponentModel.DataAnnotations;
 using FluentValidation;
-using FluentValidation.Results;
-using System.Reflection.Metadata;
-using NuGet.ProjectModel;
-using SQLitePCL;
+
 
 /// </summary>
 /// This class is used as a repostiory of functions/methods that we use to interact with the Database when dealing with Cheeps 
@@ -86,7 +81,7 @@ public class CheepRepository : ICheepRepository
             CheepAmount = dbContext.Cheeps.Where(c => true).Count();
         }
 
-        return CheepAmount;
+        return await Task.FromResult(CheepAmount);
     }
 
     public async Task<int> GetPageAmount(String? authorName = null)
@@ -116,7 +111,8 @@ public class CheepRepository : ICheepRepository
         {
             Author = author,
             Message = cheepDTO.Message,
-            TimeStamp = Timestamp == null ? DateTime.Now : (DateTime)Timestamp
+            TimeStamp = Timestamp == null ? DateTime.Now : (DateTime)Timestamp,
+            Reactions = new List<Reaction>(),
         };
 
         if (author.Cheeps == null)
@@ -155,7 +151,7 @@ public class CheepRepository : ICheepRepository
 
     public async Task<ReactionDTO> GetReactions(Guid cheepId, int type)
     {
-        return ReactionsToReactionDTO((await dbContext.Cheeps.Include(c => c.Reactions).FirstOrDefaultAsync(c => c.Id == cheepId)).Reactions, type);
+        return ReactionsToReactionDTO((await dbContext.Cheeps.Include(c => c.Reactions).FirstOrDefaultAsync(c => c.Id == cheepId))!.Reactions, type);
     }
 
     public async Task ReactToCheep(string? author, string type, Guid cheepId)

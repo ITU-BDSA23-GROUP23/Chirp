@@ -2,7 +2,6 @@ using Chirp.Core;
 using Chirp.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Authorization;
 using Chirp.Web.Pages.Shared;
 
 namespace Chirp.Web.Pages;
@@ -31,15 +30,14 @@ public class PageInfoModel : PageModel
     public async Task OnGetAuthor(string author)
     {
         Console.WriteLine("author is " + author + " in OnGetAuthor");
-        var _Author = _Author_repository.FindAuthorByName(author);
-        _Author.Wait();
-        Author = _Author.Result;
+        var _Author = await _Author_repository.FindAuthorByName(author);
+        Author = _Author;
     }
 
     // list of cheeps
     public async Task<ActionResult> OnGet(string authorName, [FromQuery] int page)
     {
-        authorName = User.Identity.Name;
+        authorName = User.Identity?.Name!;
         try
         {
             var _Cheeps = _Cheep_repository.GetCheeps(authorName: authorName);
@@ -74,19 +72,17 @@ public class PageInfoModel : PageModel
         return _Author_repository.GetFollowersCount(authorName);
     }
 
-    public async Task OnGetFollowers(string authorName)
+    public async Task OnGetFollowers(string? authorName)
     {
-        var _Followers = _Author_repository.GetFollowers(authorName);
-        _Followers.Wait();
-        Followers = _Followers.Result;
+        var _Followers = await _Author_repository.GetFollowers(authorName!);
+        Followers = _Followers;
     }
 
     public async Task OnGetFollowing(string authorName)
     {
         Console.WriteLine("OnGetFollowing called");
-        var _Following = _Author_repository.GetFollowing(authorName);
-        _Following.Wait();
-        Following = _Following.Result;
+        var _Following = await _Author_repository.GetFollowing(authorName);
+        Following = _Following;
     }
 
     // This method is run, when the 'Forget me' button is pressed.
@@ -98,7 +94,7 @@ public class PageInfoModel : PageModel
 
             // I want to make a break for 10 seconds here
 
-            string authorName = User.Identity.Name; // Author.Name;
+            string authorName = User.Identity?.Name!; // Author.Name;
 
             var _Author = await _Author_repository.FindAuthorByName(authorName);
 

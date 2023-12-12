@@ -15,7 +15,7 @@
     <h2>Public Timeline</h2>
     @(await Html.PartialAsync("Shared/PageNav", @Model.PageNav))
     <div class="follow-buttons">
-        @if (User.Identity.IsAuthenticated)
+        @if (User.Identity!.IsAuthenticated)
         {
             @(await Html.PartialAsync("CreateCheep", @Model.CreateCheep))
         }

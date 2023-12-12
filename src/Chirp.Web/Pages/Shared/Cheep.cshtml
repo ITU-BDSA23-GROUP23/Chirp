@@ -14,9 +14,9 @@
             <small>&mdash; @Model.cheep.TimeStamp</small>
         </p>
         <div style="justify-content: flex-end; display: flex;">
-        @if (User.Identity.IsAuthenticated && Model.cheep.AuthorName != User.Identity.Name)
+        @if (User.Identity!.IsAuthenticated && Model.cheep.AuthorName != User.Identity.Name)
         {
-            @if (await Model.IsFollowing(User.Identity?.Name, @Model.cheep.AuthorName))
+            @if (await Model.IsFollowing(User.Identity?.Name!, @Model.cheep.AuthorName))
             {
                 <form method="post" action=@("?uf=" + @User.Identity?.Name)>
                     @Html.AntiForgeryToken()

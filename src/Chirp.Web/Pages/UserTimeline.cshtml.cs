@@ -3,11 +3,7 @@ using Chirp.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using Microsoft.Identity.Web.Resource;
 using Chirp.Web.Pages.Shared;
-using System.Runtime.CompilerServices;
 
 namespace Chirp.Web.Pages;
 [AllowAnonymous]
@@ -27,8 +23,7 @@ public class UserTimelineModel : PageModel
 
     private readonly ILogger<UserTimelineModel> _logger;
     
-
-    public string? _author { get; set; }
+    public string? _author;
 
     public UserTimelineModel(ILogger<UserTimelineModel> logger, IAuthorRepository authorRepository, ICheepRepository cheepRepository)
     {
@@ -78,8 +73,7 @@ public class UserTimelineModel : PageModel
 
 
 
-
-    public async Task<ActionResult> OnPost(string author, [FromQuery] int page, [FromQuery] string f, [FromQuery] string uf, [FromQuery] string c, [FromQuery] string li, [FromQuery] string di, [FromQuery] string lo)
+    public async Task<ActionResult> OnPost(string author, [FromQuery] int page, [FromQuery] string f, [FromQuery] string uf, [FromQuery] string c, [FromQuery] string? li, [FromQuery] string? di, [FromQuery] string? lo)
     {
 
         await OnGet(author, page);
@@ -109,10 +103,10 @@ public class UserTimelineModel : PageModel
         
         if (f != null)
         {
-            await Methods.FollowAuthor(authorRepository, f, Request.Form["Follow"]);
+            await Methods.FollowAuthor(authorRepository, f, Request.Form["Follow"].ToString());
         } else if (uf != null)
         {
-            await Methods.UnfollowAuthor(authorRepository, uf, Request.Form["Unfollow"]);
+            await Methods.UnfollowAuthor(authorRepository, uf, Request.Form["Unfollow"].ToString());
         } 
         else if(li != null)
         {
@@ -128,7 +122,7 @@ public class UserTimelineModel : PageModel
             await cheepRepository.ReactToCheep(_author, "Love", loGuid);
         } else if (c != null) 
         {
-            string? Message = Request.Form["Cheep"];
+            string Message = Request.Form["Cheep"].ToString();
             CreateCheep.OnPostCheep(c, Message);
             return RedirectToPage("");
         }
