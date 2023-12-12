@@ -54,6 +54,12 @@ public class ForYouModel : PageModel
 
     public async Task<ActionResult> OnPost(string authorName, [FromQuery] int page, [FromQuery] string f, [FromQuery] string uf, [FromQuery] string c, [FromQuery] string li, [FromQuery] string di, [FromQuery] string lo)
     {
+
+        if(string.IsNullOrEmpty(author))
+        {
+            author = User.Identity?.Name!;
+        }
+
         await OnGet(authorName, page);
         li = HttpContext.Request.Query["li"].ToString();
         di = HttpContext.Request.Query["di"].ToString();

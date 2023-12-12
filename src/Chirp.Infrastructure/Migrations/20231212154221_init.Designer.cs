@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chirp.Infrastructure.Migrations
 {
     [DbContext(typeof(ChirpDBContext))]
-    [Migration("20231206121045_init")]
+    [Migration("20231212154221_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -89,26 +89,24 @@ namespace Chirp.Infrastructure.Migrations
 
             modelBuilder.Entity("Chirp.Infrastructure.Reaction", b =>
                 {
-                    b.Property<int>("CheepId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AuthorId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("AuthorId1")
+                    b.Property<Guid>("ReactionId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CheepId1")
+                    b.Property<Guid?>("AuthorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CheepId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ReactionType")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CheepId", "AuthorId");
+                    b.HasKey("ReactionId");
 
-                    b.HasIndex("AuthorId1");
+                    b.HasIndex("AuthorId");
 
-                    b.HasIndex("CheepId1");
+                    b.HasIndex("CheepId");
 
                     b.ToTable("Reactions", (string)null);
                 });
@@ -143,11 +141,11 @@ namespace Chirp.Infrastructure.Migrations
                 {
                     b.HasOne("Chirp.Infrastructure.Author", "Author")
                         .WithMany("Reactions")
-                        .HasForeignKey("AuthorId1");
+                        .HasForeignKey("AuthorId");
 
                     b.HasOne("Chirp.Infrastructure.Cheep", "Cheep")
                         .WithMany("Reactions")
-                        .HasForeignKey("CheepId1");
+                        .HasForeignKey("CheepId");
 
                     b.Navigation("Author");
 

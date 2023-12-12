@@ -55,25 +55,31 @@ public class PublicModel : PageModel
 
     public async Task<ActionResult> OnPost([FromQuery] int page, [FromQuery] string f, [FromQuery] string uf, [FromQuery] string c, [FromQuery] string li, [FromQuery] string di, [FromQuery] string lo)
     {
+
+        if(string.IsNullOrEmpty(author))
+        {
+            author = User.Identity?.Name;
+        }
+
         await OnGet(page);
 
-        // li = HttpContext.Request.Query["li"].ToString();
-        // di = HttpContext.Request.Query["di"].ToString();
-        // lo = HttpContext.Request.Query["lo"].ToString();
-        // if (string.IsNullOrEmpty(li))
-        // {
-        //     li = Request.Form["Like"];
-        // }
+        li = HttpContext.Request.Query["li"].ToString();
+        di = HttpContext.Request.Query["di"].ToString();
+        lo = HttpContext.Request.Query["lo"].ToString();
+        if (string.IsNullOrEmpty(li))
+        {
+            li = Request.Form["Like"];
+        }
 
-        // if (string.IsNullOrEmpty(di))
-        // {
-        //     di = Request.Form["Dislike"];
-        // }
+        if (string.IsNullOrEmpty(di))
+        {
+            di = Request.Form["Dislike"];
+        }
 
-        // if (string.IsNullOrEmpty(lo))
-        // {
-        //     lo = Request.Form["Love"];
-        // }
+        if (string.IsNullOrEmpty(lo))
+        {
+            lo = Request.Form["Love"];
+        }
         
         if (f != null)
         {
