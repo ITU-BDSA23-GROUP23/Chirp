@@ -1,6 +1,35 @@
-{\rtf1\ansi\ansicpg1252\cocoartf2639
-\cocoatextscaling0\cocoaplatform0{\fonttbl}
-{\colortbl;\red255\green255\blue255;}
-{\*\expandedcolortbl;;}
-\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
-}
+---
+title: "Your Report Title"
+author: "Your Name"
+date: \today
+---
+
+\newpage
+
+# 1. Design and Architecture of Chirp!
+
+## Domain model
+
+## Architecture — In the small
+
+## Architecture of deployed application
+
+## User activities
+
+## Sequence of functionality/calls through Chirp!
+
+# 2. Process
+
+## Build, test, release, and deployment
+
+## Teamwork
+
+## How to make Chirp! work locally
+
+## How to run the test suite locally
+
+# 3. Ethics
+
+## License
+
+## LLMs, ChatGPT, CoPilot, and others
