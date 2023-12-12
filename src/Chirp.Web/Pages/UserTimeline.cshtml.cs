@@ -35,11 +35,15 @@ public class UserTimelineModel : PageModel
         PageNav = new PageNavModel(1, TotalPages);
     }
 
-    public ActionResult OnGet(string author, [FromQuery] int page)
+    public async Task<ActionResult> OnGet(string author, [FromQuery] int page)
     {
         
         //Cheeps = _service.GetCheeps(page);
         //Cheeps = _service.GetCheeps(author);
+        if(page == 0)
+        {
+            page = 1;
+        }
         try 
         {
             var _Cheeps = cheepRepository.GetCheeps(page, authorName: author);
@@ -49,7 +53,7 @@ public class UserTimelineModel : PageModel
         catch (AggregateException e)
         {
             Console.WriteLine(e);
-        }
+        }   
         
         try
         {
@@ -111,8 +115,7 @@ public class UserTimelineModel : PageModel
             Guid loGuid = Guid.Parse(lo);
             await cheepRepository.ReactToCheep(author, "Love", loGuid);
         }
-        
-        return Page();
+        return RedirectToPage(author);
     }
 
 
