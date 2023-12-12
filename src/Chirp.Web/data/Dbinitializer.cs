@@ -25,7 +25,7 @@ public static class DbInitializer
             Author_repository.CreateAuthor(new CreateAuthorDTO("Helge", "ropf@itu.dk"));
             Author_repository.CreateAuthor(new CreateAuthorDTO("Rasmus", "rnie@itu.dk"));
 
-            var a1 = await Author_repository.FindAuthorByName("Roger Histand");
+            var a1 = await Author_repository.FindAuthorByName("Roger Histand")!;
             var a2 = await Author_repository.FindAuthorByName("Luanna Muro");
             var a3 = await Author_repository.FindAuthorByName("Wendell Ballan");
             var a4 = await Author_repository.FindAuthorByName("Nathan Sirmon");
@@ -34,7 +34,7 @@ public static class DbInitializer
             var a7 = await Author_repository.FindAuthorByName("Malcolm Janski");
             var a8 = await Author_repository.FindAuthorByName("Octavio Wagganer");
             var a9 = await Author_repository.FindAuthorByName("Johnnie Calixto");
-            var a10 = await Author_repository.FindAuthorByName("Jacqualine Gilcoine");
+            var a10 = await Author_repository.FindAuthorByName("Jacqualine Gilcoine")!;
             var a11 = await Author_repository.FindAuthorByName("Helge");
             var a12 = await Author_repository.FindAuthorByName("Rasmus");
 

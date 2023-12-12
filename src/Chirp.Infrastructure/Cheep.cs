@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace Chirp.Infrastructure
 {
     /// <summary>
@@ -16,9 +14,9 @@ namespace Chirp.Infrastructure
 
         public required DateTime TimeStamp { get; set; }
 
-        public ICollection<Reaction> Reactions { get; set; }
+        public required ICollection<Reaction> Reactions { get; set; }
 
-        public string ToString()
+        public override string ToString()
         {
             return $"Cheep: id:{Id}, Message: {Message} Timestamp: {TimeStamp}";
         }

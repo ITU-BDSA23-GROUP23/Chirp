@@ -3,15 +3,7 @@ using Chirp.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using Microsoft.Identity.Web.Resource;
 using Chirp.Web.Pages.Shared;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Humanizer;
-using SQLitePCL;
-
 namespace Chirp.Web.Pages;
 [AllowAnonymous]
 
@@ -40,14 +32,12 @@ public class PublicModel : PageModel
 
     public virtual async Task<ActionResult> OnGet([FromQuery] int page)
     {
-        var _TotalPages = cheepRepository.GetPageAmount();
-        _TotalPages.Wait();
-        TotalPages = _TotalPages.Result;
+        var _TotalPages = await cheepRepository.GetPageAmount();
+        TotalPages = _TotalPages;
         PageNav = new PageNavModel(page, TotalPages);
        
-        var _Cheeps = cheepRepository.GetCheeps(page);
-        _Cheeps.Wait();
-        Cheeps = _Cheeps.Result;
+        var _Cheeps = await cheepRepository.GetCheeps(page);
+        Cheeps = _Cheeps;
 
         return Page();
     }
@@ -62,25 +52,25 @@ public class PublicModel : PageModel
         lo = HttpContext.Request.Query["lo"].ToString();
         if (string.IsNullOrEmpty(li))
         {
-            li = Request.Form["Like"];
+            li = Request.Form["Like"]!;
         }
 
         if (string.IsNullOrEmpty(di))
         {
-            di = Request.Form["Dislike"];
+            di = Request.Form["Dislike"]!;
         }
 
         if (string.IsNullOrEmpty(lo))
         {
-            lo = Request.Form["Love"];
+            lo = Request.Form["Love"]!;
         }
         
         if (f != null)
         {
-            await Methods.FollowAuthor(authorRepository, f, Request.Form["Follow"]);
+            await Methods.FollowAuthor(authorRepository, f, Request.Form["Follow"]!);
         } else if (uf != null)
         {
-            await Methods.UnfollowAuthor(authorRepository, uf, Request.Form["Unfollow"]);
+            await Methods.UnfollowAuthor(authorRepository, uf, Request.Form["Unfollow"]!);
         } 
         else if(li != null)
         {
@@ -97,7 +87,7 @@ public class PublicModel : PageModel
         } else if (c != null) 
         {
             string? Message = Request.Form["Cheep"];
-            CreateCheep.OnPostCheep(c, Message);
+            CreateCheep.OnPostCheep(c, Message!);
             return RedirectToPage("");
         }
         

@@ -1,9 +1,6 @@
-using Azure;
 using Chirp.Core;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol.Plugins;
 using Chirp.Infrastructure;
-using SQLitePCL;
 
 
 /// <summary>
@@ -100,7 +97,7 @@ public class AuthorRepository : IAuthorRepository
             }
 
             Console.WriteLine($"Created AuthorDTO for {author.Name} with {Followers.Count} followers and following {Following.Count}");
-            return new AuthorDTO(author.Name, author.Email, Followers, Following, author.Id);
+            return new AuthorDTO(author.Name, author.Email!, Followers, Following, author.Id);
         }
         return null;
     }
@@ -127,8 +124,8 @@ public class AuthorRepository : IAuthorRepository
 
         if (selfAuthor != null && otherAuthor != null)
         {
-            selfAuthor.Following.Remove(selfAuthor.Following.FirstOrDefault(f => f.Name == other.Name));
-            otherAuthor.Followers.Remove(otherAuthor.Followers.FirstOrDefault(f => f.Name == self.Name));
+            selfAuthor.Following.Remove(selfAuthor.Following.FirstOrDefault(f => f.Name == other.Name)!);
+            otherAuthor.Followers.Remove(otherAuthor.Followers.FirstOrDefault(f => f.Name == self.Name)!);
             await dbContext.SaveChangesAsync();
         }
         else
@@ -163,35 +160,33 @@ public class AuthorRepository : IAuthorRepository
     {
 
         var author = await dbContext.Authors.Include(a => a.Followers).FirstOrDefaultAsync(a => a.Name == authorName);
+        ICollection<AuthorDTO> Followers = new List<AuthorDTO>();
         if (author != null)
         {
-            ICollection<AuthorDTO> Followers = new List<AuthorDTO>();
             foreach (var follower in author.Followers)
             {
                 Console.WriteLine("Adding follower");
-                Followers.Add(AuthorToAuthorDTO(follower));
+                Followers.Add(AuthorToAuthorDTO(follower)!);
             }
-            return Followers;
         }
-        return null;
+        return Followers;
     }
 
     public async Task<IEnumerable<AuthorDTO>> GetFollowing(string authorName)
     {
         var author = await dbContext.Authors.Include(a => a.Following).FirstOrDefaultAsync(a => a.Name == authorName);
+        ICollection<AuthorDTO> Following = new List<AuthorDTO>();
         if (author != null)
         {
-            ICollection<AuthorDTO> Following = new List<AuthorDTO>();
             foreach (var following in author.Following)
             {
                 Console.WriteLine("Adding following");
-                Following.Add(AuthorToAuthorDTO(following));
+                Following.Add(AuthorToAuthorDTO(following)!);
             }
             Console.WriteLine("Returning following");
-            return Following;
         }
         Console.WriteLine("Returning null");
-        return null;
+        return Following;
     }
 
     public async Task ForgetMe(string authorName)
@@ -244,12 +239,12 @@ public class AuthorRepository : IAuthorRepository
         // Deletes the author that is trying to delete itselft from the app, from each of its followers' following lists.
         foreach (var author in authors)
         {
-            author.Following.Remove(author.Following.FirstOrDefault(f => f.Name == DeletingAuthorName));
+            author.Following.Remove(author.Following.FirstOrDefault(f => f.Name == DeletingAuthorName)!);
         }
 
         var DelitingAuthor = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == DeletingAuthorName);
 
-        DelitingAuthor.Followers.Clear();
+        DelitingAuthor!.Followers.Clear();
 
         await dbContext.SaveChangesAsync();
     }
@@ -263,12 +258,12 @@ public class AuthorRepository : IAuthorRepository
 
         foreach (var author in authors)
         {
-            author.Followers.Remove(author.Followers.FirstOrDefault(f => f.Name == DeletingAuthorName));
+            author.Followers.Remove(author.Followers.FirstOrDefault(f => f.Name == DeletingAuthorName)!);
         }
 
         var DelitingAuthor = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == DeletingAuthorName);
 
-        DelitingAuthor.Following.Clear();
+        DelitingAuthor!.Following.Clear();
         await dbContext.SaveChangesAsync();
     }
 
@@ -304,7 +299,7 @@ public class AuthorRepository : IAuthorRepository
     {
         var _authorOther = FindAuthorByName(authorNameOther).Result;
         var _authorSelf = FindAuthorByName(authorNameSelf).Result;
-        if (_authorSelf.Following?.Contains(_authorOther.Id) ?? false)
+        if (_authorSelf!.Following?.Contains(_authorOther!.Id) ?? false)
         {
             return true;
         }

@@ -1,16 +1,7 @@
 using Chirp.Core;
 using Chirp.Infrastructure;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using Microsoft.Identity.Web.Resource;
-using Chirp.Web.Pages.Shared;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Humanizer;
-using SQLitePCL;
 
 namespace Chirp.Web.Pages.Shared;
 [AllowAnonymous]
@@ -43,7 +34,7 @@ public class CheepModel : PageModel
 
         var _following = await authorRepository.FindAuthorByName(followingName);
 
-        await authorRepository.FollowAuthor(_following, _follower);
+        await authorRepository.FollowAuthor(_following!, _follower!);
     }
 
     public async Task UnfollowAuthor(string followerName, string followingName)
@@ -61,7 +52,7 @@ public class CheepModel : PageModel
 
         var _following = await authorRepository.FindAuthorByName(followingName);
 
-        await authorRepository.UnfollowAuthor(_following, _follower);
+        await authorRepository.UnfollowAuthor(_following!, _follower!);
     }
 
     public async Task<bool> IsFollowing(string self, string other)
@@ -73,7 +64,7 @@ public class CheepModel : PageModel
             return false;
         }
         var _other = await authorRepository.FindAuthorByName(other);
-        if (_other.Followers.Contains(_self.Id))
+        if (_other!.Followers!.Contains(_self.Id))
         {
             return true;
         }
