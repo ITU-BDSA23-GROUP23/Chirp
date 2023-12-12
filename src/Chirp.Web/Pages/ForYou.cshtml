@@ -6,8 +6,8 @@
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
-    var authorName = (string)HttpContext.GetRouteValue("authorName");
-    Model.author = @User.Identity?.Name;
+    var authorName = (string)HttpContext.GetRouteValue("authorName")!;
+    Model.author = @User.Identity?.Name!;
 }
 
 <div>
