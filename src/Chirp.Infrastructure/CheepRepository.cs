@@ -38,7 +38,7 @@ public class CheepRepository : ICheepRepository
             .Take(pageSize)
             .Include(c => c.Author);
 
-        return CheepsToCheepDTOs(_Cheeps.ToList());
+        return await CheepsToCheepDTOs(_Cheeps.ToList());
     }
 
     public async Task<Cheep> GetCheepById(Guid id)
@@ -66,7 +66,7 @@ public class CheepRepository : ICheepRepository
             .Take(pageSize)
             .Include(c => c.Author);
 
-        return CheepsToCheepDTOs(Cheeps.ToList());
+        return await CheepsToCheepDTOs(Cheeps.ToList());
     }
 
     public async Task<long> GetCheepsAmount(string? authorName = null)
@@ -133,7 +133,7 @@ public class CheepRepository : ICheepRepository
         return (page - 1) * pageSize;
     }
 
-    private IEnumerable<CheepDTO> CheepsToCheepDTOs(List<Cheep> cheeps)
+    private async Task<IEnumerable<CheepDTO>> CheepsToCheepDTOs(List<Cheep> cheeps)
     {
         var cheepDTOs = new List<CheepDTO>();
         foreach (var cheep in cheeps)
@@ -144,7 +144,13 @@ public class CheepRepository : ICheepRepository
 
             ICollection<AuthorDTO>? following = new List<AuthorDTO>();
 
-            cheepDTOs.Add(new CheepDTO(cheep.Message, cheep.Author.Name, formattedDateTime, (ICollection<ReactionDTO>?)cheep.Reactions, following, cheep.Id));
+
+            ICollection<ReactionDTO> rDTOs = new List<ReactionDTO>();
+            foreach (int n in Enum.GetValues(typeof(Reactiontype))) {
+                rDTOs.Add(await GetReactions(cheep.Id, n));
+            }
+
+            cheepDTOs.Add(new CheepDTO(cheep.Message, cheep.Author.Name, formattedDateTime, rDTOs, following, cheep.Id));
         }
 
         return cheepDTOs;
