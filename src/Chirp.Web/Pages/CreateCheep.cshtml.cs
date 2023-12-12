@@ -57,7 +57,9 @@ public class CreateCheepModel : PageModel
                     Console.WriteLine("Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage);
                 }
             }
+            else {
             _Cheep_repository.CreateCheep(cheepDTO, null);
+            }
         }
         else
         {
@@ -74,8 +76,10 @@ public class CreateCheepModel : PageModel
                 {
                     Console.WriteLine("Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage);
                 }
+            } else {
+                _Cheep_repository.CreateCheep(cheepDTO, null);
             }
-            _Cheep_repository.CreateCheep(cheepDTO, null);
+            
         }
     }
     public ActionResult OnGetPartial()

@@ -5,6 +5,12 @@ using NuGet.Protocol.Plugins;
 using Chirp.Infrastructure;
 using SQLitePCL;
 
+
+/// <summary>
+/// This class is used as a repostiory of functions/methods that we use to interact with the Database when dealing with Authors 
+/// This class has methods like findAuthor, Create author, and eveything we use later to get or update data that has to do with an Author  
+/// </summary>
+
 public class AuthorRepository : IAuthorRepository
 {
     private readonly ChirpDBContext dbContext;
@@ -155,10 +161,8 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task<IEnumerable<AuthorDTO>> GetFollowers(string authorName)
     {
-        //Console.WriteLine("followers123");
+
         var author = await dbContext.Authors.Include(a => a.Followers).FirstOrDefaultAsync(a => a.Name == authorName);
-        //Console.WriteLine("authorauthor: " + author);
-        //Console.WriteLine("author.Name: " + author.Following);
         if (author != null)
         {
             ICollection<AuthorDTO> Followers = new List<AuthorDTO>();
@@ -174,11 +178,7 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task<IEnumerable<AuthorDTO>> GetFollowing(string authorName)
     {
-        //Console.WriteLine("following123"); FOR DEBUGGING
-        //Console.WriteLine(authorName); FOR DEBUGGING
         var author = await dbContext.Authors.Include(a => a.Following).FirstOrDefaultAsync(a => a.Name == authorName);
-        //Console.WriteLine("authorauthor: " + author); FOR DEBUGGING
-        //Console.WriteLine("author.Following: " + author.Following); FOR DEBUGGING
         if (author != null)
         {
             ICollection<AuthorDTO> Following = new List<AuthorDTO>();
