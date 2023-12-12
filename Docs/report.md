@@ -39,6 +39,36 @@ date: \today
 
 ## How to run the test suite locally
 
+## How to run the test suite locally
+
+To run the test suites locally, first you will have to start your docker container.
+
+MAC: `docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=DhE883cb" -p 1433:1433 --name sql1 --hostname sql1 -d mcr.microsoft.com/azure-sql-edge`
+
+Windows:
+
+Linux:
+
+Next, open up a terminal in the project. Assuming you are in the root of the repository Chirp, direct to either:
+
+```bash
+cd Test/Chirp.Razor.Tests
+```
+
+or
+
+```bash
+cd Test/UITest/PlaywrightTests
+```
+
+In both the Chirp.Razor.Tests and PlaywrightTests folder, to run the tests:
+
+```bash
+dotnet test
+```
+
+The kind of tests we have in our test suites are... they are testing...
+
 # 3. Ethics
 
 ## License
@@ -50,3 +80,7 @@ License: WTFPL
 The LLMs used for this project during developments are ChatGPT and GitHub CoPilot. ChatGPT has been used carefully, mainly for asking questions about the code or errors in the code. It has also been used for generating small pieces of code, mainly in the cshtml files. Likewise, CoPilot has been used for generating some of the code in cshtml, but has also been used for helping with code, partly making some of the methods in the repositories and creating outlines for tests.
 Generally, the responses of the LLMs has been helpful for better understandment of the code and speeding up the development. It has not really created code that we would not have done ourselves, but it do have provided some logic in the methods, which has been helpful in terms of taking inspiration for futher method extensions.
 The application of LLMs has sped up the development process. Especially, CoPilot has made coding much faster, as it for most parts provides the code needed, e.g., if we already made a test for a method FollowAuthor, in no time CoPilot can make the same one for UnfollowAuthor. However, there has indeed been a few times, when ChatGPT or CoPilot does not understand the requests as intended, and therefore not providing useful outputs. But, for most of the time, they have been helpful tools for development.
+
+```
+
+```
