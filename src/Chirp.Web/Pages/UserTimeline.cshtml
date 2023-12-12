@@ -5,8 +5,8 @@
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
-    var routeName = (string)HttpContext.GetRouteValue("author")!;
-    Model.author = User.Identity?.Name;
+    var routeName = (string)HttpContext.GetRouteValue("author");
+    Model._author = User.Identity?.Name;
     <p>Author: @routeName</p> <!-- Add this line to check the value -->
 }
 

@@ -4,6 +4,7 @@ using Chirp.Infrastructure;
 using System.Globalization;
 using FluentValidation;
 
+
 /// </summary>
 /// This class is used as a repostiory of functions/methods that we use to interact with the Database when dealing with Cheeps 
 /// This class has methods like getCheeps, Create cheep, and eveything we use later to get or update data that has to do with cheep/cheeps  
@@ -12,6 +13,7 @@ public class CheepRepository : ICheepRepository
 {
     private readonly ChirpDBContext dbContext; 
 
+    private AuthorRepository authorRepository;
     public CheepRepository(ChirpDBContext dbContext)
     {
         this.dbContext = dbContext;
@@ -156,12 +158,21 @@ public class CheepRepository : ICheepRepository
     {
         
         Cheep? cheep = await dbContext.Cheeps.Include(c => c.Reactions).FirstAsync(c => c.Id == cheepId);
+        Author _Author = await dbContext.Authors.Include(a => a.Reactions).FirstOrDefaultAsync(a => a.Name == author);
 
-        cheep.Reactions.Add(new Reaction()
+        Console.WriteLine("(String) Author is" + author);
+        Console.WriteLine("Author: " + _Author.Name);
+        Console.WriteLine("Reactions: " + _Author.Reactions + " Type: " + _Author.Reactions.GetType());
+        Reaction reaction = new Reaction()
         {
             ReactionType = type,
-            Author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == author)
-        });
+            Cheep = cheep,
+            Author = _Author
+        };
+        
+        cheep.Reactions.Add(reaction);
+        _Author.Reactions.Add(reaction);
+
         await dbContext.SaveChangesAsync();
     }
 

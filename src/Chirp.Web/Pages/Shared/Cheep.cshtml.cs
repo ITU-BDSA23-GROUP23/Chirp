@@ -17,9 +17,6 @@ public class CheepModel : PageModel
         this.cheepRepository = cheepRepository;
         this.cheep = cheep;
     }
-
-
-    
     
     public async Task FollowAuthor(string followerName, string followingName)
     {

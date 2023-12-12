@@ -26,7 +26,8 @@ public class AuthorRepository : IAuthorRepository
             Email = author.Email,
             Cheeps = new List<Cheep>(),
             Following = new List<Author>(),
-            Followers = new List<Author>()
+            Followers = new List<Author>(),
+            Reactions = new List<Reaction>()
         });
         dbContext.SaveChanges();
     }
@@ -71,6 +72,18 @@ public class AuthorRepository : IAuthorRepository
         }
         return null;
     }
+
+    // public async Task AddReaction(string type, Guid CheepId, string authorName)
+    // {
+    //     var cheep = await dbContext.Cheeps.Include(c => c.Reactions).FirstAsync(c => c.Id == CheepId);
+    //     var reaction = new Reaction()
+    //     {
+    //         Author = await dbContext.Authors.FirstAsync(a => a.Name == authorName),
+    //         ReactionType = type,
+    //         Cheep = cheep
+    //     };
+    //     cheep.Reactions.Add(reaction);
+    // }
 
     public AuthorDTO? AuthorToAuthorDTO(Author? author)
     {

@@ -38,7 +38,7 @@
             <div style="display:flex; flex-direction: row;">
                 <div style="display: flex; flex-direction: column-reverse; text-align: center; font-size: 20px;">
                     @(await Model.GetReactionCount(Reactiontype.Like))
-                <form name="Reaction" method="post" action=@("?li=")>
+                <form name="Reaction" method="post">
                     @Html.AntiForgeryToken()
                     <input hidden type="text" name="Like" value="@Model.cheep.Id"/>
                     <input type="submit" name="submit" value="&#128077;" class="submit"/>
@@ -46,7 +46,7 @@
                 </div>
                 <div style="display: flex; flex-direction: column-reverse; text-align: center; font-size: 20px;">
                     @(await Model.GetReactionCount(Reactiontype.Dislike))
-                <form name="Reaction" method="post" action=@("?di=")>
+                <form name="Reaction" method="post">
                     @Html.AntiForgeryToken()
                     <input hidden type="text" name="Dislike" value="@Model.cheep.Id"/>
                     <input type="submit" name="submit" value="&#128078;" class="submit"/>
@@ -54,7 +54,7 @@
                 </div>
                 <div style="display: flex; flex-direction: column-reverse; text-align: center; font-size: 20px;">
                     @(await Model.GetReactionCount(Reactiontype.Love))
-                <form name="Reaction" method="post" action=@("?lo=")>
+                <form name="Reaction" method="post">
                     @Html.AntiForgeryToken()
                     <input hidden type="text" name="Love" value="@Model.cheep.Id"/>
                     <input type="submit" name="submit" value="&#128525;" class="submit"/>

@@ -45,6 +45,12 @@ public class PublicModel : PageModel
 
     public async Task<ActionResult> OnPost([FromQuery] int page, [FromQuery] string f, [FromQuery] string uf, [FromQuery] string c, [FromQuery] string li, [FromQuery] string di, [FromQuery] string lo)
     {
+
+        if(string.IsNullOrEmpty(author))
+        {
+            author = User.Identity?.Name;
+        }
+
         await OnGet(page);
 
         li = HttpContext.Request.Query["li"].ToString();
@@ -84,7 +90,8 @@ public class PublicModel : PageModel
         {
             Guid loGuid = Guid.Parse(lo);
             await cheepRepository.ReactToCheep(author, "Love", loGuid);
-        } else if (c != null) 
+        } 
+        else if (c != null) 
         {
             string? Message = Request.Form["Cheep"];
             CreateCheep.OnPostCheep(c, Message!);
