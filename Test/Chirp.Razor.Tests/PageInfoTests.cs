@@ -24,7 +24,7 @@ public class PageInfoTests : IDisposable
         context = new ChirpDBContext(_contextOptions);
         context.Database.EnsureCreated();
         authorRepository = new AuthorRepository(context);
-        cheepRepository = new CheepRepository(context);
+        cheepRepository = new CheepRepository(context, authorRepository);
     }
 
     [Fact]
@@ -259,23 +259,13 @@ public class PageInfoTests : IDisposable
         // In the application it is impossible for users to follow other users, that haven't yet been created as authors.*      // (Except if they interact with the application outside our UI)
         // - You are created as an author when you create your first cheep, or the first time you attempt to follow an author.
         // Author 1 follows Author 2 and Author 3
-<<<<<<< HEAD
         var author1cheep1DTO = new createCheepDTO(author1DTO, "Author 1 cheep 1");
-        await cheepRepository.CreateCheep(author1cheep1DTO, null);
+        cheepRepository.CreateCheep(author1cheep1DTO, null);
         var author1cheep2DTO = new createCheepDTO(author1DTO, "Author 1 cheep 2");
-        await cheepRepository.CreateCheep(author1cheep2DTO, null);
-=======
-        await authorRepository.FollowAuthor(author1DTO, author2DTO);
-        await authorRepository.FollowAuthor(author1DTO, author3DTO);
-
-
-        // ACT Use forget me on author 1
-        await authorRepository.ForgetMe(author1Name);
->>>>>>> main
+        cheepRepository.CreateCheep(author1cheep2DTO, null);
 
         var author2cheep1DTO = new createCheepDTO(author2DTO, "Author 2 cheep 1");
 
-<<<<<<< HEAD
 
         await authorRepository.FollowAuthor(author1DTO, author2DTO);
         await authorRepository.FollowAuthor(author1DTO, author3DTO);
@@ -301,8 +291,6 @@ public class PageInfoTests : IDisposable
         await authorRepository.ForgetMe(author1Name);
 
 
-=======
->>>>>>> main
         // ASSERT
         // Check that author 2 and 3 no longer follows author 1, and that author 1 is completely removed from the database.
         var author1FollowERSAfter = await authorRepository.GetFollowers(author1Name);
@@ -312,10 +300,10 @@ public class PageInfoTests : IDisposable
         var author1FollowINGAfter = await authorRepository.GetFollowing(author1Name);
         var author2FollowINGAfter = await authorRepository.GetFollowing(author2Name);
         var author3FollowINGAfter = await authorRepository.GetFollowing(author3Name);
-
+        
         // Check that author 2 and author 3 is no longer following or followers of author 1.
-        Assert.Null(author1FollowERSAfter);
-        Assert.Null(author1FollowINGAfter);
+        Assert.Empty(author1FollowERSAfter);
+        Assert.Empty(author1FollowINGAfter);
 
         // Now i want to go through author2FollowERSAfter and author3FollowERSAfter and check that they are not following author 1.
         // Check that there is no list left of author 1 following author 1 and author 2.
@@ -339,7 +327,6 @@ public class PageInfoTests : IDisposable
         {
             Assert.NotEqual(author1Name, author.Name);
         }
-<<<<<<< HEAD
 
         // Check that all reactions to author 1 cheeps are removed.
         // Go through all the cheeps in author1cheeps and check that all reactions to author 1 cheeps are removed.
@@ -352,8 +339,6 @@ public class PageInfoTests : IDisposable
         // Check that all reactions by author 1 are removed.
         var author1Reactions = await context.Reactions.FirstOrDefaultAsync(r => r.Author.Name == author1Name);
         Assert.Null(author1Reactions);
-=======
->>>>>>> main
 
         // Check that author 1 is completely removed from the database.
         var author1After = await authorRepository.FindAuthorByName(author1Name);
