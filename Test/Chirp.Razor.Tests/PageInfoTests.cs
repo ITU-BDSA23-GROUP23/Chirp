@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.Sqlite;
 using Humanizer;
 using Azure;
+using System.Reflection;
 
 public class PageInfoTests : IDisposable
 {
@@ -263,6 +264,8 @@ public class PageInfoTests : IDisposable
         var author1cheep2DTO = new createCheepDTO(author1DTO, "Author 1 cheep 2");
         await cheepRepository.CreateCheep(author1cheep2DTO, null);
 
+        var author2cheep1DTO = new createCheepDTO(author2DTO, "Author 2 cheep 1");
+
 
         await authorRepository.FollowAuthor(author1DTO, author2DTO);
         await authorRepository.FollowAuthor(author1DTO, author3DTO);
@@ -275,6 +278,12 @@ public class PageInfoTests : IDisposable
             await cheepRepository.ReactToCheep(author2Name, "Like", cheep.Id);
             await cheepRepository.ReactToCheep(author3Name, "Love", cheep.Id);
             await cheepRepository.ReactToCheep(author3Name, "Love", cheep.Id);
+        }
+        var author2cheeps = await cheepRepository.GetCheeps(1, authorName: author1Name);
+        foreach (var cheep in author2cheeps)
+        {
+            await cheepRepository.ReactToCheep(author1Name, "Like", cheep.Id);
+            await cheepRepository.ReactToCheep(author1Name, "Love", cheep.Id);
         }
 
 
@@ -323,15 +332,15 @@ public class PageInfoTests : IDisposable
         // Go through all the cheeps in author1cheeps and check that all reactions to author 1 cheeps are removed.
         foreach (var cheep in author1cheeps)
         {
-            var reactions = await cheepRepository.GetReactions(cheep.Id, 1);
-            Assert.Null(reactions);
+            Assert.ThrowsAsync<NullReferenceException>(async () => await cheepRepository.GetReactions(cheep.Id, 1));
+            // If the exception is thrown (passing the assertion), the reactions with these ids have removed.
         }
-        // context.Reactions.FirstOrDefaultAsync.Where(r => r.Author.Name == author1Name);
-        var Reactions = await context.Reactions.Where(r => r.Cheep.Id == cheep.Id)
+
         // Check that all reactions by author 1 are removed.
+        var author1Reactions = await context.Reactions.FirstOrDefaultAsync(r => r.Author.Name == author1Name);
+        Assert.Null(author1Reactions);
 
         // Check that author 1 is completely removed from the database.
-        // If the method return ArgumentNullException, when the author isn't found: await Assert.ThrowsAsync<ArgumentNullException>(async () => await authorRepository.FindAuthorByName(author1Name));
         var author1After = await authorRepository.FindAuthorByName(author1Name);
         Assert.Null(author1After);
     }
