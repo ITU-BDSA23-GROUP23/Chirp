@@ -215,8 +215,8 @@ public class AuthorRepository : IAuthorRepository
         }
 
         // Deleting reactions connected to the author.
-        await DeleteReactionsByAuthor(authorName);
         await DeleteReactionsForCheepsByAuthor(authorName);
+        await DeleteReactionsByAuthor(authorName);
 
         // Deleting cheeps connected to the author, and the author itself.
         await DeleteAuthorCheeps(authorName);
@@ -305,10 +305,24 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task DeleteReactionsByAuthor(string AuthorName)
     {
-        var Author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == AuthorName);
+        Console.WriteLine($"Deleting reactions by author {AuthorName}");
+        var Author = await dbContext.Authors.Include(r => r.Reactions).FirstOrDefaultAsync(a => a.Name == AuthorName);
         if (Author != null)
         {
-            Author.Reactions.Clear();
+            Console.WriteLine($"Author {AuthorName} has {Author.Reactions.Count} reactions.");
+            var reactionsToRemove = dbContext.Reactions.Include(c => c.Cheep).Include(a => a.Author).Where(r => r.Author.Name == AuthorName);
+            Author.Reactions = new List<Reaction>();
+            // We remove the specific reactions from their cheeps.
+            foreach (var reaction in reactionsToRemove)
+            {
+                Console.WriteLine($"Removing reaction {reaction.ReactionId} from cheep {reaction.Cheep.Id}");
+                reaction.Cheep.Reactions.Remove(reaction);
+            }
+
+            dbContext.Reactions.RemoveRange(reactionsToRemove);
+
+            // Author.Reactions.Clear(); For some reason, this doesn't work. Instead we set Reactions to a new empty list.
+
             await dbContext.SaveChangesAsync();
         }
     }
