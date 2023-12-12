@@ -21,10 +21,10 @@ public class CreateCheepModel : PageModel
 
     }
 
-    public ActionResult OnPostCheep(string c, string message) 
+    public ActionResult OnPostCheep(string c, string message)
     {
         if (c != null)
-        { 
+        {
             createCheep(c, message);
         }
 
@@ -38,7 +38,7 @@ public class CreateCheepModel : PageModel
         _Author.Wait();
         var Author = _Author.Result;
 
-  
+
         if (Author != null)
         {
 
@@ -52,8 +52,9 @@ public class CreateCheepModel : PageModel
                     Console.WriteLine("Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage);
                 }
             }
-            else {
-            _Cheep_repository.CreateCheep(cheepDTO, null);
+            else
+            {
+                _Cheep_repository.CreateCheep(cheepDTO, null);
             }
         }
         else
@@ -71,14 +72,16 @@ public class CreateCheepModel : PageModel
                 {
                     Console.WriteLine("Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage);
                 }
-            } else {
+            }
+            else
+            {
                 _Cheep_repository.CreateCheep(cheepDTO, null);
             }
-            
+
         }
     }
     public ActionResult OnGetPartial()
     {
-       return Page();
+        return Page();
     }
 }

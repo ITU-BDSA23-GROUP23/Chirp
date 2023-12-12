@@ -27,7 +27,7 @@ public class PublicModel : PageModel
         this.cheepRepository = cheepRepository;
         PageNav = new PageNavModel(1, TotalPages);
         CreateCheep = new CreateCheepModel(authorRepository, cheepRepository);
-        
+
     }
 
     public virtual async Task<ActionResult> OnGet([FromQuery] int page)
@@ -35,7 +35,7 @@ public class PublicModel : PageModel
         var _TotalPages = await cheepRepository.GetPageAmount();
         TotalPages = _TotalPages;
         PageNav = new PageNavModel(page, TotalPages);
-       
+
         var _Cheeps = await cheepRepository.GetCheeps(page);
         Cheeps = _Cheeps;
 
@@ -46,7 +46,7 @@ public class PublicModel : PageModel
     public async Task<ActionResult> OnPost([FromQuery] int page, [FromQuery] string f, [FromQuery] string uf, [FromQuery] string c, [FromQuery] string li, [FromQuery] string di, [FromQuery] string lo)
     {
 
-        if(string.IsNullOrEmpty(author))
+        if (string.IsNullOrEmpty(author))
         {
             author = User.Identity?.Name;
         }
@@ -70,41 +70,44 @@ public class PublicModel : PageModel
         {
             lo = Request.Form["Love"]!;
         }
-        
+
         if (f != null)
         {
             await Methods.FollowAuthor(authorRepository, f, Request.Form["Follow"]!);
-        } else if (uf != null)
+        }
+        else if (uf != null)
         {
             await Methods.UnfollowAuthor(authorRepository, uf, Request.Form["Unfollow"]!);
-        } 
-        else if(li != null)
+        }
+        else if (li != null)
         {
             Guid liGuid = Guid.Parse(li);
             await cheepRepository.ReactToCheep(author, "Like", liGuid);
-        } else if (di != null)
-        {   
+        }
+        else if (di != null)
+        {
             Guid diGuid = Guid.Parse(di);
             await cheepRepository.ReactToCheep(author, "Dislike", diGuid);
-        } else if (lo != null)
+        }
+        else if (lo != null)
         {
             Guid loGuid = Guid.Parse(lo);
             await cheepRepository.ReactToCheep(author, "Love", loGuid);
-        } 
-        else if (c != null) 
+        }
+        else if (c != null)
         {
             string? Message = Request.Form["Cheep"];
             CreateCheep.OnPostCheep(c, Message!);
             return RedirectToPage("");
         }
-        
+
         return Page();
     }
- 
+
     public CheepModel GenerateCheepModel(CheepDTO cheep)
     {
         return new CheepModel(authorRepository, cheepRepository, cheep);
     }
 }
 
-    
+

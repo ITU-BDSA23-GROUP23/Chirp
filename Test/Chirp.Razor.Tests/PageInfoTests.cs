@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.Sqlite;
 using Humanizer;
 using Azure;
+using System.Reflection;
 
 public class PageInfoTests : IDisposable
 {
@@ -258,14 +259,50 @@ public class PageInfoTests : IDisposable
         // In the application it is impossible for users to follow other users, that haven't yet been created as authors.*      // (Except if they interact with the application outside our UI)
         // - You are created as an author when you create your first cheep, or the first time you attempt to follow an author.
         // Author 1 follows Author 2 and Author 3
+<<<<<<< HEAD
+        var author1cheep1DTO = new createCheepDTO(author1DTO, "Author 1 cheep 1");
+        await cheepRepository.CreateCheep(author1cheep1DTO, null);
+        var author1cheep2DTO = new createCheepDTO(author1DTO, "Author 1 cheep 2");
+        await cheepRepository.CreateCheep(author1cheep2DTO, null);
+=======
         await authorRepository.FollowAuthor(author1DTO, author2DTO);
         await authorRepository.FollowAuthor(author1DTO, author3DTO);
 
 
         // ACT Use forget me on author 1
         await authorRepository.ForgetMe(author1Name);
+>>>>>>> main
+
+        var author2cheep1DTO = new createCheepDTO(author2DTO, "Author 2 cheep 1");
+
+<<<<<<< HEAD
+
+        await authorRepository.FollowAuthor(author1DTO, author2DTO);
+        await authorRepository.FollowAuthor(author1DTO, author3DTO);
+
+        // We need to get the cheepIDs of the cheeps we just created, so we can react to them.
+        var author1cheeps = await cheepRepository.GetCheeps(1, authorName: author1Name);
+        foreach (var cheep in author1cheeps)
+        {
+            await cheepRepository.ReactToCheep(author2Name, "Like", cheep.Id);
+            await cheepRepository.ReactToCheep(author2Name, "Like", cheep.Id);
+            await cheepRepository.ReactToCheep(author3Name, "Love", cheep.Id);
+            await cheepRepository.ReactToCheep(author3Name, "Love", cheep.Id);
+        }
+        var author2cheeps = await cheepRepository.GetCheeps(1, authorName: author1Name);
+        foreach (var cheep in author2cheeps)
+        {
+            await cheepRepository.ReactToCheep(author1Name, "Like", cheep.Id);
+            await cheepRepository.ReactToCheep(author1Name, "Love", cheep.Id);
+        }
 
 
+        // ACT Use forget me on author 1
+        await authorRepository.ForgetMe(author1Name);
+
+
+=======
+>>>>>>> main
         // ASSERT
         // Check that author 2 and 3 no longer follows author 1, and that author 1 is completely removed from the database.
         var author1FollowERSAfter = await authorRepository.GetFollowers(author1Name);
@@ -302,9 +339,23 @@ public class PageInfoTests : IDisposable
         {
             Assert.NotEqual(author1Name, author.Name);
         }
+<<<<<<< HEAD
+
+        // Check that all reactions to author 1 cheeps are removed.
+        // Go through all the cheeps in author1cheeps and check that all reactions to author 1 cheeps are removed.
+        foreach (var cheep in author1cheeps)
+        {
+            Assert.ThrowsAsync<NullReferenceException>(async () => await cheepRepository.GetReactions(cheep.Id, 1));
+            // If the exception is thrown (passing the assertion), the reactions with these ids have removed.
+        }
+
+        // Check that all reactions by author 1 are removed.
+        var author1Reactions = await context.Reactions.FirstOrDefaultAsync(r => r.Author.Name == author1Name);
+        Assert.Null(author1Reactions);
+=======
+>>>>>>> main
 
         // Check that author 1 is completely removed from the database.
-        // If the method return ArgumentNullException, when the author isn't found: await Assert.ThrowsAsync<ArgumentNullException>(async () => await authorRepository.FindAuthorByName(author1Name));
         var author1After = await authorRepository.FindAuthorByName(author1Name);
         Assert.Null(author1After);
     }
