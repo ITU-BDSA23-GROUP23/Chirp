@@ -2,7 +2,10 @@ namespace Chirp.Core
 
 {
     using FluentValidation;
-
+    /// <summary>
+    /// This is a data transfer object which is used from the outer part of the code to be send back to the repositories when we create a Cheep
+    /// We are using fluentvalidation to stop the creation of cheeps with the wrong length
+    /// </summary>
     public class createCheepDTO
     {
         public AuthorDTO Author { get; set; }

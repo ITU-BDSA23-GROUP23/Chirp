@@ -3,6 +3,10 @@ using Chirp.Core;
 
 namespace Chirp.Infrastructure
 {
+    /// <summary>
+    /// this class is our database context https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app?tabs=netcore-cli
+    /// We give the context our entity classes that make up the model here Authors, cheep and reactions
+    /// </summary>
     public class ChirpDBContext : DbContext
     {
         public ChirpDBContext(DbContextOptions<ChirpDBContext> options)
@@ -25,6 +29,10 @@ namespace Chirp.Infrastructure
         public DbSet<Cheep> Cheeps { get; set; }
         public DbSet<Reaction> Reactions { get; set; }
 
+        /// <summary>
+        /// https://learn.microsoft.com/en-us/ef/core/modeling/
+        /// Here we configure specific rules for the model and DB without change the entities themself
+        /// </summary>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             

@@ -9,6 +9,8 @@
     Model.author = User.Identity?.Name;
 }
 
+@* file that has HTML markup with C# code using Razor syntax. *@
+
 <div>
     <h2>Public Timeline</h2>
     @(await Html.PartialAsync("Shared/PageNav", @Model.PageNav))

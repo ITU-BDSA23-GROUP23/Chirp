@@ -14,6 +14,9 @@ using SQLitePCL;
 
 namespace Chirp.Web.Pages;
 [AllowAnonymous]
+
+/// file that has C# code that handles page events.
+
 public class PublicModel : PageModel
 {
     private readonly IAuthorRepository authorRepository;
