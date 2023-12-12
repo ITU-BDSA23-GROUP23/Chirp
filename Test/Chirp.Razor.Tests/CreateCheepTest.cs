@@ -25,8 +25,8 @@ public class CreateCheepTest
     {
         //Arrange
         string Message = "MyMessage";
-        ICheepRepository cheepRepository = new CheepRepository(context);
         IAuthorRepository authorRepository = new AuthorRepository(context);
+        ICheepRepository cheepRepository = new CheepRepository(context, authorRepository);
         CreateAuthorDTO author = new CreateAuthorDTO("Thorstein Pedersen", "tpepsi@gmail.com");
         authorRepository.CreateAuthor(author);
         var Aurthor = authorRepository.FindAuthorByName("Thorstein Pedersen").Result;

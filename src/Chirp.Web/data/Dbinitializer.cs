@@ -10,7 +10,7 @@ public static class DbInitializer
         if (!(chirpContext.Authors.Any() && chirpContext.Cheeps.Any()))
         {
             IAuthorRepository Author_repository = new AuthorRepository(chirpContext);
-            ICheepRepository Cheep_repository = new CheepRepository(chirpContext);
+            ICheepRepository Cheep_repository = new CheepRepository(chirpContext, Author_repository);
 
             Author_repository.CreateAuthor(new CreateAuthorDTO("Roger Histand", "Roger+Histand@hotmail.com"));
             Author_repository.CreateAuthor(new CreateAuthorDTO("Luanna Muro", "Luanna-Muro@ku.dk"));

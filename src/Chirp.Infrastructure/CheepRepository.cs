@@ -11,12 +11,13 @@ using FluentValidation;
 /// </summary>
 public class CheepRepository : ICheepRepository
 {
-    private readonly ChirpDBContext dbContext; 
+    private readonly ChirpDBContext dbContext;
 
-    private AuthorRepository authorRepository;
-    public CheepRepository(ChirpDBContext dbContext)
+    private IAuthorRepository authorRepository;
+    public CheepRepository(ChirpDBContext dbContext, IAuthorRepository authorRepository)
     {
         this.dbContext = dbContext;
+        this.authorRepository = authorRepository;
     }
 
     public async Task<IEnumerable<CheepDTO>> GetCheepsFromAuthors(ICollection<Guid> authorIds, int page = 1, int pageSize = 32)
@@ -156,10 +157,18 @@ public class CheepRepository : ICheepRepository
 
     public async Task ReactToCheep(string? author, string type, Guid cheepId)
     {
-        
+
         Cheep? cheep = await dbContext.Cheeps.Include(c => c.Reactions).FirstAsync(c => c.Id == cheepId);
-        Author _Author = await dbContext.Authors.Include(a => a.Reactions).FirstOrDefaultAsync(a => a.Name == author);
-        
+        Author? _Author = await dbContext.Authors.Include(a => a.Reactions).FirstOrDefaultAsync(a => a.Name == author);
+
+        if (_Author == null) {
+            authorRepository.CreateAuthor(new CreateAuthorDTO(author!, author +"@pmail.com"));
+            _Author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == author);
+        }
+
+        Console.WriteLine("(String) Author is" + author);
+        Console.WriteLine("Author: " + _Author.Name);
+        Console.WriteLine("Reactions: " + _Author.Reactions + " Type: " + _Author.Reactions.GetType());
         Reaction reaction = new Reaction()
         {
             ReactionType = type,
