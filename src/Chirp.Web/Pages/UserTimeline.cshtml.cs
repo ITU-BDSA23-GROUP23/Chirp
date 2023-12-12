@@ -26,8 +26,9 @@ public class UserTimelineModel : PageModel
     private readonly ICheepRepository cheepRepository;
 
     private readonly ILogger<UserTimelineModel> _logger;
+    
 
-    public string author;
+    public string? _author { get; set; }
 
     public UserTimelineModel(ILogger<UserTimelineModel> logger, IAuthorRepository authorRepository, ICheepRepository cheepRepository)
     {
@@ -78,8 +79,16 @@ public class UserTimelineModel : PageModel
 
 
 
-    public async Task<ActionResult> OnPost([FromQuery] int page, [FromQuery] string f, [FromQuery] string uf, [FromQuery] string c, [FromQuery] string li, [FromQuery] string di, [FromQuery] string lo)
+    public async Task<ActionResult> OnPost(string author, [FromQuery] int page, [FromQuery] string f, [FromQuery] string uf, [FromQuery] string c, [FromQuery] string li, [FromQuery] string di, [FromQuery] string lo)
     {
+
+        await OnGet(author, page);
+
+        if(string.IsNullOrEmpty(_author))
+        {
+            _author = User.Identity?.Name!;
+        }
+
         li = HttpContext.Request.Query["li"].ToString();
         di = HttpContext.Request.Query["di"].ToString();
         lo = HttpContext.Request.Query["lo"].ToString();
@@ -108,22 +117,22 @@ public class UserTimelineModel : PageModel
         else if(li != null)
         {
             Guid liGuid = Guid.Parse(li);
-            await cheepRepository.ReactToCheep(author, "Like", liGuid);
+            await cheepRepository.ReactToCheep(_author, "Like", liGuid);
         } else if (di != null)
         {   
             Guid diGuid = Guid.Parse(di);
-            await cheepRepository.ReactToCheep(author, "Dislike", diGuid);
+            await cheepRepository.ReactToCheep(_author, "Dislike", diGuid);
         } else if (lo != null)
         {
             Guid loGuid = Guid.Parse(lo);
-            await cheepRepository.ReactToCheep(author, "Love", loGuid);
+            await cheepRepository.ReactToCheep(_author, "Love", loGuid);
         } else if (c != null) 
         {
             string? Message = Request.Form["Cheep"];
             CreateCheep.OnPostCheep(c, Message);
             return RedirectToPage("");
         }
-        return RedirectToPage(author);
+        return Page();
     }
 
 
