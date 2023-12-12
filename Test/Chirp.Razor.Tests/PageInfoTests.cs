@@ -239,7 +239,7 @@ public class PageInfoTests : IDisposable
     [Fact]
     public async Task ForgetMeTest()
     {
-        // Arrange - Create three authors, with 3 cheeps each, each following each other.
+        // ARRANGE - Create three authors, with 3 cheeps each, each following each other.
         // Author 1
         string author1Name = "ArthurAuthor1";
         authorRepository.CreateAuthor(new CreateAuthorDTO(author1Name, ""));
@@ -262,22 +262,46 @@ public class PageInfoTests : IDisposable
         await authorRepository.FollowAuthor(author1DTO, author3DTO);
 
 
-        // Act Use forget me on author 1
+        // ACT Use forget me on author 1
         await authorRepository.ForgetMe(author1Name);
 
 
-        // Assert Check that author 2 and 3 no longer follows author 1, and that author 1 is completely removed from the database.
-        var author1FollowersAfter = await authorRepository.GetFollowers(author1Name);
-        var author1FollowingAfter = await authorRepository.GetFollowing(author1Name);
+        // ASSERT
+        // Check that author 2 and 3 no longer follows author 1, and that author 1 is completely removed from the database.
+        var author1FollowERSAfter = await authorRepository.GetFollowers(author1Name);
+        var author2FollowERSAfter = await authorRepository.GetFollowers(author2Name);
+        var author3FollowERSAfter = await authorRepository.GetFollowers(author3Name);
 
-        var author2FollowingAfter = await authorRepository.GetFollowing(author2Name);
-        var author3FollowingAfter = await authorRepository.GetFollowing(author3Name);
+        var author1FollowINGAfter = await authorRepository.GetFollowing(author1Name);
+        var author2FollowINGAfter = await authorRepository.GetFollowing(author2Name);
+        var author3FollowINGAfter = await authorRepository.GetFollowing(author3Name);
 
-        // Check that author 2 and author 3 is no longer following author 1.
+        // Check that author 2 and author 3 is no longer following or followers of author 1.
+        Assert.Null(author1FollowERSAfter);
+        Assert.Null(author1FollowINGAfter);
 
+        // Now i want to go through author2FollowERSAfter and author3FollowERSAfter and check that they are not following author 1.
+        // Check that there is no list left of author 1 following author 1 and author 2.
 
-        // Check that there is no list left of author 1 following author 1 and author 3.
+        // author2 lists checks:
+        foreach (var author in author2FollowERSAfter)
+        {
+            Assert.NotEqual(author1Name, author.Name);
+        }
+        foreach (var author in author2FollowINGAfter)
+        {
+            Assert.NotEqual(author1Name, author.Name);
+        }
 
+        // Author3 lists checks:
+        foreach (var author in author3FollowERSAfter)
+        {
+            Assert.NotEqual(author1Name, author.Name);
+        }
+        foreach (var author in author2FollowINGAfter)
+        {
+            Assert.NotEqual(author1Name, author.Name);
+        }
 
         // Check that author 1 is completely removed from the database.
         // If the method return ArgumentNullException, when the author isn't found: await Assert.ThrowsAsync<ArgumentNullException>(async () => await authorRepository.FindAuthorByName(author1Name));
