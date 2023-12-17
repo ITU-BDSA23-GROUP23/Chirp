@@ -20,17 +20,10 @@ public class CheepRepositoryTests : IDisposable
         context = new ChirpDBContext(_contextOptions);
         context.Database.EnsureCreated();
     }
-    // [Fact]
-    // public void CreateCheepTest()
-    // {
-
-    // }
 
     [Fact]
     public async Task GetCheepsTest()
     {
-        // var a10 = new Author() { Name = "Jacqualine Gilcoine", Email = "Jacqualine.Gilcoine@gmail.com", Cheeps = new List<Cheep>() };
-        // var c1 = new Cheep() { Author = a10, Message = "123Testing", TimeStamp = DateTime.Parse("2023-08-01 13:14:37") };
         IAuthorRepository authorRepository = new AuthorRepository(context);
         ICheepRepository cheepRepository = new CheepRepository(context, authorRepository);
         CreateAuthorDTO author = new CreateAuthorDTO("Jacqualine Gilcoine", "Jacqualine.Gilcoine@gmail.com");
@@ -38,9 +31,6 @@ public class CheepRepositoryTests : IDisposable
         var Aurthor = authorRepository.FindAuthorByName("Jacqualine Gilcoine").Result;
         createCheepDTO createcheepDTO = new createCheepDTO(Aurthor, "123Testing");
         cheepRepository.CreateCheep(createcheepDTO, null);
-        // context.Authors.Add(a10);
-        // context.Cheeps.Add(c1);
-        // context.SaveChanges();
         var cheeps = await cheepRepository.GetCheeps();
         foreach (CheepDTO _cheep in cheeps)
         {
@@ -61,17 +51,6 @@ public class CheepRepositoryTests : IDisposable
         Assert.Equal(authorCheeps, 7);
     }
 
-    // [Fact]
-    // public void CalculateSkippedCheepsTest()
-    // {
-
-    // }
-
-    // [Fact]
-    // public void CheepsToCheepDTOsTest()
-    // {
-
-    // }
 
     public void Dispose()
     {
