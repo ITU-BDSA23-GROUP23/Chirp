@@ -3,7 +3,7 @@ title: "Chirp! Project Report"
 author:
   - "Edward Rostomian"
   - "Thorbjørn Pepe"
-  - "Author 3"
+  - "Daniel Holm Larsen"
   - "Author 4"
   - "Author 5"
 date: \today
@@ -42,6 +42,28 @@ BLABLA automatic deployment from main
 ## Teamwork
 
 ## How to make Chirp! work locally
+
+Prerequisites: Microsoft .Net 7.0 and Docker
+
+To make Chirp! work locally, first you must clone the repository:
+```
+  git clone https://github.com/ITU-BDSA23-GROUP23/Chirp.git
+```
+From here, you must first start a MSSQL docker container using the following command:
+
+```
+  docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=DhE883cb" -p 1433:1433 --name sql1 --hostname sql1 -d mcr.microsoft.com/azure-sql-edge
+```
+Next, from the root directory in /Chirp, run the following command:
+
+```
+  dotnet run --project src/Chirp.Web
+```
+Alternatively, from the /Chirp.Web folder:
+```
+  dotnet run
+```
+Finally, open your browser of choice and connect to `https://localhost:7040`  
 
 ## How to run the test suite locally
 
