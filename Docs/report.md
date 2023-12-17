@@ -33,8 +33,6 @@ date: \today
 
 ## Build, test, release, and deployment
 
-We would often times make new features, make a short manual test, and then go on to make more features, if we thought it worked correctly. Then, after creating the new features for that week's project work, we would most often have time to make automatic tests. We ended up with a good testsuit for all of our features, but at least once, towards the end, we apparently had different understandings of how a feature was to be implemented, and wrongfully assumed it finished. This caught us by surprise, and we ended up spending a some extra time on this feature, when we had planned to make tests and code cleanup. Ideally, we would have made automatic tests for each feature either while we were making it, or at least before pushing it, to be almost certain not to run into issues caused by untested features.
-
 We aimed to introduce singlefile releases, but prioritized new features and other requirements, delaying its implementation. The infrequent releases resulted from both postponing until singlefile capability and a lack of defined milestones for stable functionality. Our continuous work in progress and insufficient release planning contributed to this pattern.
 
 BLABLA automatic deployment from main
