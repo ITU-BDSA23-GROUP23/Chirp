@@ -25,6 +25,8 @@ Introduction???
 
 ## Domain model
 
+![Domain and Repository structure](diagrams/chirp_domain_and_repos_uml.png)
+
 <!--
 Write about what we want to represent (Cheeps, Authors, etc.)
 Maybe incorporate functionality of a normal social media app?
@@ -42,8 +44,6 @@ Our chirp application is implemented with an "onion skin architecture". This mea
 
 ## Architecture of deployed application
 
-![Domain and Repository structure](diagrams/chirp_domain_and_repos_uml.png)
-
 <!--
 Write about how we used the onion skin architecture, and specifically what functionality we put in what layer (eg. DTO's in core)
 -->
@@ -60,7 +60,7 @@ Should we write about what a user can do in our application here? User flow?
 
 ## Build, test, release, and deployment
 
-We aimed to introduce singlefile releases, but prioritized new features and other requirements, delaying its implementation. The infrequent releases resulted from both postponing until singlefile capability and a lack of defined milestones for stable functionality. Insufficient release planning, and constant development on important features contributed to this pattern. Since different features were almost always under development, we rarely felt our program was in a stable, shippable state. 
+We aimed to introduce singlefile releases, but prioritized new features and other requirements, delaying its implementation. The infrequent releases resulted from both postponing until singlefile capability and a lack of defined milestones for stable functionality. Insufficient release planning, and constant development on important features contributed to this pattern. Since different features were almost always under development, we rarely felt our program was in a stable, shippable state.
 
 Back when we were developing Chirp.CLI, we had a more solid release schedule. This is because it was the primary distribution of the software. When the project transitioned into a Razor application, the primary distribution became our Azure Web App, and our releases became way less frequent. Releases of our Razor application would also be quite difficult to use (since it requires docker), and would lack all online functionality. So for an ordinary user there would be absolutely no reason to run our code from releases.
 
@@ -100,10 +100,11 @@ sudo docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=DhE883cb" \
    -d \
    mcr.microsoft.com/mssql/server:2022-latest
 ```
-On windows or osx, make sure that the docker desktop application is running first. 
+
+On windows or osx, make sure that the docker desktop application is running first.
 On linux systems, ensure the Docker daemon is running. It can be started with:
 
-``` 
+```
 sudo dockerd
 ```
 
