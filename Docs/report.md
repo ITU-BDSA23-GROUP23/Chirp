@@ -4,7 +4,7 @@ author:
   - "Edward Rostomian"
   - "Thorbjørn Pepe"
   - "Daniel Holm Larsen"
-  - "Author 4"
+  - "Halfdan Eg Minegar Brage"
   - "Author 5"
 date: \today
 ---
@@ -17,15 +17,36 @@ date: \today
 
 \newpage
 
+<!-- 
+Introduction???
+-->
+
 # 1. Design and Architecture of Chirp!
 
 ## Domain model
 
+<!-- 
+Write about what we want to represent (Cheeps, Authors, etc.)
+Maybe incorporate functionality of a normal social media app?
+-->
+
 ## Architecture — In the small
+<!-- 
+Show image from slides of onion architecture
+-->
+Our chirp application is implemented with an "onion skin architecture". This means that our program is divided into three layers, core, infrastructure and web. The three layers follow a hierarchical structure where core < infrastructure < web. In this comparison, only greater layers may use or know the contents of the lower layers. Following this structure should result in reusable and loosely coupled code. In a company setting, code from "core" could be reused in many different applications and contexts around the entire company.
 
 ## Architecture of deployed application
 
+<!-- 
+Write about how we used the onion skin architecture, and specifically what functionality we put in what layer (eg. DTO's in core)
+-->
+
 ## User activities
+
+<!-- 
+Should we write about what a user can do in our application here? User flow?
+-->
 
 ## Sequence of functionality/calls through Chirp!
 
