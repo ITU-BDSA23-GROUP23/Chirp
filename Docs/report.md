@@ -5,7 +5,7 @@ author:
   - "Thorbjørn Pepe"
   - "Daniel Holm Larsen"
   - "Halfdan Eg Minegar Brage"
-  - "Author 5"
+  - "Nicklas Ostenfeldt Gardil"
 date: \today
 ---
 
