@@ -63,7 +63,7 @@ MAC: `docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=DhE883cb" -p 1433:1433
 
 Windows:
 
-Linux:
+Linux/wsl:
 
 Next, open up a terminal in the project. Assuming you are in the root of the repository Chirp, direct to either:
 
