@@ -17,7 +17,7 @@ date: \today
 
 \newpage
 
-<!-- 
+<!--
 Introduction???
 -->
 
@@ -25,29 +25,33 @@ Introduction???
 
 ## Domain model
 
-<!-- 
+<!--
 Write about what we want to represent (Cheeps, Authors, etc.)
 Maybe incorporate functionality of a normal social media app?
 -->
 
 ## Architecture — In the small
-<!-- 
+
+<!--
 Show image from slides of onion architecture
 -->
 
+<<<<<<< HEAD
 ![](images/chirp_onion_model.png)
 
+=======
+>>>>>>> 06785d1a6e0404599a6bb45dd52b8c163a73f6f6
 Our chirp application is implemented with an "onion skin architecture". This means that our program is divided into three layers, core, infrastructure and web. The three layers follow a hierarchical structure where core < infrastructure < web. In this comparison, only greater layers may use or know the contents of the lower layers. Following this structure should result in reusable and loosely coupled code. In a company setting, code from "core" could be reused in many different applications and contexts around the entire company.
 
 ## Architecture of deployed application
 
-<!-- 
+<!--
 Write about how we used the onion skin architecture, and specifically what functionality we put in what layer (eg. DTO's in core)
 -->
 
 ## User activities
 
-<!-- 
+<!--
 Should we write about what a user can do in our application here? User flow?
 -->
 
@@ -75,7 +79,7 @@ Briefly describe and illustrate the flow of activities that happen from the new 
 
 BLABLA When creating a new issue, we consider...
 Once an issues is created, it is automatically added to the "Unassigned" column on our Project Board. If we have a good idea of who should make it, we assign people, and move it to the "Todo" column. If we want to delay an issue for when we have better time, we move it to the "Less important" column. Once we start working on an issue, we assign ourselves (if not already), and move it to "In progress".
-When we work on a feature, we are usually one or two people. Sometimes we use pair programming. Other times one will work on the frontend, while the other works on the backend. Once we believe a feature is ready for main, we make a pull request, and asks that somebody who hasn't been a part of this issue review it. Depending on the complexity of the code, we ask one or more people to review it. Sometimes we explain the code to the reviewer(s). Sometimes we find that some of the code could be better, or maybe that some of the changes were unnecessary or too intrusive, and should be reverted. Depending on how big of an issue it is, and how much time we have, we either write a comment, and possibly an issue about fixing it, and then approve the pull request, or we write a comment, and request changes, before allowing for a push to main.
+When we work on a feature, we are usually one or two people. Sometimes we use pair programming. Other times one will work on the frontend, while the other works on the backend. Once we believe a feature is ready for main, we make a pull request, and ask a group member who hasn't been a part of this issue, to review it. Depending on the complexity of the code, we ask one or more people to review it. Sometimes we explain the code to the reviewer(s). Sometimes we find that some of the code could be better, or maybe that some of the changes were unnecessary or too intrusive, and should be reverted. Depending on how big of an issue it is, and how much time we have, we either write a comment, and possibly an issue about fixing it, and then approve the pull request, or we write a comment, and request changes, before allowing for a push to main.
 
 <!-- OVERVEJER OM DET HER BØR VÆRE MED: Sometimes, we work on multiple issues on the same branch, because some of our other issues are currently incompatible, and we delay merge of one branch until another is merged. This makes some of our pull requests quite big, and sometimes incomprehensible. We strive to make our pull requests as compact and focused as possible. -->
 
@@ -84,9 +88,11 @@ When we work on a feature, we are usually one or two people. Sometimes we use pa
 Prerequisites: Microsoft .Net 7.0 and Docker
 
 To make Chirp! work locally, first you must clone the repository:
+
 ```
 git clone https://github.com/ITU-BDSA23-GROUP23/Chirp.git
 ```
+
 From here, you must first start a MSSQL docker container using the following command:
 
 ```
@@ -108,13 +114,24 @@ Next, from the root directory in /Chirp, run the following command:
 dotnet run --project src/Chirp.Web
 ```
 
+<<<<<<< HEAD:Docs/report.md
+Alternatively, from the /Chirp.Web folder:
+
+```
+dotnet run
+```
+
+Finally, open your browser of choice and connect to `https://localhost:7040`
+=======
 Finally, open your browser of choice and connect to `https://localhost:7040`  
+>>>>>>> 8067335d4d87c696682683658b9589d138b428cd:docs/report.md
 
 ## How to run the test suite locally
 
 To run the test suites locally, first you will have to start your docker container.
 
-MAC: 
+MAC:
+
 ```
 docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=DhE883cb" -p 1433:1433 --name sql1 --hostname sql1 -d mcr.microsoft.com/azure-sql-edge
 ```
