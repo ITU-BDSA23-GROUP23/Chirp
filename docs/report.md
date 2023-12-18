@@ -56,7 +56,9 @@ Should we write about what a user can do in our application here? User flow?
 
 ## Build, test, release, and deployment
 
-We aimed to introduce singlefile releases, but prioritized new features and other requirements, delaying its implementation. The infrequent releases resulted from both postponing until singlefile capability and a lack of defined milestones for stable functionality. Our continuous work in progress and insufficient release planning contributed to this pattern.
+We aimed to introduce singlefile releases, but prioritized new features and other requirements, delaying its implementation. The infrequent releases resulted from both postponing until singlefile capability and a lack of defined milestones for stable functionality. Insufficient release planning, and constant development on important features contributed to this pattern. Since different features were almost always under development, we rarely felt our program was in a stable, shippable state. 
+
+Back when we were developing Chirp.CLI, we had a more solid release schedule. This is because it was the primary distribution of the software. When the project transitioned into a Razor application, the primary distribution became our Azure Web App, and our releases became way less frequent. Releases of our Razor application would also be quite difficult to use (since it requires docker), and would lack all online functionality. So for an ordinary user there would be absolutely no reason to run our code from releases.
 
 BLABLA automatic deployment from main
 
@@ -89,7 +91,16 @@ git clone https://github.com/ITU-BDSA23-GROUP23/Chirp.git
 From here, you must first start a MSSQL docker container using the following command:
 
 ```
-docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=DhE883cb" -p 1433:1433 --name sql1 --hostname sql1 -d mcr.microsoft.com/azure-sql-edge
+sudo docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=DhE883cb" \
+   -p 1433:1433 --name sql1 --hostname sql1 \
+   -d \
+   mcr.microsoft.com/mssql/server:2022-latest
+```
+On windows or osx, make sure that the docker desktop application is running first. 
+On linux systems, ensure the Docker daemon is running. It can be started with:
+
+``` 
+sudo dockerd
 ```
 
 Next, from the root directory in /Chirp, run the following command:
@@ -98,6 +109,7 @@ Next, from the root directory in /Chirp, run the following command:
 dotnet run --project src/Chirp.Web
 ```
 
+<<<<<<< HEAD:Docs/report.md
 Alternatively, from the /Chirp.Web folder:
 
 ```
@@ -105,6 +117,9 @@ dotnet run
 ```
 
 Finally, open your browser of choice and connect to `https://localhost:7040`
+=======
+Finally, open your browser of choice and connect to `https://localhost:7040`  
+>>>>>>> 8067335d4d87c696682683658b9589d138b428cd:docs/report.md
 
 ## How to run the test suite locally
 
