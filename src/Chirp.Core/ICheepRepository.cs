@@ -15,8 +15,4 @@ public interface ICheepRepository
 
     Task<ReactionDTO> GetReactions(Guid cheepId, int type);
 
-    //Task<IEnumerable<CheepDTO>> CheepsToCheepDTOs(Task<List<cheep>> cheeps);
-    // void Add(Cheep entity);
-    // void Update(Cheep entity);
-    // void Remove(Cheep entity);
 }

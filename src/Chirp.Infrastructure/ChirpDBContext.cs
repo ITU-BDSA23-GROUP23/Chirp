@@ -14,17 +14,6 @@ namespace Chirp.Infrastructure
         {
         }
 
-        // public string DbPath { get; }
-
-        // public ChirpDBContext() {
-        //     var folder = Environment.SpecialFolder.LocalApplicationData;
-        //     var path = Environment.GetFolderPath(folder);
-        //     Console.WriteLine($"chirp.db file path: {path}");
-        //     DbPath = Path.Join(path, "chirp.db");
-        // }
-        // protected override void OnConfiguring(DbContextOptionsBuilder options)
-        // => options.UseSqlite($"Data Source={DbPath}");
-
         public DbSet<Author> Authors { get; set; }
         public DbSet<Cheep> Cheeps { get; set; }
         public DbSet<Reaction> Reactions { get; set; }
@@ -51,9 +40,7 @@ namespace Chirp.Infrastructure
 
 
             modelBuilder.Entity<Author>().Property(a => a.Email).HasAnnotation("RegularExpression", "[.+@.+]");
-            // DOESN'T WORK!:
-            //modelBuilder.Entity<Author>().HasIndex(a => a.Email).Email
-            //modelBuilder.Entity<Author>().Property(a => a.Email).Email()
+
 
         }
     }

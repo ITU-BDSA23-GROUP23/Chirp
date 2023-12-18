@@ -206,21 +206,5 @@ public class CheepRepository : ICheepRepository
         return new ReactionDTO((Reactiontype)type, count);
     }
 
-    // public void Add(Cheep entity)
-    // {
-    //     dbContext.Set<Cheep>().Add(entity);
-    //     dbContext.SaveChanges();
-    // }
 
-    // public void Update(Cheep entity)
-    // {
-    //     dbContext.Set<Cheep>().Update(entity);
-    //     dbContext.SaveChanges();
-    // }
-
-    // public void Remove(Cheep entity)
-    // {
-    //     dbContext.Set<Cheep>().Remove(entity);
-    //     dbContext.SaveChanges();
-    // }
 }

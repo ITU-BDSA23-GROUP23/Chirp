@@ -37,8 +37,6 @@ public class UserTimelineModel : PageModel
     public async Task<ActionResult> OnGet(string author, [FromQuery] int page)
     {
         
-        //Cheeps = _service.GetCheeps(page);
-        //Cheeps = _service.GetCheeps(author);
         if(page == 0)
         {
             page = 1;

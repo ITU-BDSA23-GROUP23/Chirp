@@ -150,4 +150,68 @@ public class Tests : PageTest
 
     }
 
+    [Test]
+    public async Task forgetmeTest()
+    { 
+        await using var browser = await Playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
+        {
+            Headless = false,
+        });
+        var context = await browser.NewContextAsync(new BrowserNewContextOptions
+        {
+            IgnoreHTTPSErrors = true,
+        });
+
+        var page = await context.NewPageAsync();
+
+        await page.GotoAsync("https://localhost:7040/");
+
+        await page.GetByRole(AriaRole.Link, new() { Name = "login" }).ClickAsync();
+
+        await page.GetByLabel("Username or email address").ClickAsync(new LocatorClickOptions
+        {
+            Modifiers = new[] { KeyboardModifier.Control },
+        });
+
+        await page.GetByLabel("Username or email address").FillAsync("github@nyrrdin.com");
+
+        await page.GetByLabel("Password").ClickAsync();
+
+        await page.GetByLabel("Password").ClickAsync(new LocatorClickOptions
+        {
+            Modifiers = new[] { KeyboardModifier.Control },
+        });
+        
+        await page.GetByLabel("Password").FillAsync("23Passwrod");
+
+        await page.GetByRole(AriaRole.Button, new() { Name = "Sign in", Exact = true }).ClickAsync();
+
+        await page.GetByPlaceholder("Cheep here!").ClickAsync();
+
+        await page.GetByPlaceholder("Cheep here!").FillAsync("This is a test");
+
+        await page.GetByRole(AriaRole.Button, new() { Name = "Submit" }).ClickAsync();
+
+        await page.GetByRole(AriaRole.Link, new() { Name = "my timeline" }).ClickAsync();
+
+        await page.GetByRole(AriaRole.Listitem).ClickAsync();
+
+        await page.GetByRole(AriaRole.Link, new() { Name = "About me" }).ClickAsync();
+
+        await page.GetByRole(AriaRole.Button, new() { Name = "Forget me" }).ClickAsync();
+
+        await page.GetByRole(AriaRole.Link, new() { Name = "public timeline" }).ClickAsync();
+
+        await page.GetByRole(AriaRole.Link, new() { Name = "login" }).ClickAsync();
+
+        await page.GetByRole(AriaRole.Link, new() { Name = "my timeline" }).ClickAsync();
+
+        await page.GetByText("There are no cheeps so far.").ClickAsync();
+
+
+    }
+
+
+
+
 }

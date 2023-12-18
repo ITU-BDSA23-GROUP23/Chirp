@@ -73,18 +73,6 @@ public class AuthorRepository : IAuthorRepository
         return null;
     }
 
-    // public async Task AddReaction(string type, Guid CheepId, string authorName)
-    // {
-    //     var cheep = await dbContext.Cheeps.Include(c => c.Reactions).FirstAsync(c => c.Id == CheepId);
-    //     var reaction = new Reaction()
-    //     {
-    //         Author = await dbContext.Authors.FirstAsync(a => a.Name == authorName),
-    //         ReactionType = type,
-    //         Cheep = cheep
-    //     };
-    //     cheep.Reactions.Add(reaction);
-    // }
-
     public AuthorDTO? AuthorToAuthorDTO(Author? author)
     {
         if (author != null)
@@ -120,12 +108,6 @@ public class AuthorRepository : IAuthorRepository
         var author = await dbContext.Authors.Include(f => f.Followers).Include(f => f.Following).FirstOrDefaultAsync(a => a.Name == Name);
         return AuthorToAuthorDTO(author);
 
-
-        // if (author != null)
-        // {
-        //     return new AuthorDTO(author.Name, author.Email);
-        // }
-        // return null;
     }
 
     //Copilot with this!
@@ -204,8 +186,6 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task ForgetMe(string authorName)
     {
-        // For testing: var Author = await dbContext.Authors.Include(r => r.Reactions).FirstOrDefaultAsync(a => a.Name == authorName);
-        // For testing: Console.WriteLine($"Author {authorName} has {Author.Reactions.Count} reactions.");
         var _Followers = await GetFollowers(authorName);
         var _Following = await GetFollowing(authorName);
         Console.WriteLine("Followers: (" + _Followers + ")");
