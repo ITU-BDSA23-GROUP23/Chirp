@@ -34,6 +34,9 @@ Maybe incorporate functionality of a normal social media app?
 <!-- 
 Show image from slides of onion architecture
 -->
+
+![](images/chirp_onion_model.png)
+
 Our chirp application is implemented with an "onion skin architecture". This means that our program is divided into three layers, core, infrastructure and web. The three layers follow a hierarchical structure where core < infrastructure < web. In this comparison, only greater layers may use or know the contents of the lower layers. Following this structure should result in reusable and loosely coupled code. In a company setting, code from "core" could be reused in many different applications and contexts around the entire company.
 
 ## Architecture of deployed application
