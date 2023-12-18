@@ -102,10 +102,7 @@ Next, from the root directory in /Chirp, run the following command:
 ```
 dotnet run --project src/Chirp.Web
 ```
-Alternatively, from the /Chirp.Web folder:
-```
-dotnet run
-```
+
 Finally, open your browser of choice and connect to `https://localhost:7040`  
 
 ## How to run the test suite locally
