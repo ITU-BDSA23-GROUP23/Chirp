@@ -42,6 +42,8 @@ Our chirp application is implemented with an "onion skin architecture". This mea
 
 ## Architecture of deployed application
 
+![Domain and Repository structure](diagrams/chirp_domain_and_repos_uml.png)
+
 <!--
 Write about how we used the onion skin architecture, and specifically what functionality we put in what layer (eg. DTO's in core)
 -->
