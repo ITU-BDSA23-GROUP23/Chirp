@@ -3,9 +3,9 @@ title: "Chirp! Project Report"
 author:
   - "Edward Rostomian"
   - "Thorbjørn Pepe"
-  - "Author 3"
-  - "Author 4"
-  - "Author 5"
+  - "Daniel Holm Larsen"
+  - "Halfdan Eg Minegar Brage"
+  - "Nicklas Ostenfeldt Gardil"
 date: \today
 ---
 
@@ -17,15 +17,36 @@ date: \today
 
 \newpage
 
+<!-- 
+Introduction???
+-->
+
 # 1. Design and Architecture of Chirp!
 
 ## Domain model
 
+<!-- 
+Write about what we want to represent (Cheeps, Authors, etc.)
+Maybe incorporate functionality of a normal social media app?
+-->
+
 ## Architecture — In the small
+<!-- 
+Show image from slides of onion architecture
+-->
+Our chirp application is implemented with an "onion skin architecture". This means that our program is divided into three layers, core, infrastructure and web. The three layers follow a hierarchical structure where core < infrastructure < web. In this comparison, only greater layers may use or know the contents of the lower layers. Following this structure should result in reusable and loosely coupled code. In a company setting, code from "core" could be reused in many different applications and contexts around the entire company.
 
 ## Architecture of deployed application
 
+<!-- 
+Write about how we used the onion skin architecture, and specifically what functionality we put in what layer (eg. DTO's in core)
+-->
+
 ## User activities
+
+<!-- 
+Should we write about what a user can do in our application here? User flow?
+-->
 
 ## Sequence of functionality/calls through Chirp!
 
@@ -55,11 +76,36 @@ When we work on a feature, we are usually one or two people. Sometimes we use pa
 
 ## How to make Chirp! work locally
 
+Prerequisites: Microsoft .Net 7.0 and Docker
+
+To make Chirp! work locally, first you must clone the repository:
+```
+git clone https://github.com/ITU-BDSA23-GROUP23/Chirp.git
+```
+From here, you must first start a MSSQL docker container using the following command:
+
+```
+docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=DhE883cb" -p 1433:1433 --name sql1 --hostname sql1 -d mcr.microsoft.com/azure-sql-edge
+```
+Next, from the root directory in /Chirp, run the following command:
+
+```
+dotnet run --project src/Chirp.Web
+```
+Alternatively, from the /Chirp.Web folder:
+```
+dotnet run
+```
+Finally, open your browser of choice and connect to `https://localhost:7040`  
+
 ## How to run the test suite locally
 
 To run the test suites locally, first you will have to start your docker container.
 
-MAC: `docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=DhE883cb" -p 1433:1433 --name sql1 --hostname sql1 -d mcr.microsoft.com/azure-sql-edge`
+MAC: 
+```
+docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=DhE883cb" -p 1433:1433 --name sql1 --hostname sql1 -d mcr.microsoft.com/azure-sql-edge
+```
 
 Windows:
 
