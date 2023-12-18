@@ -5,7 +5,7 @@ author:
   - "Thorbjørn Pepe"
   - "Daniel Holm Larsen"
   - "Halfdan Eg Minegar Brage"
-  - "Author 5"
+  - "Nicklas Ostenfeldt Gardil"
 date: \today
 ---
 
@@ -87,17 +87,24 @@ git clone https://github.com/ITU-BDSA23-GROUP23/Chirp.git
 From here, you must first start a MSSQL docker container using the following command:
 
 ```
-docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=DhE883cb" -p 1433:1433 --name sql1 --hostname sql1 -d mcr.microsoft.com/azure-sql-edge
+sudo docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=DhE883cb" \
+   -p 1433:1433 --name sql1 --hostname sql1 \
+   -d \
+   mcr.microsoft.com/mssql/server:2022-latest
 ```
+On windows or osx, make sure that the docker desktop application is running first. 
+On linux systems, ensure the Docker daemon is running. It can be started with:
+
+``` 
+sudo dockerd
+```
+
 Next, from the root directory in /Chirp, run the following command:
 
 ```
 dotnet run --project src/Chirp.Web
 ```
-Alternatively, from the /Chirp.Web folder:
-```
-dotnet run
-```
+
 Finally, open your browser of choice and connect to `https://localhost:7040`  
 
 ## How to run the test suite locally
@@ -111,7 +118,7 @@ docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=DhE883cb" -p 1433:1433 --nam
 
 Windows:
 
-Linux:
+Linux/wsl:
 
 Next, open up a terminal in the project. Assuming you are in the root of the repository Chirp, direct to either:
 
