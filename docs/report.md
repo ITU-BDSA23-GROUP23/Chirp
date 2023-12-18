@@ -113,7 +113,6 @@ Next, from the root directory in /Chirp, run the following command:
 dotnet run --project src/Chirp.Web
 ```
 
-<<<<<<< HEAD:Docs/report.md
 Alternatively, from the /Chirp.Web folder:
 
 ```
@@ -121,9 +120,6 @@ dotnet run
 ```
 
 Finally, open your browser of choice and connect to `https://localhost:7040`
-=======
-Finally, open your browser of choice and connect to `https://localhost:7040`  
->>>>>>> 8067335d4d87c696682683658b9589d138b428cd:docs/report.md
 
 ## How to run the test suite locally
 
