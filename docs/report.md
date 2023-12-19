@@ -2,7 +2,7 @@
 title: "Chirp! Project Report"
 author:
   - "Edward Rostomian"
-  - "Thorbjørn Pepe"
+  - "Thorbjørn Peter Høgsbro Pedersen"
   - "Daniel Holm Larsen"
   - "Halfdan Eg Minegar Brage"
   - "Nicklas Ostenfeldt Gardil"
@@ -56,7 +56,26 @@ Our chirp application is implemented with an "onion skin architecture". This mea
 
 Our application is a web abblication, hosted by Azure. Clients use our web application through http calls. Our application sends and receives data from and to our Azure SQL server database. If the user tries to access a page on our webapplication which needs authentication, they are redirected to authentication, through B2C. Then they have to authenticate using their Github account. After authentication, they are redirected back to our page. If already authenticated, a cookie is saved, and they can skip the login process.<!-- Omskriv gerne, hvis jeg har skrevet noget forkert. Ved honestly ikke om det her er lidt for in depth til det her afsnit, og hører til under Sequence diagrammet i stedet. -->
 
+<!-- Lidt ændret, lidt mindre: -->
+
+Our application is a web abblication, hosted by Azure. Clients use our web application through http calls. Our application sends and receives data from and to our Azure SQL server database. If needed, authentication is done through B2C with Github accounts.
+
 ## User activities
+
+<!-- Har sandsynligvis skrevet for meget her, måske alt for meget, men havde lige lidt overskud, så fyrede det hele af. -->
+
+The navigation bar is shown on all pages, and is used to redirect the user to other pages.
+**Not authenticated:**
+When going to our page, users are shown the public timeline, which displays cheeps. They can to navigate back and forth between pages, to see older or newer cheeps.
+The navbar consists of "Public Timeline" and "login".
+They can press on the authorname on cheeps, which will redirect them to the author's private timline, showing cheeps made by that author. They can also press the login button. This authenticates them through B2C with their github account. If already logged in to Github on their browser, they are directed to our Public Timeline. If not, they must login with a Github account.
+
+**Authenticated:**
+The navigations bar is changed, if a user accesses it while authenticated. It has "my timeline", "public timeline", "For You", "About me", and "logout". The navigation bar is visible on all pages.
+On every page where there are cheeps, the user is able to react to, and follow authors of all cheeps, not made by themself.
+On the public timeline, they are also able to log out, and submit cheeps. They can also react to cheeps and follow authors on cheeps, if they are not the author of the cheep.
+On "my timeline", the user can submit cheeps, and see their own cheeps. On "For you", they can see the cheeps of the people that they follow.
+On the "About me" page, they can see the users they follow, the people who follow them, the number of each, and their own most recent cheeps. They can press the "Forget me" button, which deletes everything about them, from the database. They can also go to the timeline of other users, by pressing their name on one of the lists.
 
 <!--
 Should we write about what a user can do in our application here? User flow?
