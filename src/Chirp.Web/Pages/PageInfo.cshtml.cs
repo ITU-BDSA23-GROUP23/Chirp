@@ -97,9 +97,14 @@ public class PageInfoModel : PageModel
             string authorName = User.Identity?.Name!; // Author.Name;
 
             var _Author = await _Author_repository.FindAuthorByName(authorName);
-
-            await _Author_repository.ForgetMe(authorName);
-
+            if (_Author != null)
+            {
+                await _Author_repository.ForgetMe(authorName);
+            }
+            else
+            {
+                // Console.WriteLine("No author found with name " + authorName);
+            }
             return Redirect("~/MicrosoftIdentity/Account/SignOut");
         }
         return Page();
