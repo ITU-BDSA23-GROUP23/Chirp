@@ -21,7 +21,11 @@ date: \today
 Introduction???
 -->
 
-# 1. Design and Architecture of Chirp!
+# 1. Introduction
+
+In this report we will briefly describe the project work and outcome of our chat-application Cheep.
+
+# 2. Design and Architecture of Chirp!
 
 ## Domain model
 
@@ -55,8 +59,14 @@ Should we write about what a user can do in our application here? User flow?
 -->
 
 ## Sequence of functionality/calls through Chirp!
+When a user access the website they make a http get requested. If they do it to a page which they are not authorized to then the program makes a authgorize code request + code challenge to Azure AD B2C to try and 
+Authenticate the user. Azure B2C then sends a Authorization code request to Github Where the user can authorize with github to login. If the user is successful at github, then it returns a aurthorization code to B2C and B2C get a token from github with the code. B2C then return a authorization code to the Client. The client can get authorazation id and token from B2C. When the user then has login and are granted authorozation to the page then the server returns the web-page and the client can render it.     
 
-# 2. Process
+
+![Sequence Diagram](diagrams/SequenceeForProtectedResource.drawiodrawio.png)
+
+
+# 3. Process
 
 ## Build, test, release, and deployment
 
@@ -156,13 +166,15 @@ dotnet test
 
 The project contains two test suites, Chirp.Razor.Tests and UITest.
 The first test suite contains unit tests, integration tests and end-to-end tests. **\*\***Har vi det?
-The unit tests are testing the functionality of the isolated components in our application, that is testing methods within our application of core, infrastructure and web components.
+The unit tests are testing the functionality of the isolated components in our application, that is testing methods within our application of core, infrastructure and web components. <!-- Tror ikke vi har unit tests af web components. -->
 The integration tests are testing the interactions of different components in our application, that is testing when using logic from e.g. the infrastructure layer in our web components.
 The end-to-end tests...?
 
 The second test suite contains our UI tests. These are UI automation tests, using Playwright to simulate a users interactions with the user interface. These are implemented such that we can ensure that the UI behaves as expected, performing actions and receiving expected output, when doing all types of interactions with our application from the UI.
 
-# 3. Ethics
+<!-- The Playwright tests are responsible for testing our razorpage functionality, as we don't have unit tests for the methods in the .cs files for the pages. -->
+
+# 4. Ethics
 
 ## License
 
