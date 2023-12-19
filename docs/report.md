@@ -62,20 +62,30 @@ Our application is a web abblication, hosted by Azure. Clients use our web appli
 
 ## User activities
 
-<!-- Har sandsynligvis skrevet for meget her, måske alt for meget, men havde lige lidt overskud, så fyrede det hele af. -->
+<!-- Har sandsynligvis skrevet for meget her, måske alt for meget, men havde lige lidt overskud, så fyrede det hele af.
+- Har rettet din tekst igennem - Edward -->
 
 The navigation bar is shown on all pages, and is used to redirect the user to other pages.
 **Not authenticated:**
-When going to our page, users are shown the public timeline, which displays cheeps. They can to navigate back and forth between pages, to see older or newer cheeps.
-The navbar consists of "Public Timeline" and "login".
-They can press on the authorname on cheeps, which will redirect them to the author's private timline, showing cheeps made by that author. They can also press the login button. This authenticates them through B2C with their github account. If already logged in to Github on their browser, they are directed to our Public Timeline. If not, they must login with a Github account.
+
+![User Activity diagram: not authenticated](diagrams/UserActivityNONauthorized.drawio.png)
+
+When accessing our webpage, users are presented with the public timeline, which displays cheeps. On this page, users can navigate between pages to view older or newer cheeps
+The navigation bar consists of links to "Public Timeline" and "login".
+Furthermore, users have the option to click on the author's name within cheeps, redirecting them to the author's private timeline, showing cheeps made by that author.
+Also, user can click on the login button, which facilitates authentication through B2C, using their GitHub account.
+If already logged in to Github on their browser, they are directed to the Public Timeline. If not, they must login with a Github account.
 
 **Authenticated:**
-The navigations bar is changed, if a user accesses it while authenticated. It has "my timeline", "public timeline", "For You", "About me", and "logout". The navigation bar is visible on all pages.
-On every page where there are cheeps, the user is able to react to, and follow authors of all cheeps, not made by themself.
-On the public timeline, they are also able to log out, and submit cheeps. They can also react to cheeps and follow authors on cheeps, if they are not the author of the cheep.
-On "my timeline", the user can submit cheeps, and see their own cheeps. On "For you", they can see the cheeps of the people that they follow.
-On the "About me" page, they can see the users they follow, the people who follow them, the number of each, and their own most recent cheeps. They can press the "Forget me" button, which deletes everything about them, from the database. They can also go to the timeline of other users, by pressing their name on one of the lists.
+
+![User Activity diagram: Authenticated](diagrams/UserActivityAuthorized.drawio.png)
+
+The navigation bar is changed upon user authentication. It has links to pages such as "My Timeline", "Public Timeline", "For You", "About Me" and "Logout." The navigation bar is visible on all pages.
+On every page where there are cheeps, the user is able to express reactions, and follow/unfollow authors of all cheeps, not made by themself.
+On the public timeline, they are also able to submit cheeps and sign out. They can also react to cheeps and follow/unfollow authors on cheeps, if not they are the author of the cheep themselves.
+On "my timeline", the user can submit cheeps, and see their own cheeps.
+On "For you", they can see the cheeps of the people that they follow.
+On the "About me" page, they can see the users they follow, the people who follow them, the number of each, and their own most recent cheeps. They can press the "Forget me" button, which deletes everything about them, from the database. They can also go to the timeline of other users, by pressing their name, found on one of the lists.
 
 <!--
 Should we write about what a user can do in our application here? User flow?
