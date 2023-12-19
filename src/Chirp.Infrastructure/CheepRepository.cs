@@ -187,6 +187,7 @@ public class CheepRepository : ICheepRepository
             Reaction oldReaction = _Author.Reactions.Where(r => r.Cheep.Id == cheepId).First();
             _Author.Reactions.Remove(oldReaction);
             cheep.Reactions.Remove(oldReaction);
+            Console.WriteLine("Removing old reaction of type " + oldReaction.ReactionType + " and adding new reaction of type " + type);
             if (oldReaction.ReactionType == type)
             {
                 await dbContext.SaveChangesAsync();
