@@ -51,6 +51,101 @@ public class CheepRepositoryTests : IDisposable
         Assert.Equal(authorCheeps, 7);
     }
 
+    [Fact]
+    public async Task AddReactionTest()
+    {
+        //Initializing the author
+        IAuthorRepository authorRepository = new AuthorRepository(context);
+        CheepRepository _cheepRepository = new CheepRepository(context, authorRepository);
+        ICheepRepository cheepRepository = _cheepRepository;
+        CreateAuthorDTO author = new CreateAuthorDTO("Jacqualine Gilcoine", "Jacqualine.Gilcoine@gmail.com");
+        authorRepository.CreateAuthor(author);
+        //Making a cheep
+        var Author = authorRepository.FindAuthorByName("Jacqualine Gilcoine").Result;
+        createCheepDTO createcheepDTO = new createCheepDTO(Author, "123Testing");
+        cheepRepository.CreateCheep(createcheepDTO, null);
+        var cheeps = await cheepRepository.GetCheeps();
+        // Adding a reaction to the cheep
+        foreach (var cheep in cheeps)
+        {
+            Guid id = cheep.Id;
+            await cheepRepository.ReactToCheep("Jacqualine Gilcoine", "Like", id);
+            var _cheep = _cheepRepository.GetCheepById(id).Result;
+            var reaction = _cheep.Reactions.Where(r => r.ReactionType == "Like");
+            Assert.Equal(1, reaction.Count());
+        }   
+    }
+
+    [Fact]
+    public async Task RemoveReactionTest()
+    {
+        //Initializing the author
+        IAuthorRepository authorRepository = new AuthorRepository(context);
+        CheepRepository _cheepRepository = new CheepRepository(context, authorRepository);
+        ICheepRepository cheepRepository = _cheepRepository;
+        CreateAuthorDTO author = new CreateAuthorDTO("Jacqualine Gilcoine", "Jacqualine.Gilcoine@gmail.com");
+        authorRepository.CreateAuthor(author);
+        //Making a cheep
+        var Author = authorRepository.FindAuthorByName("Jacqualine Gilcoine").Result;
+        createCheepDTO createcheepDTO = new createCheepDTO(Author, "123Testing");
+        cheepRepository.CreateCheep(createcheepDTO, null);
+        var cheeps = await cheepRepository.GetCheeps();
+        // Adding a reaction to the cheep
+        foreach (var cheep in cheeps)
+        {
+            Guid id = cheep.Id;
+            await cheepRepository.ReactToCheep("Jacqualine Gilcoine", "Like", id);
+            var _cheep = _cheepRepository.GetCheepById(id).Result;
+            var reaction = _cheep.Reactions.Where(r => r.ReactionType == "Like");
+            Assert.Equal(1, reaction.Count());
+        }   
+
+        //Removing the reaction (same method as adding, but since there is already a reaction, we remove it)
+        foreach(var cheep in cheeps)
+        {
+            Guid id = cheep.Id;
+            await cheepRepository.ReactToCheep("Jacqualine Gilcoine", "Like", id);
+            var _cheep = _cheepRepository.GetCheepById(id).Result;
+            var reaction = _cheep.Reactions.Where(r => r.ReactionType == "Like");
+            Assert.Equal(0, reaction.Count());
+        }
+    }
+
+    [Fact]
+    public async Task MoveCheepTest()
+    {
+        //Initializing the author
+        IAuthorRepository authorRepository = new AuthorRepository(context);
+        CheepRepository _cheepRepository = new CheepRepository(context, authorRepository);
+        ICheepRepository cheepRepository = _cheepRepository;
+        CreateAuthorDTO author = new CreateAuthorDTO("Jacqualine Gilcoine", "Jacqualine.Gilcoine@gmail.com");
+        authorRepository.CreateAuthor(author);
+        //Making a cheep
+        var Author = authorRepository.FindAuthorByName("Jacqualine Gilcoine").Result;
+        createCheepDTO createcheepDTO = new createCheepDTO(Author, "123Testing");
+        cheepRepository.CreateCheep(createcheepDTO, null);
+        var cheeps = await cheepRepository.GetCheeps();
+        // Adding a reaction to the cheep
+        foreach (var cheep in cheeps)
+        {
+            Guid id = cheep.Id;
+            await cheepRepository.ReactToCheep("Jacqualine Gilcoine", "Like", id);
+            var _cheep = _cheepRepository.GetCheepById(id).Result;
+            var reaction = _cheep.Reactions.Where(r => r.ReactionType == "Like");
+            Assert.Equal(1, reaction.Count());
+        }   
+        // Moving the cheep
+        foreach (var cheep in cheeps)
+        {
+            Guid id = cheep.Id;
+            await cheepRepository.ReactToCheep("Jacqualine Gilcoine", "Dislike", id);
+            var _cheep = _cheepRepository.GetCheepById(id).Result;
+            var LikeReaction = _cheep.Reactions.Where(r => r.ReactionType == "Like");
+            var DislikeReaction = _cheep.Reactions.Where(r => r.ReactionType == "Dislike");
+            Assert.Equal(0, LikeReaction.Count());
+            Assert.Equal(1, DislikeReaction.Count());
+        }
+    }
 
     public void Dispose()
     {
