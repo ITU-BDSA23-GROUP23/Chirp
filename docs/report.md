@@ -59,6 +59,8 @@ Should we write about what a user can do in our application here? User flow?
 -->
 
 ## Sequence of functionality/calls through Chirp!
+![Sequence Diagram](diagrams/SequenceeForProtectedResource.drawio.png)
+
 
 # 3. Process
 
