@@ -155,6 +155,12 @@ When we work on a feature, we are usually one or two people. Sometimes we use pa
 
 <!-- OVERVEJER OM DET HER BØR VÆRE MED: Sometimes, we work on multiple issues on the same branch, because some of our other issues are currently incompatible, and we delay merge of one branch until another is merged. This makes some of our pull requests quite big, and sometimes incomprehensible. We strive to make our pull requests as compact and focused as possible. -->
 
+
+### Unresolved issues
+
+* Releases currently don't publish our code as single file
+* Released compiled code currently does not work
+
 ## How to make Chirp! work locally
 
 Prerequisites: Microsoft .Net 7.0 and Docker
