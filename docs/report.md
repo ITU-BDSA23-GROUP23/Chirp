@@ -38,7 +38,10 @@ Write about what we want to represent (Cheeps, Authors, etc.)
 Maybe incorporate functionality of a normal social media app?
 -->
 In our program the user post messages in the form of a cheep. the Cheep class is a model for this aka the repressentation of what a cheep is. A cheep consists of a id,Author,message,TimeStamp, and a list of Reactions 
- 
+
+The author class repressent a user of our application. it contains all the information the program needs to model a user.
+
+The reaction class are used to keep track of the diffrent reaction a user can have given a cheep it contains thee reactiontype, the author and the cheep that has been reacted too.
 
 
 ## Architecture — In the small
