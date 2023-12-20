@@ -192,8 +192,15 @@ docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=DhE883cb" -p 1433:1433 --nam
 ```
 
 Windows:
+Open Docker desktop and run the `mcr.microsoft.com/mssql/server:2022-latest` image
 
 Linux/wsl:
+```
+sudo docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=DhE883cb" \
+   -p 1433:1433 --name sql1 --hostname sql1 \
+   -d \
+   mcr.microsoft.com/mssql/server:2022-latest
+```
 
 Next, open up a terminal in the project. Assuming you are in the root of the repository Chirp, direct to either:
 
