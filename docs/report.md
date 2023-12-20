@@ -23,7 +23,7 @@ Introduction???
 
 # 1. Introduction
 
-In this report we will briefly describe the project work and outcome of our chat-application Cheep.
+In this report we will briefly describe the project work and outcome of our social media application, Chirp.
 
 # 2. Design and Architecture of Chirp!
 
