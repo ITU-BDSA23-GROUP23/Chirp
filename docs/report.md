@@ -69,6 +69,8 @@ In a company setting, code from "core" could be reused in many different applica
 
 ## Architecture of deployed application
 
+![Architecture component diagram](diagrams/Client-server-Component-diagram.drawio.png)
+
 Our application is a web application hosted by Azure. Clients use our web application through HTTP calls. Our application sends and receives data from and to our Azure SQL server database. If a user tries to access a page that requires authentication, they are redirected to authentication using B2C. Authentication is done through their GitHub account. afterward, they are redirected back to our page. If already authenticated, a cookie is saved and they can skip the login process.
 
 ## User activities
@@ -141,6 +143,8 @@ Show a screenshot of your project board right before hand-in. Briefly describe w
 Briefly describe and illustrate the flow of activities that happen from the new creation of an issue (task description), over development, etc. until a feature is finally merged into the main branch of your repository.
 -->
 
+![Project Board](images/ProjectBoard.png)
+
 ![Flow of activities](diagrams/ActivityFlows.png)
 
 For this project, we did most of our work while sitting together in a meeting, either physically or on a Discord server. Then we would split of into smaller groups, but still be available for other team members.
@@ -155,11 +159,10 @@ When we work on a feature, we are usually one or two people. Sometimes we use pa
 
 <!-- OVERVEJER OM DET HER BØR VÆRE MED: Sometimes, we work on multiple issues on the same branch, because some of our other issues are currently incompatible, and we delay merge of one branch until another is merged. This makes some of our pull requests quite big, and sometimes incomprehensible. We strive to make our pull requests as compact and focused as possible. -->
 
-
 ### Unresolved issues
 
-* Releases currently don't publish our code as single file
-* Released compiled code currently does not work
+- Releases currently don't publish our code as single file
+- Released compiled code currently does not work
 
 ## How to make Chirp! work locally
 
