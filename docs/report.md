@@ -120,7 +120,7 @@ Should we write about what a user can do in our application here? User flow?
 
 ## Sequence of functionality/calls through Chirp!
 
-When a user accesses the website, they make a http GET request. If they make such a request to a page to which they are not authorized, then the program makes an authorized code request + code challenge to Azure AD B2C, attempting to Authenticate the user. Azure B2C then sends an authorization code request to Github, Where the user can authorize with GitHub to login. If the user is successful with this, then it returns an authorization code to B2C, and B2C gets a token from github with the code. B2C then returns an authorization code to the client. The client can get authorization id and token from B2C. When the user has logged in, and is granted authorization to the page, then the server returns the web page, and the client can render it.
+When a user accesses the website, they make a http GET request. If they make such a request to a page to which they are not authorized, then the program makes an authorized code request and code challenge to Azure AD B2C, attempting to Authenticate the user. Azure B2C then sends an authorization code request to Github, Where the user can authorize with GitHub to login. If the user is successful with this, then it returns an authorization code to B2C, and B2C gets a token from github with the code. B2C then returns an authorization code to the client. The client can get authorization id and token from B2C. When the user has logged in, and is granted authorization to the page, then the server returns the web page, and the client can render it.
 
 ![Sequence Diagram](diagrams/SequenceeForProtectedResource.png)
 
