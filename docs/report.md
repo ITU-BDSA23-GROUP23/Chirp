@@ -47,7 +47,7 @@ The author class represents a user of our application. it contains all the infor
 
 The reaction class is used to keep track of the different reactions a user can append to a cheep. It contains the reaction type, the author, and the cheep that has been reacted to.
 
-We have repositories for author and cheep. These repositories contain the methods to manipulate and retrieve data in/from the database.
+We have repositories for author and cheep. These repositories contain methods to manipulate and retrieve data in/from the database.
 
 We use Data transfer objects (DTOs) to send and receive data between the different layers of our program. The DTOs contain the same information as the classes, but they are not used as entity classes for the model. So they are a safe way to make sure the user can't change the database in an unwanted way.
 
@@ -63,20 +63,20 @@ Write about how we used the onion skin architecture, and specifically what funct
 
 ![Onion model](diagrams/chirp_onion_model.png){width=50%}
 
-Our chirp application is implemented with an "onion skin architecture". This means that our program is divided into three layers, core, infrastructure and web. The three layers follow a hierarchical structure where core < infrastructure < web. In this comparison, greater layers may use and know the contents of the layers below. Lower layers cannot know about nor use anything from above layers. Following this structure should result in reusable and loosely coupled code.
+Our chirp application is implemented with an "onion skin architecture". This means that our program is divided into three layers, core, infrastructure, and web. The three layers follow a hierarchical structure where core < infrastructure < web. In this comparison, greater layers may use and know the contents of the layers below. Lower layers cannot know about nor use anything from the above layers. Following this structure should result in reusable and loosely coupled code.
 
-In a company setting, code from "core" could be reused in many different applications and contexts around the entire company. In our project, core only contains DTO's and interfaces that are used throughout our entire project. Chirp.Infrastructure contains all our domain implementations. This means that our repositories, domain classes (Cheep, Author, Reaction) are located here. Both our database migrations and our database-context (dbContext) are additionally located in infrastructure. Chirp.Web contains all our frontend code, in the shape of cshtml files, and their corresponding cshtml.cs code. Chirp.Web is the main executable c# project, which means that the Program.cs file is located here. Additionally, a database initialization script is also located here, which can populate and initiate our database with data provided by the course.
+In a company setting, code from "core" could be reused in many different applications and contexts around the entire company. In our project, core only contains DTO's and interfaces that are used throughout our entire project. Chirp.Infrastructure contains all our domain implementations. This means that our repositories, domain classes (Cheep, Author, Reaction) are located here. Both our database migrations and our database-context (dbContext) are additionally located in the infrastructure. Chirp.Web contains all our frontend code, in the shape of cshtml files, and their corresponding cshtml.cs code. Chirp.Web is the main executable c# project, which means that the Program.cs file is located here. Additionally, a database initialization script is also located here, which can populate and initiate our database with data provided by the course.
 
 ## Architecture of deployed application
 
-Our application is a web-application hosted by Azure. Clients use our web application through http calls. Our application sends and receives data from and to our Azure SQL server database. If a user tries to access a page that requires authentication, they are redirected to authentication using B2C. Authentication is done through their GitHub account. afterwards, they are redirected back to our page. If already authenticated, a cookie is saved and they can skip the login process.
+Our application is a web application hosted by Azure. Clients use our web application through HTTP calls. Our application sends and receives data from and to our Azure SQL server database. If a user tries to access a page that requires authentication, they are redirected to authentication using B2C. Authentication is done through their GitHub account. afterward, they are redirected back to our page. If already authenticated, a cookie is saved and they can skip the login process.
 
 ## User activities
 
 <!-- Har sandsynligvis skrevet for meget her, måske alt for meget, men havde lige lidt overskud, så fyrede det hele af.
 - Har rettet din tekst igennem - Edward -->
 
-The navigation bar is shown on all pages, and is used to redirect the user to other pages.
+The navigation bar is shown on all pages and is used to redirect the user to other pages.
 
 **Not authenticated:**
 
@@ -84,9 +84,9 @@ The navigation bar is shown on all pages, and is used to redirect the user to ot
 
 When accessing our web page, users are presented with the public timeline, which displays cheeps. On this page, users can navigate between pages to view older or newer cheeps
 The navigation bar consists of links to "Public Timeline" and "login".
-Users have the option to click on the author's name within cheeps, redirecting them to the author's private timeline, showing cheeps made by that author.
+Users have the option to click on the author's name within cheeps, redirecting them to the author's private timeline, and showing cheeps made by that author.
 The top bar contains a login button, which when clicked facilitates authentication through B2C, using a user's GitHub account.
-If already logged in to Github on their browser, they are directed to the Public Timeline. If not, they must login with a Github account.
+If already logged in to GitHub on their browser, they are directed to the Public Timeline. If not, they must login with a GitHub account.
 
 **Authenticated:**
 
@@ -105,7 +105,7 @@ Should we write about what a user can do in our application here? User flow?
 
 ## Sequence of functionality/calls through Chirp!
 
-When a user accesses the website they make a http GET request. If they make such a request to page which they are not authorized to, then the program makes an authorized code request + code challenge to Azure AD B2C attempting to Authenticate the user. Azure B2C then sends an authorization code request to Github, Where the user can authorize with github to login. If the user is successful with this, then it returns an authorization code to B2C and B2C get a token from github with the code. B2C then return an authorization code to the Client. The client can get authorization id and token from B2C. When the user then has logged in and is granted authorization to the page, then the server returns the web-page and the client can render it.
+When a user accesses the website they make a http GET request. If they make such a request to a page to which they are not authorized, then the program makes an authorized code request + code challenge to Azure AD B2C attempting to Authenticate the user. Azure B2C then sends an authorization code request to Github, Where the user can authorize with GitHub to login. If the user is successful with this, then it returns an authorization code to B2C and B2C get a token from github with the code. B2C then return an authorization code to the Client. The client can get authorization id and token from B2C. When the user has logged in and is granted authorization to the page, then the server returns the web page and the client can render it.
 
 ![Sequence Diagram](diagrams/SequenceeForProtectedResource.png)
 
@@ -113,9 +113,9 @@ When a user accesses the website they make a http GET request. If they make such
 
 ## Build, test, release, and deployment
 
-### Merge to main workflow
+### Merge to the main workflow
 
-During our project development process, our main mehod of building, testing and deploying was with two automated workflows. The structure of which is described by the diagram below:
+During our project development process, our main method of building, testing, and deploying was with two automated workflows. The structure of which is described by the diagram below:
 
 ![Merge to main workflows](diagrams/chirp_workflow_merge_main.png)
 
