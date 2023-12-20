@@ -23,7 +23,7 @@ Introduction???
 
 # 1. Introduction
 
-In this report we will briefly describe the project work and outcome of our chat-application Cheep.
+In this report we will briefly describe the project work and outcome of our social media application, Chirp. The project is developed for the course "Analysis, Design and Software Architecture (Autumn 2023)", taught by Helge Pfeiffer and Rasmus Lystrøm, at the IT University of Copenhagen.
 
 # 2. Design and Architecture of Chirp!
 
@@ -38,6 +38,15 @@ Write about what we want to represent (Cheeps, Authors, etc.)
 Maybe incorporate functionality of a normal social media app?
 -->
 
+In our program the user post messages in the form of a cheep. the Cheep class is a model, it represents what a cheep is. A cheep consists of an id, Author, message, TimeStamp, and a list of Reactions 
+
+The author class represents a user of our application. it contains all the information the program needs to model a user.
+
+The reaction class is used to keep track of the different reactions a user can have given a cheep. It contains the reaction type, the author, and the cheep that has been reacted to.
+
+We have repositories for author and cheep. These repositories contain the methods to manipulate and retrieve data in/from the database. The repositories are used in the outer part of the onion.
+We use Data transfer objects to send and receive data between the different layers of our program. The DTOs contain the same information as the classes but they are not used as entity classes for the model. So they are safer when dealing with the user, to make sure the user can't change the database in an unwanted way.
+
 ## Architecture — In the small
 
 <!--
@@ -50,15 +59,13 @@ Write about how we used the onion skin architecture, and specifically what funct
 
 ![Onion model](diagrams/chirp_onion_model.png)
 
-Our chirp application is implemented with an "onion skin architecture". This means that our program is divided into three layers, core, infrastructure and web. The three layers follow a hierarchical structure where core < infrastructure < web. In this comparison, only greater layers may use or know the contents of the lower layers. Following this structure should result in reusable and loosely coupled code. In a company setting, code from "core" could be reused in many different applications and contexts around the entire company.
+Our chirp application is implemented with an "onion skin architecture". This means that our program is divided into three layers, core, infrastructure and web. The three layers follow a hierarchical structure where core < infrastructure < web. In this comparison, only greater layers may use or know the contents of the lower layers. Following this structure should result in reusable and loosely coupled code.
+
+In a company setting, code from "core" could be reused in many different applications and contexts around the entire company. In our project, core only contains DTO's and interfaces that are used throughout our entire project. Chirp.Infrastructure contains all our domain implementations. This means that our repositories, domain classes (Cheep, Author, Reaction) are located here. Both our database migrations and our database-context (dbContext) are additionally located in infrastructure. Chirp.Web contains all our frontline code, in the shape of cshtml files, and their corresponding cshtml.cs code. Chirp.Web is the main executable c# project, which means that the Program.cs file is located here. Additionally, a database initialization script is also located here, which can populate and initiate our database with data provided by the course.
 
 ## Architecture of deployed application
 
-Our application is a web abblication, hosted by Azure. Clients use our web application through http calls. Our application sends and receives data from and to our Azure SQL server database. If the user tries to access a page on our webapplication which needs authentication, they are redirected to authentication, through B2C. Then they have to authenticate using their Github account. After authentication, they are redirected back to our page. If already authenticated, a cookie is saved, and they can skip the login process.<!-- Omskriv gerne, hvis jeg har skrevet noget forkert. Ved honestly ikke om det her er lidt for in depth til det her afsnit, og hører til under Sequence diagrammet i stedet. -->
-
-<!-- Lidt ændret, lidt mindre: -->
-
-Our application is a web abblication, hosted by Azure. Clients use our web application through http calls. Our application sends and receives data from and to our Azure SQL server database. If needed, authentication is done through B2C with Github accounts.
+Our application is a web-application, hosted by Azure. Clients use our web application through http calls. Our application sends and receives data from and to our Azure SQL server database. If a user tries to access a page, that requires authentication, they are redirected to authentication, through Business to Consumer (B2C). Authentication is done through their GitHub account. Next, they are redirected back to our page. If already authenticated, a cookie is saved, and they can skip the login process.
 
 ## User activities
 
@@ -97,17 +104,29 @@ Should we write about what a user can do in our application here? User flow?
 When a user access the website they make a http get requested. If they do it to a page which they are not authorized to then the program makes a authgorize code request + code challenge to Azure AD B2C to try and
 Authenticate the user. Azure B2C then sends a Authorization code request to Github Where the user can authorize with github to login. If the user is successful at github, then it returns a aurthorization code to B2C and B2C get a token from github with the code. B2C then return a authorization code to the Client. The client can get authorazation id and token from B2C. When the user then has login and are granted authorozation to the page then the server returns the web-page and the client can render it.
 
-![Sequence Diagram](diagrams/SequenceeForProtectedResource.drawiodrawio.png)
+![Sequence Diagram](diagrams/SequenceeForProtectedResource.png)
 
 # 3. Process
 
 ## Build, test, release, and deployment
 
-We aimed to introduce singlefile releases, but prioritized new features and other requirements, delaying its implementation. The infrequent releases resulted from both postponing until singlefile capability and a lack of defined milestones for stable functionality. Insufficient release planning, and constant development on important features contributed to this pattern. Since different features were almost always under development, we rarely felt our program was in a stable, shippable state.
+### Merge to main workflow
 
-Back when we were developing Chirp.CLI, we had a more solid release schedule. This is because it was the primary distribution of the software. When the project transitioned into a Razor application, the primary distribution became our Azure Web App, and our releases became way less frequent. Releases of our Razor application would also be quite difficult to use (since it requires docker), and would lack all online functionality. So for an ordinary user there would be absolutely no reason to run our code from releases.
+During our project development process, our main mehod of building, testing and deploying was with two automated workflows. The structure of which is described by the diagram below:
 
-BLABLA automatic deployment from main
+![Merge to main workflows](diagrams/chirp_workflow_merge_main.png)
+
+In the diagram you can see our two main workflows, the "deploy to azure" workflow (filename main_bdsagroup23chirprazor.yml) and the build and test workflow (filename dotnet.yml). Github CodeQL is also included in the diagram as it is an automated process, which runs whenever we merge into main. The "deploy to azure" workflow is auto-generated by azure and slightly modified. It publishes our application and uploads it to our azure web application. This was our preffered method of automated deployment. Our build and test workflow builds our project, and runs our tests (not including ui tests). The two workflows and CodeQL run in parralell. This means that our web app would be deployed even if our test suite failed. This was practical in our case, for rapid development, since our tests in many cases were not updated to work with our newer code. This meant that we could test our code on the live server without updating all our tests first. Not testing before deploying also meant that the deployment process was quicker. Going around our tests suite would in a real-world scenario, with an active application, result in huge stability issues.
+
+For "automatic releases" we used a seperate workflow (filename publish.yml). The process of which can be seen in the diagram below:
+
+![Release workflow](diagrams/chirp_workflow_release.png)
+
+The functionality of this worklow is to build, test and package our application automatically, whenever a release is created.
+
+We aimed to introduce singlefile releases, but prioritized new features and other requirements, delaying its implementation. The infrequent releases resulted from both postponing until singlefile capability, and a lack of defined milestones for stable functionality. Insufficient release planning, and constant development on important features contributed to this pattern. Since different features were almost always under development, we rarely felt our program was in a stable, shippable state.
+
+Back when we were developing Chirp.CLI, we had a more solid release schedule. This is because it was the primary distribution of the software. When the project transitioned into a Razor application, the primary distribution became our Azure Web App, and our releases became way less frequent. Releases of our Razor application would also be quite difficult to use (since it requires docker), and would lack all online functionality. So for an ordinary user, there would be absolutely no reason to run our code from releases.
 
 ## Teamwork
 
@@ -119,8 +138,14 @@ Show a screenshot of your project board right before hand-in. Briefly describe w
 Briefly describe and illustrate the flow of activities that happen from the new creation of an issue (task description), over development, etc. until a feature is finally merged into the main branch of your repository.
 -->
 
-BLABLA When creating a new issue, we consider...
-Once an issues is created, it is automatically added to the "Unassigned" column on our Project Board. If we have a good idea of who should make it, we assign people, and move it to the "Todo" column. If we want to delay an issue for when we have better time, we move it to the "Less important" column. Once we start working on an issue, we assign ourselves (if not already), and move it to "In progress".
+For this project, we made most of our work, while sitting together in a meeting, either physically, or on a discord server. Then we would split of into smaller groups, but still be available for other team members.
+
+On Github, we have used a centralised workflow, with protection on the main branch, and a requirement for pull requests to make changes.
+
+When creating a new issue, we focus on the functional requiremtens, and make sure to make an issue, that covers these. Sometimes, we already do the design process here, and describe in the issue, more precisely, how to reach the functional requirements. Other times, we let the one(s) who work on the issue, make all design decisions. For large issues, or very important design decisions, we often discuss it in the group, even with team members who aren't assigned to the issue.
+
+<!-- Once an issues is created, it is automatically added to the "Unassigned" column on our Project Board. If we have a good idea of who should make it, we assign people, and move it to the "Todo" column. If we want to delay an issue for when we have better time, we move it to the "Less important" column. Once we start working on an issue, we assign ourselves (if not already), and move it to "In progress". -->
+
 When we work on a feature, we are usually one or two people. Sometimes we use pair programming. Other times one will work on the frontend, while the other works on the backend. Once we believe a feature is ready for main, we make a pull request, and ask a group member who hasn't been a part of this issue, to review it. Depending on the complexity of the code, we ask one or more people to review it. Sometimes we explain the code to the reviewer(s). Sometimes we find that some of the code could be better, or maybe that some of the changes were unnecessary or too intrusive, and should be reverted. Depending on how big of an issue it is, and how much time we have, we either write a comment, and possibly an issue about fixing it, and then approve the pull request, or we write a comment, and request changes, before allowing for a push to main.
 
 <!-- OVERVEJER OM DET HER BØR VÆRE MED: Sometimes, we work on multiple issues on the same branch, because some of our other issues are currently incompatible, and we delay merge of one branch until another is merged. This makes some of our pull requests quite big, and sometimes incomprehensible. We strive to make our pull requests as compact and focused as possible. -->
@@ -135,6 +160,13 @@ To make Chirp! work locally, first you must clone the repository:
 git clone https://github.com/ITU-BDSA23-GROUP23/Chirp.git
 ```
 
+On windows or osx, make sure that the docker desktop application is running first.
+On linux systems, ensure the Docker daemon is running. It can be started with:
+
+```
+sudo dockerd
+```
+
 From here, you must first start a MSSQL docker container using the following command:
 
 ```
@@ -142,13 +174,6 @@ sudo docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=DhE883cb" \
    -p 1433:1433 --name sql1 --hostname sql1 \
    -d \
    mcr.microsoft.com/mssql/server:2022-latest
-```
-
-On windows or osx, make sure that the docker desktop application is running first.
-On linux systems, ensure the Docker daemon is running. It can be started with:
-
-```
-sudo dockerd
 ```
 
 Next, from the root directory in /Chirp, run the following command:
@@ -176,8 +201,16 @@ docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=DhE883cb" -p 1433:1433 --nam
 ```
 
 Windows:
+Open Docker desktop and run the `mcr.microsoft.com/mssql/server:2022-latest` image
 
 Linux/wsl:
+
+```
+sudo docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=DhE883cb" \
+   -p 1433:1433 --name sql1 --hostname sql1 \
+   -d \
+   mcr.microsoft.com/mssql/server:2022-latest
+```
 
 Next, open up a terminal in the project. Assuming you are in the root of the repository Chirp, direct to either:
 
