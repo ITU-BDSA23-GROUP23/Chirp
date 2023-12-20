@@ -74,6 +74,8 @@ In a company setting, code from "core" could be reused in many different applica
 
 ## Architecture of deployed application
 
+![Architecture component diagram](diagrams/Client-server-Component-diagram.drawio.png)
+
 Our application is a web application hosted by Azure. Clients use our web application through HTTP calls. Our application sends and receives data from and to our Azure SQL server database. If a user tries to access a page that requires authentication, they are redirected to authentication using B2C. Authentication is done through their GitHub account. afterward, they are redirected back to our page. If already authenticated, a cookie is saved and they can skip the login process.
 
 ## User activities
@@ -145,6 +147,8 @@ Show a screenshot of your project board right before hand-in. Briefly describe w
 <!--
 Briefly describe and illustrate the flow of activities that happen from the new creation of an issue (task description), over development, etc. until a feature is finally merged into the main branch of your repository.
 -->
+
+![Project Board](images/ProjectBoard.png)
 
 ![Flow of activities](diagrams/ActivityFlows.png)
 
