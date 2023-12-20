@@ -49,7 +49,7 @@ Write about what we want to represent (Cheeps, Authors, etc.)
 Maybe incorporate functionality of a normal social media app?
 -->
 
-In our program, the user posts messages in the form of a cheep. the Cheep class is a model representing what a cheep is. A cheep consists of an id, Author, message, TimeStamp, and a list of Reactions
+In our program, the user posts messages in the form of a cheep. The Cheep class is a model representing what a cheep is. A cheep consists of an id, Author, message, TimeStamp, and a list of Reactions
 
 The author class represents a user of our application. it contains all the information the program needs to model a user.
 
@@ -57,7 +57,7 @@ The reaction class is used to keep track of the different reactions a user can a
 
 We have repositories for author and cheep. These repositories contain methods to manipulate and retrieve data in/from the database.
 
-We use Data transfer objects (DTOs) to send and receive data between the different layers of our program. The DTOs contain the same information as the classes, but they are not used as entity classes for the model. So they are a safe way to make sure the user can't change the database in an unwanted way.
+We use Data Transfer Objects (DTOs) to send and receive data between the different layers of our program. The DTOs contain the same information as the classes, but they are not used as entity classes for the model. This means they are a safe way to make sure the user cannot change the database in an unwanted way.
 
 ## Architecture — In the small
 
@@ -79,7 +79,7 @@ In a company setting, code from "core" could be reused in many different applica
 
 ![Architecture component diagram](diagrams/Client-server-Component-diagram.drawio.png)
 
-Our application is a web application hosted by Azure. Clients use our web application through HTTP calls. Our application sends and receives data from and to our Azure SQL server database. If a user tries to access a page that requires authentication, they are redirected to authentication using B2C. Authentication is done through their GitHub account. afterward, they are redirected back to our page. If already authenticated, a cookie is saved and they can skip the login process.
+Our application is a web application hosted by Azure. Clients use our web application through HTTP calls. Our application sends and receives data from and to our Azure SQL server database. If a user tries to access a page that requires authentication, they are redirected to authentication using B2C. Authentication is done through their GitHub account. Afterwards, they are redirected back to our page. If already authenticated, a cookie is saved and they can skip the login process.
 
 \newpage
 
@@ -106,7 +106,7 @@ If already logged in to GitHub on their browser, they are directed to the Public
 
 The navigation bar is changed upon user authentication. It has links to the pages: "My Timeline", "Public Timeline", "For You", "About Me" and "Logout." The navigation bar is visible on all pages.
 On every page where there are cheeps, the user is able to express reactions, and follow/unfollow authors of all cheeps, not made by themself.
-On the public timeline, they are also able to submit cheeps and sign out. They can also react to cheeps and follow/unfollow authors on cheeps if they aren't the author of the cheep themselves.
+On the public timeline, they are also able to submit cheeps and sign out. They can also react to cheeps and follow/unfollow authors on cheeps, if they aren't the author of the cheep themselves.
 On "my timeline", the user can submit cheeps, and see their own cheeps.
 On "For you", they can see the cheeps of the people that they follow.
 On the "About me" page, they can see the users they follow, the people who follow them, the number of each, and their own most recent cheeps. They can press the "Forget me" button, which deletes everything about them, from the database. They can also go to the timeline of other users by pressing their name found on any of the lists.
@@ -117,7 +117,7 @@ Should we write about what a user can do in our application here? User flow?
 
 ## Sequence of functionality/calls through Chirp!
 
-When a user accesses the website they make a http GET request. If they make such a request to a page to which they are not authorized, then the program makes an authorized code request + code challenge to Azure AD B2C attempting to Authenticate the user. Azure B2C then sends an authorization code request to Github, Where the user can authorize with GitHub to login. If the user is successful with this, then it returns an authorization code to B2C and B2C get a token from github with the code. B2C then returns an authorization code to the Client. The client can get authorization id and token from B2C. When the user has logged in and is granted authorization to the page, then the server returns the web page and the client can render it.
+When a user accesses the website they make a http GET request. If they make such a request to a page to which they are not authorized, then the program makes an authorized code request + code challenge to Azure AD B2C attempting to Authenticate the user. Azure B2C then sends an authorization code request to Github, Where the user can authorize with GitHub to login. If the user is successful with this, then it returns an authorization code to B2C and B2C get a token from github with the code. B2C then returns an authorization code to the Client. The client can get authorization id and token from B2C. When the user has logged in and is granted authorization to the page, then the server returns the web page, and the client can render it.
 
 ![Sequence Diagram](diagrams/SequenceeForProtectedResource.png)
 
@@ -131,7 +131,7 @@ During our project development process, our main method of building, testing, an
 
 ![Merge to main workflows](diagrams/chirp_workflow_merge_main.png){width=60%}
 
-In the diagram, you can see our two main workflows, the "deploy to Azure" workflow (filename main_bdsagroup23chirprazor.yml) and the build and test workflow (filename dotnet.yml). Github CodeQL is also included in the diagram as it is an automated process, that runs whenever we merge into main. The "deploy to Azure" workflow is auto-generated by Azure and slightly modified. It publishes our application and uploads it to our Azure web application. This was our preferred method of automated deployment. Our build and test workflow builds our project, and runs our tests (not including ui tests). The two workflows and CodeQL run in parallel. This means that our web app would be deployed even if our test suite failed. This was practical in our case, for rapid development, since our tests in many cases were not updated to work with our newer code. This meant that we could test our code on the live server without updating all our tests first. Not testing before deploying also meant that the deployment process was quicker. Going around our tests suite would in a real-world scenario, with an active application, result in huge stability issues.
+In the diagram, you can see our two main workflows, the "deploy to Azure" workflow (filename main_bdsagroup23chirprazor.yml) and the build and test workflow (filename dotnet.yml). Github CodeQL is also included in the diagram as it is an automated process, that runs whenever we merge into main. The "deploy to Azure" workflow is auto-generated by Azure and slightly modified. It publishes our application and uploads it to our Azure web application. This was our preferred method of automated deployment. Our build and test workflow builds our project, and runs our tests (not including UI-tests). The two workflows and CodeQL run in parallel. This means that our web app would be deployed even if our test suite failed. This was practical in our case, for rapid development, since our tests in many cases were not updated to work with our newer code. This meant that we could test our code on the live server without updating all our tests first. Not testing before deploying also meant that the deployment process was quicker. Going around our tests suite would in a real-world scenario, with an active application, result in huge stability issues.
 
 For "automatic releases" we used a separate workflow (filename publish.yml). The process of which can be seen in the diagram below:
 
@@ -176,7 +176,7 @@ When creating a new issue, we focus on the functional requirements and make sure
 
 <!-- Once an issues is created, it is automatically added to the "Unassigned" column on our Project Board. If we have a good idea of who should make it, we assign people, and move it to the "Todo" column. If we want to delay an issue for when we have better time, we move it to the "Less important" column. Once we start working on an issue, we assign ourselves (if not already), and move it to "In progress". -->
 
-When we work on a feature, we are usually one or two people. Sometimes we use pair programming. Other times one will work on the front-end while the other works on the back-end. Once we believe a feature is ready for main, we make a pull request and ask a group member who hasn't been a part of this issue to review it. Depending on the complexity of the code, we ask one or more people to review it. Sometimes we explain the code to the reviewer(s). Sometimes we find that some of the code could be better, or maybe that some of the changes were unnecessary or too intrusive and should be reverted. Depending on how big of an issue it is and how much time we have, we either write a comment, and possibly an issue about fixing it, and then approve the pull request or we write a comment requesting changes before allowing for a push to main.
+When working on a feature, we are usually one or two people. We often use the pair programming method. Once we believe a feature is ready for main, we make a pull request and ask a group member who hasn't been a part of this issue to review it. Depending on the complexity of the code, we ask one or more people to review it. If the reviewer(s) think that the code could be better or some of the changes were unnecessary or too intrusive, changes to the pull request are requested.
 
 <!-- OVERVEJER OM DET HER BØR VÆRE MED: Sometimes, we work on multiple issues on the same branch, because some of our other issues are currently incompatible, and we delay merge of one branch until another is merged. This makes some of our pull requests quite big, and sometimes incomprehensible. We strive to make our pull requests as compact and focused as possible. -->
 
@@ -264,8 +264,8 @@ dotnet test
 
 The project contains two test suites, Chirp.Razor.Tests and UITest.
 The first test suite contains unit tests and integration tests.
-The unit tests are testing the functionality of the isolated components in our application, that is testing methods within our application of core, infrastructure and web components. <!-- Tror ikke vi har unit tests af web components. -->
-The integration tests are testing the interactions of different components in our application, that is testing when using logic from e.g. the infrastructure layer in our web components.
+The unit tests are testing the functionality of the isolated components in our application, i.e., testing methods within our application of core, infrastructure and web components.
+The integration tests are testing the interactions of different components in our application, i.e., testing when using logic from e.g. the infrastructure layer in our web components.
 
 The second test suite contains our UI tests. These are UI automation tests, using Playwright to simulate a users interactions with the user interface. These are implemented such that we can ensure that the UI behaves as expected, performing actions and receiving expected output, when doing all types of interactions with our application from the UI. Before being able to run the test the program has to be running on the same local machine.
 
