@@ -16,7 +16,7 @@ header-includes:
   - \usepackage{fancyhdr}
   - \pagestyle{fancy}
   - \fancyhead[L]{\begin{tabular}{@{}l}edwr, tpep, habr, dhla \& ngar\\ IT-University of Copenhagen\end{tabular}}
-  - \fancyhead[C]{bdsa}
+  - \fancyhead[C]{BSANDSA1KU}
   - \fancyhead[R]{\today}
 ---
 
@@ -44,7 +44,7 @@ In this report we will briefly describe the project work and outcome of our soci
 
 <!-- Det er muligt at dette diagram bør være med i architecture - In the small, og at vores domain model kun bør være hvordan de foreksllige database elementer er relateret. -->
 
-![Domain and Repository structure](diagrams/chirp_domain_and_repos_uml2.png){width=120%}
+![Domain and Repository structure](diagrams/chirp_domain_and_repos_uml2.png)
 \newpage
 
 <!--
@@ -74,9 +74,9 @@ Write about how we used the onion skin architecture, and specifically what funct
 
 ![Onion model](diagrams/chirp_onion_model.png){width=50%}
 
-Our chirp application is implemented with an "onion skin architecture". This means that our program is divided into three layers, core, infrastructure, and web. The three layers follow a hierarchical structure where core < infrastructure < web. In this comparison, greater layers may use and know the contents of the layers below. Lower layers cannot know about nor use anything from the above layers. Following this structure should result in reusable and loosely coupled code.
+Our chirp application is implemented with an "onion skin architecture". This means that our program is divided into three layers: core, infrastructure, and web. The three layers follow a hierarchical structure where core < infrastructure < web. In this comparison, greater layers may use and know the contents of the layers below. Lower layers cannot know about nor use anything from the above layers. Following this structure should result in reusable and loosely coupled code.
 
-In a company setting, code from "core" could be reused in many different applications and contexts around the entire company. In our project, core only contains DTO's and interfaces that are used throughout our entire project. Chirp.Infrastructure contains all our domain implementations. This means that our repositories, domain classes (Cheep, Author, Reaction) are located here. Both our database migrations and our database-context (dbContext) are additionally located in the infrastructure. Chirp.Web contains all our frontend code, in the shape of cshtml files, and their corresponding cshtml.cs code. Chirp.Web is the main executable c# project, which means that the Program.cs file is located here. Additionally, a database initialization script is also located here, which can populate and initiate our database with data provided by the course.
+In a company setting, code from "core" could theoretically be reused in many different applications and contexts around the entire company. In our project, core only contains DTO's and interfaces that are used throughout our entire project. Chirp.Infrastructure contains all our domain implementations. This means that our repositories, domain classes (Cheep, Author, Reaction) are located here. Both our database migrations and our database-context (dbContext) are additionally located in the infrastructure. Chirp.Web contains all our frontend code, in the shape of cshtml files, and their corresponding cshtml.cs code. Chirp.Web is the main executable c# project, which means that the Program.cs file is located here. Additionally, a database initialization script is also located here, which can populate and initiate our database with data provided by the course.
 
 ## Architecture of deployed application
 
@@ -103,6 +103,7 @@ Users have the option to click on the author's name within cheeps, redirecting t
 The top bar contains a login button, which when clicked facilitates authentication through B2C, using a user's GitHub account.
 If already logged in to GitHub on their browser, they are directed to the Public Timeline. If not, they must login with a GitHub account.
 
+\newpage
 **Authenticated:**
 
 ![User Activity diagram: Authenticated](diagrams/UserActivityAuthorized.drawio.png){height=80%}
@@ -128,8 +129,6 @@ When a user accesses the website they make a http GET request. If they make such
 
 ## Build, test, release, and deployment
 
-### Merge to the main workflow
-
 During our project development process, our main method of building, testing, and deploying was with two automated workflows. The structure of which is described by the diagram below:
 
 ![Merge to main workflows](diagrams/chirp_workflow_merge_main.png){width=60%}
@@ -145,6 +144,8 @@ The functionality of this workflow is to build, test and package our application
 We aimed to introduce single-file releases, but prioritized new features and other requirements, delaying its implementation. The infrequent releases resulted from both postponing until single-file capability, and a lack of defined milestones for stable functionality. Insufficient release planning, and constant development on important features contributed to this pattern. Since different features were almost always under development, we rarely felt our program was in a stable, shippable state.
 
 Back when we were developing Chirp.CLI, we had a more solid release schedule. This is because it was the primary distribution of the software. When the project transitioned into a Razor application, the primary distribution became our Azure Web App, and our releases became way less frequent. Releases of our Razor application would also be quite difficult to use (since it requires docker), and would lack all online functionality. So for an ordinary user, there would be absolutely no reason to run our code from releases.
+
+\newpage
 
 ## Teamwork
 
@@ -168,6 +169,9 @@ Briefly describe and illustrate the flow of activities that happen from the new 
 - Migrate to .net 8
 - Feedback on failed cheep submit
 - Check for nullable properties
+  \newpage
+
+### Flow of development
 
 ![Flow of activities](diagrams/ActivityFlows.png){height=45%}
 
@@ -242,6 +246,7 @@ dotnet run
 ```
 
 Finally, open your browser of choice and connect to `https://localhost:7040`
+\newpage
 
 ## How to run the test suite locally
 
@@ -274,6 +279,8 @@ The second test suite contains our UI tests. These are UI automation tests, usin
 
 <!-- The Playwright tests are responsible for testing our razorpage functionality, as we don't have unit tests for the methods in the .cs files for the pages. -->
 
+\newpage
+
 # 4. Ethics
 
 ## License
@@ -282,9 +289,9 @@ License: WTFPL
 
 ## LLMs, ChatGPT, CoPilot, and others
 
-The LLMs used for this project during development are ChatGPT and GitHub CoPilot. ChatGPT has been used carefully, mainly for asking questions about the code or errors in the code. It has also been used for generating small pieces of code, mainly in the cshtml files. Likewise, CoPilot has been used for generating some of the code in cshtml, but has also been used for helping with code, partly making some of the methods in the repositories and creating outlines for tests.
+The LLMs used for this project during development are ChatGPT and GitHub CoPilot. The degree of usage of these LLMs varies highly across the group, and overall, almost all our code was written by ourselves. ChatGPT has been used carefully, mainly for asking questions about the code or errors in the code. It has also been used for generating small pieces of code, mainly in the cshtml files. Likewise, CoPilot has been used for generating some of the code in cshtml, but has also been used for helping with code, partly making some of the methods in the repositories and creating outlines for tests.
 Generally, the responses of the LLMs have been helpful for better understanding of the code and speeding up the development. It has not really created code that we would not have done ourselves, but it has provided some logic in the methods, which has been helpful in terms of taking inspiration for further method extensions.
-The application of LLMs has sped up the development process. Especially, CoPilot has made coding much faster, as it for most parts provides the code needed, e.g., if we already made a test for a method FollowAuthor, in no time CoPilot can make the same one for UnfollowAuthor. However, there have indeed been a few times, when ChatGPT or CoPilot did not understand the requests as intended, and therefore not provide useful outputs. But, for most of the time, they have been helpful tools for development.
+The application of LLMs has sped up the development process. Copilot especially has made coding faster, as it is pretty good at predicting what code we wanted to write. For example, if we already made a test for a method FollowAuthor, in no time CoPilot can make the same one for UnfollowAuthor. However ChatGPT and CoPilot would also often misunderstand our requests, and therefore not provide useful outputs. But, for most of the time, they have been helpful tools for development.
 
 ```
 
