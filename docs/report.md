@@ -115,11 +115,7 @@ When a user accesses the website they make a http GET request. If they make such
 
 ### Merge to the main workflow
 
-<<<<<<< HEAD
-During our project development process, our main method of building, testing and deploying was with two automated workflows. The structure of which is described by the diagram below:
-=======
 During our project development process, our main method of building, testing, and deploying was with two automated workflows. The structure of which is described by the diagram below:
->>>>>>> 5a7813a50a8dd466afe28906f46742b32e0e53b3
 
 ![Merge to main workflows](diagrams/chirp_workflow_merge_main.png)
 
