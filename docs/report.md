@@ -41,13 +41,13 @@ Write about what we want to represent (Cheeps, Authors, etc.)
 Maybe incorporate functionality of a normal social media app?
 -->
 
-In our program, the user posts messages in the form of a cheep. the Cheep class is a model representing what a cheep is. A cheep consists of an id, Author, message, TimeStamp, and a list of Reactions 
+In our program, the user posts messages in the form of a cheep. the Cheep class is a model representing what a cheep is. A cheep consists of an id, Author, message, TimeStamp, and a list of Reactions
 
 The author class represents a user of our application. it contains all the information the program needs to model a user.
 
 The reaction class is used to keep track of the different reactions a user can append to a cheep. It contains the reaction type, the author, and the cheep that has been reacted to.
 
-We have repositories for author and cheep. These repositories contain the methods to manipulate and retrieve data in/from the database. 
+We have repositories for author and cheep. These repositories contain the methods to manipulate and retrieve data in/from the database.
 
 We use Data transfer objects (DTOs) to send and receive data between the different layers of our program. The DTOs contain the same information as the classes, but they are not used as entity classes for the model. So they are a safe way to make sure the user can't change the database in an unwanted way.
 
@@ -67,7 +67,6 @@ Our chirp application is implemented with an "onion skin architecture". This mea
 
 In a company setting, code from "core" could be reused in many different applications and contexts around the entire company. In our project, core only contains DTO's and interfaces that are used throughout our entire project. Chirp.Infrastructure contains all our domain implementations. This means that our repositories, domain classes (Cheep, Author, Reaction) are located here. Both our database migrations and our database-context (dbContext) are additionally located in infrastructure. Chirp.Web contains all our frontend code, in the shape of cshtml files, and their corresponding cshtml.cs code. Chirp.Web is the main executable c# project, which means that the Program.cs file is located here. Additionally, a database initialization script is also located here, which can populate and initiate our database with data provided by the course.
 
-
 ## Architecture of deployed application
 
 Our application is a web-application hosted by Azure. Clients use our web application through http calls. Our application sends and receives data from and to our Azure SQL server database. If a user tries to access a page that requires authentication, they are redirected to authentication using B2C. Authentication is done through their GitHub account. afterwards, they are redirected back to our page. If already authenticated, a cookie is saved and they can skip the login process.
@@ -77,8 +76,8 @@ Our application is a web-application hosted by Azure. Clients use our web applic
 <!-- Har sandsynligvis skrevet for meget her, måske alt for meget, men havde lige lidt overskud, så fyrede det hele af.
 - Har rettet din tekst igennem - Edward -->
 
-The navigation bar is shown on all pages, and is used to redirect the user to other pages. \
-\
+The navigation bar is shown on all pages, and is used to redirect the user to other pages.
+
 **Not authenticated:**
 
 ![User Activity diagram: not authenticated](diagrams/UserActivityNONauthorized.drawio.png){width=80%}
@@ -132,6 +131,8 @@ We aimed to introduce singlefile releases, but prioritized new features and othe
 
 Back when we were developing Chirp.CLI, we had a more solid release schedule. This is because it was the primary distribution of the software. When the project transitioned into a Razor application, the primary distribution became our Azure Web App, and our releases became way less frequent. Releases of our Razor application would also be quite difficult to use (since it requires docker), and would lack all online functionality. So for an ordinary user, there would be absolutely no reason to run our code from releases.
 
+## Teamwork
+
 <!--
 Show a screenshot of your project board right before hand-in. Briefly describe which tasks are still unresolved, i.e., which features are missing from your applications or which functionality is incomplete.
 -->
@@ -139,6 +140,7 @@ Show a screenshot of your project board right before hand-in. Briefly describe w
 <!--
 Briefly describe and illustrate the flow of activities that happen from the new creation of an issue (task description), over development, etc. until a feature is finally merged into the main branch of your repository.
 -->
+
 ![Flow of activities](diagrams/ActivityFlows.png)
 
 For this project, we made most of our work while sitting together in a meeting, either physically or on a discord server. Then we would split of into smaller groups, but still be available for other team members.
@@ -233,11 +235,10 @@ In both the Chirp.Razor.Tests and PlaywrightTests folder, to run the tests:
 dotnet test
 ```
 
-The project contains two test suites: Chirp.Razor.Tests and UITest.
-The first test suite contains unit tests, integration tests and end-to-end tests.
-The unit tests are testing the functionality of the isolated components in our application. that is, testing methods within our application of core, infrastructure and web components. <!-- Tror ikke vi har unit tests af web components. -->
+The project contains two test suites, Chirp.Razor.Tests and UITest.
+The first test suite contains unit tests and integration tests.
+The unit tests are testing the functionality of the isolated components in our application, that is testing methods within our application of core, infrastructure and web components. <!-- Tror ikke vi har unit tests af web components. -->
 The integration tests are testing the interactions of different components in our application, that is testing when using logic from e.g. the infrastructure layer in our web components.
-The end-to-end tests...?
 
 The second test suite contains our UI tests. These are UI automation tests, using Playwright to simulate a users interactions with the user interface. These are implemented such that we can ensure that the UI behaves as expected, performing actions and receiving expected output, when doing all types of interactions with our application from the UI. Before be able to run the test the program has to be running on the same local machine.
 
