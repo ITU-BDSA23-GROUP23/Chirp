@@ -100,6 +100,7 @@ Users have the option to click on the author's name within cheeps, redirecting t
 The top bar contains a login button, which when clicked facilitates authentication through B2C, using a user's GitHub account.
 If already logged in to GitHub on their browser, they are directed to the Public Timeline. If not, they must login with a GitHub account.
 
+\newpage
 **Authenticated:**
 
 ![User Activity diagram: Authenticated](diagrams/UserActivityAuthorized.drawio.png){height=80%}
@@ -143,6 +144,8 @@ We aimed to introduce single-file releases, but prioritized new features and oth
 
 Back when we were developing Chirp.CLI, we had a more solid release schedule. This is because it was the primary distribution of the software. When the project transitioned into a Razor application, the primary distribution became our Azure Web App, and our releases became way less frequent. Releases of our Razor application would also be quite difficult to use (since it requires docker), and would lack all online functionality. So for an ordinary user, there would be absolutely no reason to run our code from releases.
 
+\newpage
+
 ## Teamwork
 
 <!--
@@ -165,6 +168,9 @@ Briefly describe and illustrate the flow of activities that happen from the new 
 - Migrate to .net 8
 - Feedback on failed cheep submit
 - Check for nullable properties
+  \newpage
+
+### Flow of development
 
 ![Flow of activities](diagrams/ActivityFlows.png){height=45%}
 
@@ -239,6 +245,7 @@ dotnet run
 ```
 
 Finally, open your browser of choice and connect to `https://localhost:7040`
+\newpage
 
 ## How to run the test suite locally
 
@@ -270,6 +277,8 @@ The integration tests are testing the interactions of different components in ou
 The second test suite contains our UI tests. These are UI automation tests, using Playwright to simulate a users interactions with the user interface. These are implemented such that we can ensure that the UI behaves as expected, performing actions and receiving expected output, when doing all types of interactions with our application from the UI. Before being able to run the test the program has to be running on the same local machine.
 
 <!-- The Playwright tests are responsible for testing our razorpage functionality, as we don't have unit tests for the methods in the .cs files for the pages. -->
+
+\newpage
 
 # 4. Ethics
 
