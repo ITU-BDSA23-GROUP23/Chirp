@@ -1,13 +1,16 @@
 ---
-title: "Chirp! Group 23 Project Report"
-author:
+title: "Chirp! Project Report"
+subtitle: 'ITU BDSA 2023 Group 23'
+ 
+author: 
   - "Edward Rostomian | edwr@itu.dk"
   - "Thorbjørn Peter Høgsbro Pedersen | tpep@itu.dk"
   - "Daniel Holm Larsen | dhla@itu.dk"
   - "Halfdan Eg Minegar Brage | habr@itu.dk"
   - "Nicklas Ostenfeldt Gardil | ngar@itu.dk"
-institute: "IT-University of Copenhagen"
+
 date: \today
+numbersections: true
 header-includes:
   - \usepackage{graphicx}
   - \usepackage{fancyhdr}
