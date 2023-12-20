@@ -1,11 +1,12 @@
 ---
 title: "Chirp! Group 23 Project Report"
 author:
-  - "Edward Rostomian"
-  - "Thorbjørn Peter Høgsbro Pedersen"
-  - "Daniel Holm Larsen"
-  - "Halfdan Eg Minegar Brage"
-  - "Nicklas Ostenfeldt Gardil"
+  - "Edward Rostomian | edwr@itu.dk"
+  - "Thorbjørn Peter Høgsbro Pedersen | tpep@itu.dk"
+  - "Daniel Holm Larsen | dhla@itu.dk"
+  - "Halfdan Eg Minegar Brage | habr@itu.dk"
+  - "Nicklas Ostenfeldt Gardil | ngar@itu.dk"
+institute: "IT-University of Copenhagen"
 date: \today
 header-includes:
   - \usepackage{graphicx}
@@ -15,6 +16,8 @@ header-includes:
   - \fancyhead[C]{bdsa}
   - \fancyhead[R]{\today}
 ---
+
+\maketitle
 
 \newpage
 
