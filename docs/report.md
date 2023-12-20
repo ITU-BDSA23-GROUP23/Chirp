@@ -161,6 +161,13 @@ To make Chirp! work locally, first you must clone the repository:
 git clone https://github.com/ITU-BDSA23-GROUP23/Chirp.git
 ```
 
+On windows or osx, make sure that the docker desktop application is running first.
+On linux systems, ensure the Docker daemon is running. It can be started with:
+
+```
+sudo dockerd
+```
+
 From here, you must first start a MSSQL docker container using the following command:
 
 ```
@@ -168,13 +175,6 @@ sudo docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=DhE883cb" \
    -p 1433:1433 --name sql1 --hostname sql1 \
    -d \
    mcr.microsoft.com/mssql/server:2022-latest
-```
-
-On windows or osx, make sure that the docker desktop application is running first.
-On linux systems, ensure the Docker daemon is running. It can be started with:
-
-```
-sudo dockerd
 ```
 
 Next, from the root directory in /Chirp, run the following command:
