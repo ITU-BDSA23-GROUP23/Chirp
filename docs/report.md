@@ -39,14 +39,15 @@ Write about what we want to represent (Cheeps, Authors, etc.)
 Maybe incorporate functionality of a normal social media app?
 -->
 
-In our program the user post messages in the form of a cheep. the Cheep class is a model, it represents what a cheep is. A cheep consists of an id, Author, message, TimeStamp, and a list of Reactions 
+In our program, the user posts messages in the form of a cheep. the Cheep class is a model representing what a cheep is. A cheep consists of an id, Author, message, TimeStamp, and a list of Reactions 
 
 The author class represents a user of our application. it contains all the information the program needs to model a user.
 
-The reaction class is used to keep track of the different reactions a user can have given a cheep. It contains the reaction type, the author, and the cheep that has been reacted to.
+The reaction class is used to keep track of the different reactions a user can append to a cheep. It contains the reaction type, the author, and the cheep that has been reacted to.
 
-We have repositories for author and cheep. These repositories contain the methods to manipulate and retrieve data in/from the database. The repositories are used in the outer part of the onion.
-We use Data transfer objects to send and receive data between the different layers of our program. The DTOs contain the same information as the classes but they are not used as entity classes for the model. So they are safer when dealing with the user, to make sure the user can't change the database in an unwanted way.
+We have repositories for author and cheep. These repositories contain the methods to manipulate and retrieve data in/from the database. 
+
+We use Data transfer objects (DTOs) to send and receive data between the different layers of our program. The DTOs contain the same information as the classes, but they are not used as entity classes for the model. So they are a safe way to make sure the user can't change the database in an unwanted way.
 
 ## Architecture — In the small
 
@@ -60,15 +61,14 @@ Write about how we used the onion skin architecture, and specifically what funct
 
 ![Onion model](diagrams/chirp_onion_model.png)
 
-Our chirp application is implemented with an "onion skin architecture". This means that our program is divided into three layers, core, infrastructure and web. The three layers follow a hierarchical structure where core < infrastructure < web. In this comparison, only greater layers may use or know the contents of the lower layers. Following this structure should result in reusable and loosely coupled code. 
+Our chirp application is implemented with an "onion skin architecture". This means that our program is divided into three layers, core, infrastructure and web. The three layers follow a hierarchical structure where core < infrastructure < web. In this comparison, greater layers may use and know the contents of the layers below. Lower layers cannot know about nor use anything from above layers. Following this structure should result in reusable and loosely coupled code.
 
 In a company setting, code from "core" could be reused in many different applications and contexts around the entire company. In our project, core only contains DTO's and interfaces that are used throughout our entire project. Chirp.Infrastructure contains all our domain implementations. This means that our repositories, domain classes (Cheep, Author, Reaction) are located here. Both our database migrations and our database-context (dbContext) are additionally located in infrastructure. Chirp.Web contains all our frontline code, in the shape of cshtml files, and their corresponding cshtml.cs code. Chirp.Web is the main executable c# project, which means that the Program.cs file is located here. Additionally, a database initialization script is also located here, which can populate and initiate our database with data provided by the course.
 
 
-
 ## Architecture of deployed application
 
-Our application is a web-application, hosted by Azure. Clients use our web application through http calls. Our application sends and receives data from and to our Azure SQL server database. If a user tries to access a page, that requires authentication, they are redirected to authentication, through B2C. Authentication is done through their GitHub account. Next, they are redirected back to our page. If already authenticated, a cookie is saved, and they can skip the login process.
+Our application is a web-application hosted by Azure. Clients use our web application through http calls. Our application sends and receives data from and to our Azure SQL server database. If a user tries to access a page that requires authentication, they are redirected to authentication using B2C. Authentication is done through their GitHub account. afterwards, they are redirected back to our page. If already authenticated, a cookie is saved and they can skip the login process.
 
 ## User activities
 
@@ -81,22 +81,22 @@ The navigation bar is shown on all pages, and is used to redirect the user to ot
 
 ![User Activity diagram: not authenticated](diagrams/UserActivityNONauthorized.drawio.png)
 
-When accessing our webpage, users are presented with the public timeline, which displays cheeps. On this page, users can navigate between pages to view older or newer cheeps
+When accessing our webpage, users are presented with the public timeline which displays cheeps. On this page, users can navigate between pages to view older or newer cheeps.
 The navigation bar consists of links to "Public Timeline" and "login".
-Furthermore, users have the option to click on the author's name within cheeps, redirecting them to the author's private timeline, showing cheeps made by that author.
-Also, user can click on the login button, which facilitates authentication through B2C, using their GitHub account.
+Users have the option to click on the author's name within cheeps, redirecting them to the author's private timeline, showing cheeps made by that author.
+The top bar contains a login button, which when clicked facilitates authentication through B2C, using a user's GitHub account.
 If already logged in to Github on their browser, they are directed to the Public Timeline. If not, they must login with a Github account.
 
 **Authenticated:**
 
 ![User Activity diagram: Authenticated](diagrams/UserActivityAuthorized.drawio.png)
 
-The navigation bar is changed upon user authentication. It has links to pages such as "My Timeline", "Public Timeline", "For You", "About Me" and "Logout." The navigation bar is visible on all pages.
+The navigation bar is changed upon user authentication. It has links to the pages: "My Timeline", "Public Timeline", "For You", "About Me" and "Logout." The navigation bar is visible on all pages.
 On every page where there are cheeps, the user is able to express reactions, and follow/unfollow authors of all cheeps, not made by themself.
-On the public timeline, they are also able to submit cheeps and sign out. They can also react to cheeps and follow/unfollow authors on cheeps, if not they are the author of the cheep themselves.
+On the public timeline, they are also able to submit cheeps and sign out. They can also react to cheeps and follow/unfollow authors on cheeps if they aren't the author of the cheep themselves.
 On "my timeline", the user can submit cheeps, and see their own cheeps.
 On "For you", they can see the cheeps of the people that they follow.
-On the "About me" page, they can see the users they follow, the people who follow them, the number of each, and their own most recent cheeps. They can press the "Forget me" button, which deletes everything about them, from the database. They can also go to the timeline of other users, by pressing their name, found on one of the lists.
+On the "About me" page, they can see the users they follow, the people who follow them, the number of each, and their own most recent cheeps. They can press the "Forget me" button, which deletes everything about them, from the database. They can also go to the timeline of other users by pressing their name found on any of the lists.
 
 <!--
 Should we write about what a user can do in our application here? User flow?
@@ -104,8 +104,7 @@ Should we write about what a user can do in our application here? User flow?
 
 ## Sequence of functionality/calls through Chirp!
 
-When a user access the website they make a http get requested. If they do it to a page which they are not authorized to then the program makes a authgorize code request + code challenge to Azure AD B2C to try and
-Authenticate the user. Azure B2C then sends a Authorization code request to Github Where the user can authorize with github to login. If the user is successful at github, then it returns a aurthorization code to B2C and B2C get a token from github with the code. B2C then return a authorization code to the Client. The client can get authorazation id and token from B2C. When the user then has login and are granted authorozation to the page then the server returns the web-page and the client can render it.
+When a user accesses the website they make an http GET request. If they make such a request to page which they are not authorized to, then the program makes an authorize code request + code challenge to Azure AD B2C attempting to Authenticate the user. Azure B2C then sends an authorization code request to Github, Where the user can authorize with github to login. If the user is successful with this, then it returns an aurthorization code to B2C and B2C get a token from github with the code. B2C then return an authorization code to the Client. The client can get authorization id and token from B2C. When the user then has logged in and is granted authorozation to the page, then the server returns the web-page and the client can render it.
 
 ![Sequence Diagram](diagrams/SequenceeForProtectedResource.png)
 
@@ -141,15 +140,15 @@ Show a screenshot of your project board right before hand-in. Briefly describe w
 Briefly describe and illustrate the flow of activities that happen from the new creation of an issue (task description), over development, etc. until a feature is finally merged into the main branch of your repository.
 -->
 
-For this project, we made most of our work, while sitting together in a meeting, either physically, or on a discord server. Then we would split of into smaller groups, but still be available for other team members.
+For this project, we made most of our work while sitting together in a meeting, either physically or on a discord server. Then we would split of into smaller groups, but still be available for other team members.
 
-On Github, we have used a centralised workflow, with protection on the main branch, and a requirement for pull requests to make changes.
+On Github, we have used a centralised workflow with protection on the main branch and a requirement for pull requests to make changes.
 
-When creating a new issue, we focus on the functional requiremtens, and make sure to make an issue, that covers these. Sometimes, we already do the design process here, and describe in the issue, more precisely, how to reach the functional requirements. Other times, we let the one(s) who work on the issue, make all design decisions. For large issues, or very important design decisions, we often discuss it in the group, even with team members who aren't assigned to the issue.
+When creating a new issue, we focus on the functional requiremtens and make sure to create an issue that covers these. Sometimes, we already do the design process here, and we describe in the issue more precisely how to reach the functional requirements. Other times we let the people working on the issue make all design decisions. For large issues or very important design decisions, we often discuss it in the group, even with team members who aren't assigned to the issue.
 
 <!-- Once an issues is created, it is automatically added to the "Unassigned" column on our Project Board. If we have a good idea of who should make it, we assign people, and move it to the "Todo" column. If we want to delay an issue for when we have better time, we move it to the "Less important" column. Once we start working on an issue, we assign ourselves (if not already), and move it to "In progress". -->
 
-When we work on a feature, we are usually one or two people. Sometimes we use pair programming. Other times one will work on the frontend, while the other works on the backend. Once we believe a feature is ready for main, we make a pull request, and ask a group member who hasn't been a part of this issue, to review it. Depending on the complexity of the code, we ask one or more people to review it. Sometimes we explain the code to the reviewer(s). Sometimes we find that some of the code could be better, or maybe that some of the changes were unnecessary or too intrusive, and should be reverted. Depending on how big of an issue it is, and how much time we have, we either write a comment, and possibly an issue about fixing it, and then approve the pull request, or we write a comment, and request changes, before allowing for a push to main.
+When we work on a feature, we are usually one or two people. Sometimes we use pair programming. Other times one will work on the frontend while the other works on the backend. Once we believe a feature is ready for main, we make a pull request, and ask a group member who hasn't been a part of this issue to review it. Depending on the complexity of the code, we ask one or more people to review it. Sometimes we explain the code to the reviewer(s). Sometimes we find that some of the code could be better, or maybe that some of the changes were unnecessary or too intrusive and should be reverted. Depending on how big of an issue it is and how much time we have, we either write a comment, and possibly an issue about fixing it, and then approve the pull request or we write a comment requesting changes before allowing for a push to main.
 
 <!-- OVERVEJER OM DET HER BØR VÆRE MED: Sometimes, we work on multiple issues on the same branch, because some of our other issues are currently incompatible, and we delay merge of one branch until another is merged. This makes some of our pull requests quite big, and sometimes incomprehensible. We strive to make our pull requests as compact and focused as possible. -->
 
@@ -233,9 +232,9 @@ In both the Chirp.Razor.Tests and PlaywrightTests folder, to run the tests:
 dotnet test
 ```
 
-The project contains two test suites, Chirp.Razor.Tests and UITest.
-The first test suite contains unit tests, integration tests and end-to-end tests. **\*\***Har vi det?
-The unit tests are testing the functionality of the isolated components in our application, that is testing methods within our application of core, infrastructure and web components. <!-- Tror ikke vi har unit tests af web components. -->
+The project contains two test suites: Chirp.Razor.Tests and UITest.
+The first test suite contains unit tests, integration tests and end-to-end tests.
+The unit tests are testing the functionality of the isolated components in our application. that is, testing methods within our application of core, infrastructure and web components. <!-- Tror ikke vi har unit tests af web components. -->
 The integration tests are testing the interactions of different components in our application, that is testing when using logic from e.g. the infrastructure layer in our web components.
 The end-to-end tests...?
 
