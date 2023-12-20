@@ -32,8 +32,10 @@ In this report we will briefly describe the project work and outcome of our soci
 ## Domain model
 
 <!-- Det er muligt at dette diagram bør være med i architecture - In the small, og at vores domain model kun bør være hvordan de foreksllige database elementer er relateret. -->
+
 ![Domain and Repository structure](diagrams/chirp_domain_and_repos_uml2.png)
 \newpage
+
 <!--
 Write about what we want to represent (Cheeps, Authors, etc.)
 Maybe incorporate functionality of a normal social media app?
@@ -77,7 +79,7 @@ The navigation bar is shown on all pages, and is used to redirect the user to ot
 \
 **Not authenticated:**
 
-![User Activity diagram: not authenticated](diagrams/UserActivityNONauthorized.drawio.png)
+![User Activity diagram: not authenticated](diagrams/UserActivityNONauthorized.drawio.png){width=80%}
 
 When accessing our webpage, users are presented with the public timeline, which displays cheeps. On this page, users can navigate between pages to view older or newer cheeps
 The navigation bar consists of links to "Public Timeline" and "login".
@@ -87,7 +89,7 @@ If already logged in to Github on their browser, they are directed to the Public
 
 **Authenticated:**
 
-![User Activity diagram: Authenticated](diagrams/UserActivityAuthorized.drawio.png)
+![User Activity diagram: Authenticated](diagrams/UserActivityAuthorized.drawio.png){width=80%}
 
 The navigation bar is changed upon user authentication. It has links to pages such as "My Timeline", "Public Timeline", "For You", "About Me" and "Logout." The navigation bar is visible on all pages.
 On every page where there are cheeps, the user is able to express reactions, and follow/unfollow authors of all cheeps, not made by themself.
@@ -137,7 +139,7 @@ Show a screenshot of your project board right before hand-in. Briefly describe w
 Briefly describe and illustrate the flow of activities that happen from the new creation of an issue (task description), over development, etc. until a feature is finally merged into the main branch of your repository.
 -->
 
-![Release workflow](diagrams/ActivityFlows.png)
+![Flow of activities](diagrams/ActivityFlows.png)
 
 For this project, we made most of our work, while sitting together in a meeting, either physically, or on a discord server. Then we would split of into smaller groups, but still be available for other team members.
 
