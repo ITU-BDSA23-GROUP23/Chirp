@@ -97,7 +97,7 @@ Should we write about what a user can do in our application here? User flow?
 When a user access the website they make a http get requested. If they do it to a page which they are not authorized to then the program makes a authgorize code request + code challenge to Azure AD B2C to try and
 Authenticate the user. Azure B2C then sends a Authorization code request to Github Where the user can authorize with github to login. If the user is successful at github, then it returns a aurthorization code to B2C and B2C get a token from github with the code. B2C then return a authorization code to the Client. The client can get authorazation id and token from B2C. When the user then has login and are granted authorozation to the page then the server returns the web-page and the client can render it.
 
-![Sequence Diagram](diagrams/SequenceeForProtectedResource.drawiodrawio.png)
+![Sequence Diagram](diagrams/SequenceeForProtectedResource.png)
 
 # 3. Process
 
