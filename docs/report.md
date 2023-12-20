@@ -48,7 +48,7 @@ The author class represents a user of our application. it contains all the infor
 The reaction class is used to keep track of the different reactions a user can have given a cheep. It contains the reaction type, the author, and the cheep that has been reacted to.
 
 We have repositories for author and cheep. These repositories contain the methods to manipulate and retrieve data in/from the database. The repositories are used in the outer part of the onion.
-We use Data transfer objects to send and receive data between the different layers of our program. The DTOs contain the same information as the classes but they are not used as entity classes for the model. So they are safer when dealing with the user, to make sure the user can't change the database in an unwanted way.
+We use Data transfer objects to send and receive data between the different layers of our program. The DTOs contain the same information as the classes, but they are not used as entity classes for the model. So they are safer when dealing with the user, to make sure the user can't change the database in an unwanted way.
 
 ## Architecture — In the small
 
