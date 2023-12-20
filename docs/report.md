@@ -83,11 +83,7 @@ The navigation bar is shown on all pages, and is used to redirect the user to ot
 
 ![User Activity diagram: not authenticated](diagrams/UserActivityNONauthorized.drawio.png){width=80%}
 
-<<<<<<< HEAD
 When accessing our web page, users are presented with the public timeline, which displays cheeps. On this page, users can navigate between pages to view older or newer cheeps
-=======
-When accessing our webpage, users are presented with the public timeline which displays cheeps. On this page, users can navigate between pages to view older or newer cheeps.
->>>>>>> 0c1da4e6b09cd4435b16e868a0e00a578db66ffd
 The navigation bar consists of links to "Public Timeline" and "login".
 Users have the option to click on the author's name within cheeps, redirecting them to the author's private timeline, showing cheeps made by that author.
 The top bar contains a login button, which when clicked facilitates authentication through B2C, using a user's GitHub account.
@@ -110,7 +106,7 @@ Should we write about what a user can do in our application here? User flow?
 
 ## Sequence of functionality/calls through Chirp!
 
-When a user accesses the website they make an http GET request. If they make such a request to page which they are not authorized to, then the program makes an authorize code request + code challenge to Azure AD B2C attempting to Authenticate the user. Azure B2C then sends an authorization code request to Github, Where the user can authorize with github to login. If the user is successful with this, then it returns an aurthorization code to B2C and B2C get a token from github with the code. B2C then return an authorization code to the Client. The client can get authorization id and token from B2C. When the user then has logged in and is granted authorozation to the page, then the server returns the web-page and the client can render it.
+When a user accesses the website they make a http GET request. If they make such a request to page which they are not authorized to, then the program makes an authorized code request + code challenge to Azure AD B2C attempting to Authenticate the user. Azure B2C then sends an authorization code request to Github, Where the user can authorize with github to login. If the user is successful with this, then it returns an authorization code to B2C and B2C get a token from github with the code. B2C then return an authorization code to the Client. The client can get authorization id and token from B2C. When the user then has logged in and is granted authorization to the page, then the server returns the web-page and the client can render it.
 
 ![Sequence Diagram](diagrams/SequenceeForProtectedResource.png)
 
