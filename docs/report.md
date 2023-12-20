@@ -33,7 +33,7 @@ Introduction???
 
 # 1. Introduction
 
-In this report we will briefly describe the project work and outcome of our social media application, Chirp. The project is developed for the course "Analysis, Design and Software Architecture (Autumn 2023)", taught by Helge Pfeiffer and Rasmus Lystrøm, at the IT University of Copenhagen. The application can be accessed at: https://bdsagroup23chirprazor.azurewebsites.net/.
+In this report we will briefly describe the project work and outcome of our social media application, Chirp. The project is developed for the course "Analysis, Design and Software Architecture (Autumn 2023)", taught by Helge Pfeiffer and Rasmus Lystrøm, at the IT University of Copenhagen. The application can be accessed at: https://bdsagroup23chirprazor.azurewebsites.net/. Our Github repository that we used for development can be acessed at: https://github.com/ITU-BDSA23-GROUP23/Chirp.
 
 # 2. Design and Architecture of Chirp!
 
@@ -41,7 +41,7 @@ In this report we will briefly describe the project work and outcome of our soci
 
 <!-- Det er muligt at dette diagram bør være med i architecture - In the small, og at vores domain model kun bør være hvordan de foreksllige database elementer er relateret. -->
 
-![Domain and Repository structure](diagrams/chirp_domain_and_repos_uml2.png)
+![Domain and Repository structure](diagrams/chirp_domain_and_repos_uml2.png){width=120%}
 \newpage
 
 <!--
