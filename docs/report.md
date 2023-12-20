@@ -151,7 +151,7 @@ Show a screenshot of your project board right before hand-in. Briefly describe w
 Briefly describe and illustrate the flow of activities that happen from the new creation of an issue (task description), over development, etc. until a feature is finally merged into the main branch of your repository.
 -->
 
-![Project Board](images/ProjectBoard2.png)
+![Project board: https://github.com/orgs/ITU-BDSA23-GROUP23/projects/1/views/1](images/ProjectBoard2.png)
 
 ### Unresolved issues
 
