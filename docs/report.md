@@ -10,7 +10,6 @@ author:
   - "Nicklas Ostenfeldt Gardil | ngar@itu.dk"
 
 date: \today
-numbersections: true
 header-includes:
   - \usepackage{graphicx}
   - \usepackage{fancyhdr}
