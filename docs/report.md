@@ -7,6 +7,8 @@ author:
   - "Halfdan Eg Minegar Brage"
   - "Nicklas Ostenfeldt Gardil"
 date: \today
+header-includes:
+  - \usepackage{graphicx}
 ---
 
 \newpage
@@ -30,9 +32,8 @@ In this report we will briefly describe the project work and outcome of our soci
 ## Domain model
 
 <!-- Det er muligt at dette diagram bør være med i architecture - In the small, og at vores domain model kun bør være hvordan de foreksllige database elementer er relateret. -->
-
 ![Domain and Repository structure](diagrams/chirp_domain_and_repos_uml2.png)
-
+\newpage
 <!--
 Write about what we want to represent (Cheeps, Authors, etc.)
 Maybe incorporate functionality of a normal social media app?
@@ -57,7 +58,7 @@ Show image from slides of onion architecture
 Write about how we used the onion skin architecture, and specifically what functionality we put in what layer (eg. DTO's in core)
 -->
 
-![Onion model](diagrams/chirp_onion_model.png)
+![Onion model](diagrams/chirp_onion_model.png){width=50%}
 
 Our chirp application is implemented with an "onion skin architecture". This means that our program is divided into three layers, core, infrastructure and web. The three layers follow a hierarchical structure where core < infrastructure < web. In this comparison, only greater layers may use or know the contents of the lower layers. Following this structure should result in reusable and loosely coupled code.
 
