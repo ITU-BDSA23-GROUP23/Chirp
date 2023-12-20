@@ -56,15 +56,15 @@ Write about how we used the onion skin architecture, and specifically what funct
 
 ![Onion model](diagrams/chirp_onion_model.png)
 
-Our chirp application is implemented with an "onion skin architecture". This means that our program is divided into three layers, core, infrastructure and web. The three layers follow a hierarchical structure where core < infrastructure < web. In this comparison, only greater layers may use or know the contents of the lower layers. Following this structure should result in reusable and loosely coupled code. In a company setting, code from "core" could be reused in many different applications and contexts around the entire company.
+Our chirp application is implemented with an "onion skin architecture". This means that our program is divided into three layers, core, infrastructure and web. The three layers follow a hierarchical structure where core < infrastructure < web. In this comparison, only greater layers may use or know the contents of the lower layers. Following this structure should result in reusable and loosely coupled code. 
+
+In a company setting, code from "core" could be reused in many different applications and contexts around the entire company. In our project, core only contains DTO's and interfaces that are used throughout our entire project. Chirp.Infrastructure contains all our domain implementations. This means that our repositories, domain classes (Cheep, Author, Reaction) are located here. Both our database migrations and our database-context (dbContext) are additionally located in infrastructure. Chirp.Web contains all our frontline code, in the shape of cshtml files, and their corresponding cshtml.cs code. Chirp.Web is the main executable c# project, which means that the Program.cs file is located here. Additionally, a database initialization script is also located here, which can populate and initiate our database with data provided by the course.
+
+
 
 ## Architecture of deployed application
 
-Our application is a web abblication, hosted by Azure. Clients use our web application through http calls. Our application sends and receives data from and to our Azure SQL server database. If the user tries to access a page on our webapplication which needs authentication, they are redirected to authentication, through B2C. Then they have to authenticate using their Github account. After authentication, they are redirected back to our page. If already authenticated, a cookie is saved, and they can skip the login process.<!-- Omskriv gerne, hvis jeg har skrevet noget forkert. Ved honestly ikke om det her er lidt for in depth til det her afsnit, og hører til under Sequence diagrammet i stedet. -->
-
-<!-- Lidt ændret, lidt mindre: -->
-
-Our application is a web abblication, hosted by Azure. Clients use our web application through http calls. Our application sends and receives data from and to our Azure SQL server database. If needed, authentication is done through B2C with Github accounts.
+Our application is a web-application, hosted by Azure. Clients use our web application through http calls. Our application sends and receives data from and to our Azure SQL server database. If a user tries to access a page, that requires authentication, they are redirected to authentication, through B2C. Authentication is done through their GitHub account. Next, they are redirected back to our page. If already authenticated, a cookie is saved, and they can skip the login process.
 
 ## User activities
 
