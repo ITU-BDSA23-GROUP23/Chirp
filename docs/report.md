@@ -37,6 +37,9 @@ In this report we will briefly describe the project work and outcome of our chat
 Write about what we want to represent (Cheeps, Authors, etc.)
 Maybe incorporate functionality of a normal social media app?
 -->
+In our program the user post messages in the form of a cheep. the Cheep class is a model for this aka the repressentation of what a cheep is. A cheep consists of a id,Author,message,TimeStamp, and a list of Reactions 
+ 
+
 
 ## Architecture — In the small
 
