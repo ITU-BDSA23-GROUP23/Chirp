@@ -186,13 +186,33 @@ On linux systems, ensure the Docker daemon is running. It can be started with:
 sudo dockerd
 ```
 
-From here, you must first start an MSSQL docker container using the following command:
+From here, you must first start an MSSQL docker container using one of the following commands:
+
+On Linux:
 
 ```
 sudo docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=DhE883cb" \
    -p 1433:1433 --name sql1 --hostname sql1 \
    -d \
    mcr.microsoft.com/mssql/server:2022-latest
+```
+
+On Windows or Mac:
+
+```
+docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=DhE883cb" \
+   -p 1433:1433 --name sql1 --hostname sql1 \
+   -d \
+   mcr.microsoft.com/mssql/server:2022-latest
+```
+
+On Mac-M1/M2:
+
+```
+docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=DhE883cb" \
+   -p 1433:1433 --name sql1 --hostname sql1 \
+   -d \
+   mcr.microsoft.com/azure-sql-edge
 ```
 
 Next, from the root directory in /Chirp, run the following command:
@@ -211,25 +231,7 @@ Finally, open your browser of choice and connect to `https://localhost:7040`
 
 ## How to run the test suite locally
 
-To run the test suites locally, first you will have to start your docker container.
-
-MAC:
-
-```
-docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=DhE883cb" -p 1433:1433 --name sql1 --hostname sql1 -d mcr.microsoft.com/azure-sql-edge
-```
-
-Windows:
-Open Docker desktop and run the `mcr.microsoft.com/mssql/server:2022-latest` image
-
-Linux/wsl:
-
-```
-sudo docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=DhE883cb" \
-   -p 1433:1433 --name sql1 --hostname sql1 \
-   -d \
-   mcr.microsoft.com/mssql/server:2022-latest
-```
+To run the test suites locally, first you will have to start your docker container, as described above in the "How to make Chirp! work locally" section.
 
 Next, open up a terminal in the project. Assuming you are in the root of the repository Chirp, direct to either:
 
