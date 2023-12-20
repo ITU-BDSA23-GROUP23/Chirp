@@ -65,7 +65,8 @@ Our application is a web abblication, hosted by Azure. Clients use our web appli
 <!-- Har sandsynligvis skrevet for meget her, måske alt for meget, men havde lige lidt overskud, så fyrede det hele af.
 - Har rettet din tekst igennem - Edward -->
 
-The navigation bar is shown on all pages, and is used to redirect the user to other pages.
+The navigation bar is shown on all pages, and is used to redirect the user to other pages. \
+\
 **Not authenticated:**
 
 ![User Activity diagram: not authenticated](diagrams/UserActivityNONauthorized.drawio.png)
