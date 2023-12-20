@@ -37,12 +37,12 @@ In this report we will briefly describe the project work and outcome of our soci
 Write about what we want to represent (Cheeps, Authors, etc.)
 Maybe incorporate functionality of a normal social media app?
 -->
-In our program the user post messages in the form of a cheep. the Cheep class is a model for this aka the repressentation of what a cheep is. A cheep consists of a id,Author,message,TimeStamp, and a list of Reactions 
+
+In our program the user post messages in the form of a cheep. the Cheep class is a model for this aka the repressentation of what a cheep is. A cheep consists of a id,Author,message,TimeStamp, and a list of Reactions
 
 The author class repressent a user of our application. it contains all the information the program needs to model a user.
 
 The reaction class are used to keep track of the diffrent reaction a user can have given a cheep it contains thee reactiontype, the author and the cheep that has been reacted too.
-
 
 ## Architecture — In the small
 
@@ -60,11 +60,7 @@ Our chirp application is implemented with an "onion skin architecture". This mea
 
 ## Architecture of deployed application
 
-Our application is a web abblication, hosted by Azure. Clients use our web application through http calls. Our application sends and receives data from and to our Azure SQL server database. If the user tries to access a page on our webapplication which needs authentication, they are redirected to authentication, through B2C. Then they have to authenticate using their Github account. After authentication, they are redirected back to our page. If already authenticated, a cookie is saved, and they can skip the login process.<!-- Omskriv gerne, hvis jeg har skrevet noget forkert. Ved honestly ikke om det her er lidt for in depth til det her afsnit, og hører til under Sequence diagrammet i stedet. -->
-
-<!-- Lidt ændret, lidt mindre: -->
-
-Our application is a web abblication, hosted by Azure. Clients use our web application through http calls. Our application sends and receives data from and to our Azure SQL server database. If needed, authentication is done through B2C with Github accounts.
+Our application is a web-application, hosted by Azure. Clients use our web application through http calls. Our application sends and receives data from and to our Azure SQL server database. If a user tries to access a page, that requires authentication, they are redirected to authentication, through B2C. Authentication is done through their GitHub account. Next, they are redirected back to our page. If already authenticated, a cookie is saved, and they can skip the login process.
 
 ## User activities
 
@@ -205,6 +201,7 @@ Windows:
 Open Docker desktop and run the `mcr.microsoft.com/mssql/server:2022-latest` image
 
 Linux/wsl:
+
 ```
 sudo docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=DhE883cb" \
    -p 1433:1433 --name sql1 --hostname sql1 \
