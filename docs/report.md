@@ -56,7 +56,11 @@ Write about how we used the onion skin architecture, and specifically what funct
 
 ![Onion model](diagrams/chirp_onion_model.png)
 
-Our chirp application is implemented with an "onion skin architecture". This means that our program is divided into three layers, core, infrastructure and web. The three layers follow a hierarchical structure where core < infrastructure < web. In this comparison, only greater layers may use or know the contents of the lower layers. Following this structure should result in reusable and loosely coupled code. In a company setting, code from "core" could be reused in many different applications and contexts around the entire company.
+Our chirp application is implemented with an "onion skin architecture". This means that our program is divided into three layers, core, infrastructure and web. The three layers follow a hierarchical structure where core < infrastructure < web. In this comparison, only greater layers may use or know the contents of the lower layers. Following this structure should result in reusable and loosely coupled code. 
+
+In a company setting, code from "core" could be reused in many different applications and contexts around the entire company. In our project, core only contains DTO's and interfaces that are used throughout our entire project. Chirp.Infrastructure contains all our domain implementations. This means that our repositories, domain classes (Cheep, Author, Reaction) are located here. Both our database migrations and our database-context (dbContext) are additionally located in infrastructure. Chirp.Web contains all our frontline code, in the shape of cshtml files, and their corresponding cshtml.cs code. It is also the main executable c# project, which means that the Program.cs file is located here. Additionally, a database initialization script is also located here, which can populate and initiate our database with data provided by the course.
+
+
 
 ## Architecture of deployed application
 
