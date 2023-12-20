@@ -125,8 +125,6 @@ When a user accesses the website they make a http GET request. If they make such
 
 ## Build, test, release, and deployment
 
-### Merge to the main workflow
-
 During our project development process, our main method of building, testing, and deploying was with two automated workflows. The structure of which is described by the diagram below:
 
 ![Merge to main workflows](diagrams/chirp_workflow_merge_main.png){width=60%}
