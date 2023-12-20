@@ -88,13 +88,13 @@ Our application is a web application hosted by Azure. Clients use our web applic
 <!-- Har sandsynligvis skrevet for meget her, måske alt for meget, men havde lige lidt overskud, så fyrede det hele af.
 - Har rettet din tekst igennem - Edward -->
 
-The navigation bar is shown on all pages and is used to redirect the user to other pages.
+The navigation bar is shown on all pages, and is used to redirect the user to other pages.
 
 **Not authenticated:**
 
 ![User Activity diagram: not authenticated](diagrams/UserActivityNONauthorized.drawio.png){width=80%}
 
-When accessing our web page, users are presented with the public timeline, which displays cheeps. On this page, users can navigate between pages to view older or newer cheeps
+When accessing our web page, users are presented with the public timeline, which displays cheeps. On this page, users can navigate between pages, to view older or newer cheeps.
 The navigation bar consists of links to "Public Timeline" and "login".
 Users have the option to click on the author's name within cheeps, redirecting them to the author's private timeline, and showing cheeps made by that author.
 The top bar contains a login button, which when clicked facilitates authentication through B2C, using a user's GitHub account.
@@ -106,10 +106,10 @@ If already logged in to GitHub on their browser, they are directed to the Public
 
 The navigation bar is changed upon user authentication. It has links to the pages: "My Timeline", "Public Timeline", "For You", "About Me" and "Logout." The navigation bar is visible on all pages.
 On every page where there are cheeps, the user is able to express reactions, and follow/unfollow authors of all cheeps, not made by themself.
-On the public timeline, they are also able to submit cheeps and sign out. They can also react to cheeps and follow/unfollow authors on cheeps, if they aren't the author of the cheep themselves.
+On the public timeline, they are also able to submit cheeps and sign out.
 On "my timeline", the user can submit cheeps, and see their own cheeps.
 On "For you", they can see the cheeps of the people that they follow.
-On the "About me" page, they can see the users they follow, the people who follow them, the number of each, and their own most recent cheeps. They can press the "Forget me" button, which deletes everything about them, from the database. They can also go to the timeline of other users by pressing their name found on any of the lists.
+On the "About me" page, they can see the users they follow, the people who follow them, the number of each, and their own most recent cheeps. They can press the "Forget me" button, which deletes all stored information and any references to them, from the database. They can also go to the timeline of other users, by pressing their name found on the following/follower lists.
 
 <!--
 Should we write about what a user can do in our application here? User flow?
@@ -117,7 +117,7 @@ Should we write about what a user can do in our application here? User flow?
 
 ## Sequence of functionality/calls through Chirp!
 
-When a user accesses the website they make a http GET request. If they make such a request to a page to which they are not authorized, then the program makes an authorized code request + code challenge to Azure AD B2C attempting to Authenticate the user. Azure B2C then sends an authorization code request to Github, Where the user can authorize with GitHub to login. If the user is successful with this, then it returns an authorization code to B2C and B2C get a token from github with the code. B2C then returns an authorization code to the Client. The client can get authorization id and token from B2C. When the user has logged in and is granted authorization to the page, then the server returns the web page, and the client can render it.
+When a user accesses the website, they make a http GET request. If they make such a request to a page to which they are not authorized, then the program makes an authorized code request + code challenge to Azure AD B2C, attempting to Authenticate the user. Azure B2C then sends an authorization code request to Github, Where the user can authorize with GitHub to login. If the user is successful with this, then it returns an authorization code to B2C, and B2C gets a token from github with the code. B2C then returns an authorization code to the client. The client can get authorization id and token from B2C. When the user has logged in, and is granted authorization to the page, then the server returns the web page, and the client can render it.
 
 ![Sequence Diagram](diagrams/SequenceeForProtectedResource.png)
 
@@ -131,9 +131,9 @@ During our project development process, our main method of building, testing, an
 
 ![Merge to main workflows](diagrams/chirp_workflow_merge_main.png){width=60%}
 
-In the diagram, you can see our two main workflows, the "deploy to Azure" workflow (filename main_bdsagroup23chirprazor.yml) and the build and test workflow (filename dotnet.yml). Github CodeQL is also included in the diagram as it is an automated process, that runs whenever we merge into main. The "deploy to Azure" workflow is auto-generated by Azure and slightly modified. It publishes our application and uploads it to our Azure web application. This was our preferred method of automated deployment. Our build and test workflow builds our project, and runs our tests (not including UI-tests). The two workflows and CodeQL run in parallel. This means that our web app would be deployed even if our test suite failed. This was practical in our case, for rapid development, since our tests in many cases were not updated to work with our newer code. This meant that we could test our code on the live server without updating all our tests first. Not testing before deploying also meant that the deployment process was quicker. Going around our tests suite would in a real-world scenario, with an active application, result in huge stability issues.
+In the diagram, you can see our two main workflows, the "deploy to Azure" workflow (filename main_bdsagroup23chirprazor.yml) and the build and test workflow (filename dotnet.yml). Github CodeQL is also included in the diagram as it is an automated process, that runs whenever we merge into main. The "deploy to Azure" workflow is auto-generated by Azure and slightly modified. It publishes our application and uploads it to our Azure web application. This was our preferred method of automated deployment. Our build and test workflow builds our project, and runs our tests (not including UI-tests). The two workflows and CodeQL run in parallel. This means that our web app would be deployed, even if our test suite failed. This was practical in our case, for rapid development, since our tests in many cases were not updated to work with our newer code. This meant that we could test our code on the live server without updating all our tests first. Not testing before deploying also meant that the deployment process was quicker. Going around our tests suite would in a real-world scenario, with an active application, result in huge stability issues.
 
-For "automatic releases" we used a separate workflow (filename publish.yml). The process of which can be seen in the diagram below:
+For "automatic releases" we used a separate workflow (filename publish.yml). The process of the workflow can be seen in the diagram below:
 
 ![Release workflow](diagrams/chirp_workflow_release.png){height=45%}
 
@@ -157,13 +157,13 @@ Briefly describe and illustrate the flow of activities that happen from the new 
 
 ### Unresolved issues
 
-- Releases currently don't publish our code as single file
+- Releases currently don't publish our code as a single file
 - Released compiled code currently does not work
 - The features 'Pagination' and 'Forget me' could be more user friendly. We have a few issues for that.
 - Delete data about users from B2C.
 - Automate use of docker for local use and testing
 - Migrate to .net 8
-- Feedback on failed cheep submit
+- Feedback after failed cheep submit
 - Check for nullable properties
 
 ![Flow of activities](diagrams/ActivityFlows.png){height=45%}
@@ -172,7 +172,7 @@ For this project, we did most of our work while sitting together in a meeting, e
 
 On Github, we have used a centralized workflow with protection on the main branch and a requirement for pull requests to make changes.
 
-When creating a new issue, we focus on the functional requirements and make sure to create an issue that covers these. Sometimes, we already do the design process here, and we describe in the issue more precisely how to reach the functional requirements. Other times we let the people working on the issue make all design decisions. For large issues or very important design decisions, we often discuss it in the group, even with team members who aren't assigned to the issue.
+When creating a new issue, we focus on the functional requirements, and make sure to create an issue that covers these. Sometimes, we already do the design process here, and we describe in the issue more precisely how to reach the functional requirements. Other times we let the people working on the issue make all design decisions. For large issues or very important design decisions, we often discuss it in the group, even with team members who aren't assigned to the issue.
 
 <!-- Once an issues is created, it is automatically added to the "Unassigned" column on our Project Board. If we have a good idea of who should make it, we assign people, and move it to the "Todo" column. If we want to delay an issue for when we have better time, we move it to the "Less important" column. Once we start working on an issue, we assign ourselves (if not already), and move it to "In progress". -->
 
