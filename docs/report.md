@@ -62,20 +62,31 @@ Our application is a web abblication, hosted by Azure. Clients use our web appli
 
 ## User activities
 
-<!-- Har sandsynligvis skrevet for meget her, måske alt for meget, men havde lige lidt overskud, så fyrede det hele af. -->
+<!-- Har sandsynligvis skrevet for meget her, måske alt for meget, men havde lige lidt overskud, så fyrede det hele af.
+- Har rettet din tekst igennem - Edward -->
 
-The navigation bar is shown on all pages, and is used to redirect the user to other pages.
+The navigation bar is shown on all pages, and is used to redirect the user to other pages. \
+\
 **Not authenticated:**
-When going to our page, users are shown the public timeline, which displays cheeps. They can to navigate back and forth between pages, to see older or newer cheeps.
-The navbar consists of "Public Timeline" and "login".
-They can press on the authorname on cheeps, which will redirect them to the author's private timline, showing cheeps made by that author. They can also press the login button. This authenticates them through B2C with their github account. If already logged in to Github on their browser, they are directed to our Public Timeline. If not, they must login with a Github account.
+
+![User Activity diagram: not authenticated](diagrams/UserActivityNONauthorized.drawio.png)
+
+When accessing our webpage, users are presented with the public timeline, which displays cheeps. On this page, users can navigate between pages to view older or newer cheeps
+The navigation bar consists of links to "Public Timeline" and "login".
+Furthermore, users have the option to click on the author's name within cheeps, redirecting them to the author's private timeline, showing cheeps made by that author.
+Also, user can click on the login button, which facilitates authentication through B2C, using their GitHub account.
+If already logged in to Github on their browser, they are directed to the Public Timeline. If not, they must login with a Github account.
 
 **Authenticated:**
-The navigations bar is changed, if a user accesses it while authenticated. It has "my timeline", "public timeline", "For You", "About me", and "logout". The navigation bar is visible on all pages.
-On every page where there are cheeps, the user is able to react to, and follow authors of all cheeps, not made by themself.
-On the public timeline, they are also able to log out, and submit cheeps. They can also react to cheeps and follow authors on cheeps, if they are not the author of the cheep.
-On "my timeline", the user can submit cheeps, and see their own cheeps. On "For you", they can see the cheeps of the people that they follow.
-On the "About me" page, they can see the users they follow, the people who follow them, the number of each, and their own most recent cheeps. They can press the "Forget me" button, which deletes everything about them, from the database. They can also go to the timeline of other users, by pressing their name on one of the lists.
+
+![User Activity diagram: Authenticated](diagrams/UserActivityAuthorized.drawio.png)
+
+The navigation bar is changed upon user authentication. It has links to pages such as "My Timeline", "Public Timeline", "For You", "About Me" and "Logout." The navigation bar is visible on all pages.
+On every page where there are cheeps, the user is able to express reactions, and follow/unfollow authors of all cheeps, not made by themself.
+On the public timeline, they are also able to submit cheeps and sign out. They can also react to cheeps and follow/unfollow authors on cheeps, if not they are the author of the cheep themselves.
+On "my timeline", the user can submit cheeps, and see their own cheeps.
+On "For you", they can see the cheeps of the people that they follow.
+On the "About me" page, they can see the users they follow, the people who follow them, the number of each, and their own most recent cheeps. They can press the "Forget me" button, which deletes everything about them, from the database. They can also go to the timeline of other users, by pressing their name, found on one of the lists.
 
 <!--
 Should we write about what a user can do in our application here? User flow?
@@ -86,11 +97,25 @@ Should we write about what a user can do in our application here? User flow?
 When a user access the website they make a http get requested. If they do it to a page which they are not authorized to then the program makes a authgorize code request + code challenge to Azure AD B2C to try and
 Authenticate the user. Azure B2C then sends a Authorization code request to Github Where the user can authorize with github to login. If the user is successful at github, then it returns a aurthorization code to B2C and B2C get a token from github with the code. B2C then return a authorization code to the Client. The client can get authorazation id and token from B2C. When the user then has login and are granted authorozation to the page then the server returns the web-page and the client can render it.
 
-![Sequence Diagram](diagrams/SequenceeForProtectedResource.drawiodrawio.png)
+![Sequence Diagram](diagrams/SequenceeForProtectedResource.png)
 
 # 3. Process
 
 ## Build, test, release, and deployment
+
+### Merge to main workflow
+
+During our project development process, our main mehod of building, testing and deploying was with two automated workflows. The structure of which is described by the diagram below:
+
+![Merge to main workflows](diagrams/chirp_workflow_merge_main.png)
+
+In the diagram you can see our two main workflows, the "deploy to azure" workflow (filename main_bdsagroup23chirprazor.yml) and the build and test workflow (filename dotnet.yml). Github CodeQL is also included in the diagram as it is an automated process, which runs whenever we merge into main. The "deploy to azure" workflow is auto-generated by azure and slightly modified. It simply publishes our application and uploads it to our azure web application. This was our preffered method of automated deployment. Our build and test workflow simply builds our project, and runs our tests (not including ui tests). The two workflows and CodeQL run in parralell. This means that our web app would be deployed even if our test suite failed. This was practical in our case, for rapid development, since our tests in many cases were not updated to work with our newer code. This meant that we could test our code on the live server without updating all our tests first. Not testing before deploying also meant that the deployment process was quicker. Going around our tests suite would in a real-world scenario, with an active application, result in huge stability issues.
+
+For "automatic releases" we used a seperate workflow (filename publish.yml). The process of which can be seen in the diagram below:
+
+![Release workflow](diagrams/chirp_workflow_release.png)
+
+The functionality of this worklow is to simply build, test and package our application automatically whenever a release is created.
 
 We aimed to introduce singlefile releases, but prioritized new features and other requirements, delaying its implementation. The infrequent releases resulted from both postponing until singlefile capability and a lack of defined milestones for stable functionality. Insufficient release planning, and constant development on important features contributed to this pattern. Since different features were almost always under development, we rarely felt our program was in a stable, shippable state.
 
@@ -198,7 +223,7 @@ The unit tests are testing the functionality of the isolated components in our a
 The integration tests are testing the interactions of different components in our application, that is testing when using logic from e.g. the infrastructure layer in our web components.
 The end-to-end tests...?
 
-The second test suite contains our UI tests. These are UI automation tests, using Playwright to simulate a users interactions with the user interface. These are implemented such that we can ensure that the UI behaves as expected, performing actions and receiving expected output, when doing all types of interactions with our application from the UI.
+The second test suite contains our UI tests. These are UI automation tests, using Playwright to simulate a users interactions with the user interface. These are implemented such that we can ensure that the UI behaves as expected, performing actions and receiving expected output, when doing all types of interactions with our application from the UI. Before be able to run the test the program has to be running on the same local machine.
 
 <!-- The Playwright tests are responsible for testing our razorpage functionality, as we don't have unit tests for the methods in the .cs files for the pages. -->
 
