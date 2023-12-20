@@ -38,7 +38,7 @@ Write about what we want to represent (Cheeps, Authors, etc.)
 Maybe incorporate functionality of a normal social media app?
 -->
 
-In our program the user post messages in the form of a cheep. the Cheep class is a model, it represents what a cheep is. A cheep consists of an id, Author, message, TimeStamp, and a list of Reactions 
+In our program the user post messages in the form of a cheep. the Cheep class is a model, it represents what a cheep is. A cheep consists of an id, Author, message, TimeStamp, and a list of Reactions
 
 The author class represents a user of our application. it contains all the information the program needs to model a user.
 
@@ -128,8 +128,6 @@ We aimed to introduce singlefile releases, but prioritized new features and othe
 
 Back when we were developing Chirp.CLI, we had a more solid release schedule. This is because it was the primary distribution of the software. When the project transitioned into a Razor application, the primary distribution became our Azure Web App, and our releases became way less frequent. Releases of our Razor application would also be quite difficult to use (since it requires docker), and would lack all online functionality. So for an ordinary user, there would be absolutely no reason to run our code from releases.
 
-## Teamwork
-
 <!--
 Show a screenshot of your project board right before hand-in. Briefly describe which tasks are still unresolved, i.e., which features are missing from your applications or which functionality is incomplete.
 -->
@@ -137,6 +135,8 @@ Show a screenshot of your project board right before hand-in. Briefly describe w
 <!--
 Briefly describe and illustrate the flow of activities that happen from the new creation of an issue (task description), over development, etc. until a feature is finally merged into the main branch of your repository.
 -->
+
+![Release workflow](diagrams/ActivityFlows.png)
 
 For this project, we made most of our work, while sitting together in a meeting, either physically, or on a discord server. Then we would split of into smaller groups, but still be available for other team members.
 
