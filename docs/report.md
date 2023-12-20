@@ -145,6 +145,17 @@ Briefly describe and illustrate the flow of activities that happen from the new 
 
 ![Project Board](images/ProjectBoard.png)
 
+### Unresolved issues
+
+- Releases currently don't publish our code as single file
+- Released compiled code currently does not work
+- The features 'Pagination' and 'Forget me' could be more user friendly. We have a few issues for that.
+- Delete data about users from B2C.
+- Automate use of docker for local use and testing
+- Migrate to .net 8
+- Feedback on failed cheep submit
+- Check for nullable properties
+
 ![Flow of activities](diagrams/ActivityFlows.png)
 
 For this project, we did most of our work while sitting together in a meeting, either physically or on a Discord server. Then we would split of into smaller groups, but still be available for other team members.
@@ -158,11 +169,6 @@ When creating a new issue, we focus on the functional requirements and make sure
 When we work on a feature, we are usually one or two people. Sometimes we use pair programming. Other times one will work on the front-end while the other works on the back-end. Once we believe a feature is ready for main, we make a pull request and ask a group member who hasn't been a part of this issue to review it. Depending on the complexity of the code, we ask one or more people to review it. Sometimes we explain the code to the reviewer(s). Sometimes we find that some of the code could be better, or maybe that some of the changes were unnecessary or too intrusive and should be reverted. Depending on how big of an issue it is and how much time we have, we either write a comment, and possibly an issue about fixing it, and then approve the pull request or we write a comment requesting changes before allowing for a push to main.
 
 <!-- OVERVEJER OM DET HER BØR VÆRE MED: Sometimes, we work on multiple issues on the same branch, because some of our other issues are currently incompatible, and we delay merge of one branch until another is merged. This makes some of our pull requests quite big, and sometimes incomprehensible. We strive to make our pull requests as compact and focused as possible. -->
-
-### Unresolved issues
-
-- Releases currently don't publish our code as single file
-- Released compiled code currently does not work
 
 ## How to make Chirp! work locally
 
