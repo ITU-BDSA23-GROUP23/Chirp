@@ -81,7 +81,7 @@ The navigation bar is shown on all pages, and is used to redirect the user to ot
 
 ![User Activity diagram: not authenticated](diagrams/UserActivityNONauthorized.drawio.png){width=80%}
 
-When accessing our webpage, users are presented with the public timeline, which displays cheeps. On this page, users can navigate between pages to view older or newer cheeps
+When accessing our web page, users are presented with the public timeline, which displays cheeps. On this page, users can navigate between pages to view older or newer cheeps
 The navigation bar consists of links to "Public Timeline" and "login".
 Furthermore, users have the option to click on the author's name within cheeps, redirecting them to the author's private timeline, showing cheeps made by that author.
 Also, user can click on the login button, which facilitates authentication through B2C, using their GitHub account.
