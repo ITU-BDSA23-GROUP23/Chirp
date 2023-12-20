@@ -2,7 +2,7 @@
 title: "Chirp! Project Report"
 author:
   - "Edward Rostomian"
-  - "Thorbjørn Pepe"
+  - "Thorbjørn Peter Høgsbro Pedersen"
   - "Daniel Holm Larsen"
   - "Halfdan Eg Minegar Brage"
   - "Nicklas Ostenfeldt Gardil"
@@ -29,6 +29,8 @@ In this report we will briefly describe the project work and outcome of our chat
 
 ## Domain model
 
+<!-- Det er muligt at dette diagram bør være med i architecture - In the small, og at vores domain model kun bør være hvordan de foreksllige database elementer er relateret. -->
+
 ![Domain and Repository structure](diagrams/chirp_domain_and_repos_uml.png)
 
 <!--
@@ -42,29 +44,59 @@ Maybe incorporate functionality of a normal social media app?
 Show image from slides of onion architecture
 -->
 
+<!--
+Write about how we used the onion skin architecture, and specifically what functionality we put in what layer (eg. DTO's in core)
+-->
+
 ![Onion model](diagrams/chirp_onion_model.png)
 
 Our chirp application is implemented with an "onion skin architecture". This means that our program is divided into three layers, core, infrastructure and web. The three layers follow a hierarchical structure where core < infrastructure < web. In this comparison, only greater layers may use or know the contents of the lower layers. Following this structure should result in reusable and loosely coupled code. In a company setting, code from "core" could be reused in many different applications and contexts around the entire company.
 
 ## Architecture of deployed application
 
-<!--
-Write about how we used the onion skin architecture, and specifically what functionality we put in what layer (eg. DTO's in core)
--->
+Our application is a web abblication, hosted by Azure. Clients use our web application through http calls. Our application sends and receives data from and to our Azure SQL server database. If the user tries to access a page on our webapplication which needs authentication, they are redirected to authentication, through B2C. Then they have to authenticate using their Github account. After authentication, they are redirected back to our page. If already authenticated, a cookie is saved, and they can skip the login process.<!-- Omskriv gerne, hvis jeg har skrevet noget forkert. Ved honestly ikke om det her er lidt for in depth til det her afsnit, og hører til under Sequence diagrammet i stedet. -->
+
+<!-- Lidt ændret, lidt mindre: -->
+
+Our application is a web abblication, hosted by Azure. Clients use our web application through http calls. Our application sends and receives data from and to our Azure SQL server database. If needed, authentication is done through B2C with Github accounts.
 
 ## User activities
+
+<!-- Har sandsynligvis skrevet for meget her, måske alt for meget, men havde lige lidt overskud, så fyrede det hele af.
+- Har rettet din tekst igennem - Edward -->
+
+The navigation bar is shown on all pages, and is used to redirect the user to other pages.
+**Not authenticated:**
+
+![User Activity diagram: not authenticated](diagrams/UserActivityNONauthorized.drawio.png)
+
+When accessing our webpage, users are presented with the public timeline, which displays cheeps. On this page, users can navigate between pages to view older or newer cheeps
+The navigation bar consists of links to "Public Timeline" and "login".
+Furthermore, users have the option to click on the author's name within cheeps, redirecting them to the author's private timeline, showing cheeps made by that author.
+Also, user can click on the login button, which facilitates authentication through B2C, using their GitHub account.
+If already logged in to Github on their browser, they are directed to the Public Timeline. If not, they must login with a Github account.
+
+**Authenticated:**
+
+![User Activity diagram: Authenticated](diagrams/UserActivityAuthorized.drawio.png)
+
+The navigation bar is changed upon user authentication. It has links to pages such as "My Timeline", "Public Timeline", "For You", "About Me" and "Logout." The navigation bar is visible on all pages.
+On every page where there are cheeps, the user is able to express reactions, and follow/unfollow authors of all cheeps, not made by themself.
+On the public timeline, they are also able to submit cheeps and sign out. They can also react to cheeps and follow/unfollow authors on cheeps, if not they are the author of the cheep themselves.
+On "my timeline", the user can submit cheeps, and see their own cheeps.
+On "For you", they can see the cheeps of the people that they follow.
+On the "About me" page, they can see the users they follow, the people who follow them, the number of each, and their own most recent cheeps. They can press the "Forget me" button, which deletes everything about them, from the database. They can also go to the timeline of other users, by pressing their name, found on one of the lists.
 
 <!--
 Should we write about what a user can do in our application here? User flow?
 -->
 
 ## Sequence of functionality/calls through Chirp!
-When a user access the website they make a http get requested. If they do it to a page which they are not authorized to then the program makes a authgorize code request + code challenge to Azure AD B2C to try and 
-Authenticate the user. Azure B2C then sends a Authorization code request to Github Where the user can authorize with github to login. If the user is successful at github, then it returns a aurthorization code to B2C and B2C get a token from github with the code. B2C then return a authorization code to the Client. The client can get authorazation id and token from B2C. When the user then has login and are granted authorozation to the page then the server returns the web-page and the client can render it.     
 
+When a user access the website they make a http get requested. If they do it to a page which they are not authorized to then the program makes a authgorize code request + code challenge to Azure AD B2C to try and
+Authenticate the user. Azure B2C then sends a Authorization code request to Github Where the user can authorize with github to login. If the user is successful at github, then it returns a aurthorization code to B2C and B2C get a token from github with the code. B2C then return a authorization code to the Client. The client can get authorazation id and token from B2C. When the user then has login and are granted authorozation to the page then the server returns the web-page and the client can render it.
 
 ![Sequence Diagram](diagrams/SequenceeForProtectedResource.drawiodrawio.png)
-
 
 # 3. Process
 
