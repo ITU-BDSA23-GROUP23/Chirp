@@ -1,8 +1,8 @@
 ---
 title: "Chirp! Project Report"
-subtitle: 'ITU BDSA 2023 Group 23'
- 
-author: 
+subtitle: "ITU BDSA 2023 Group 23"
+
+author:
   - "Edward Rostomian | edwr@itu.dk"
   - "Thorbjørn Peter Høgsbro Pedersen | tpep@itu.dk"
   - "Daniel Holm Larsen | dhla@itu.dk"
@@ -178,7 +178,7 @@ For this project, we did most of our work while sitting together in a meeting, e
 
 On Github, we have used a centralized workflow with protection on the main branch and a requirement for pull requests to make changes.
 
-When creating a new issue, we focus on the functional requirements and make sure to create an issue that covers these. Sometimes, we already do the design process here, and we describe in the issue more precisely how to reach the functional requirements. Other times we let the people working on the issue make all design decisions. For large issues or very important design decisions, we often discuss it in the group, even with team members who aren't assigned to the issue.
+When creating a new issue, we focus on the functional requirements and make sure to create an issue that covers these. Sometimes, we already do the design process here, and we describe in the issue more precisely how to reach the functional requirements. Other times we let the people working on the issue make all design decisions. For important design decisions, we often discuss it in the entire group.
 
 <!-- Once an issues is created, it is automatically added to the "Unassigned" column on our Project Board. If we have a good idea of who should make it, we assign people, and move it to the "Todo" column. If we want to delay an issue for when we have better time, we move it to the "Less important" column. Once we start working on an issue, we assign ourselves (if not already), and move it to "In progress". -->
 
