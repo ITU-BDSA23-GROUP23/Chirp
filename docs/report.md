@@ -13,7 +13,7 @@ header-includes:
   - \usepackage{fancyhdr}
   - \pagestyle{fancy}
   - \fancyhead[L]{\begin{tabular}{@{}l}edwr, tpep, habr, dhla \& ngar\\ IT-University of Copenhagen\end{tabular}}
-  - \fancyhead[C]{bdsa}
+  - \fancyhead[C]{BSANDSA1KU}
   - \fancyhead[R]{\today}
 ---
 
@@ -41,7 +41,7 @@ In this report we will briefly describe the project work and outcome of our soci
 
 <!-- Det er muligt at dette diagram bør være med i architecture - In the small, og at vores domain model kun bør være hvordan de foreksllige database elementer er relateret. -->
 
-![Domain and Repository structure](diagrams/chirp_domain_and_repos_uml2.png){width=120%}
+![Domain and Repository structure](diagrams/chirp_domain_and_repos_uml2.png)
 \newpage
 
 <!--
