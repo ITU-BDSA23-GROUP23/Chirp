@@ -13,7 +13,7 @@ header-includes:
   - \usepackage{fancyhdr}
   - \pagestyle{fancy}
   - \fancyhead[L]{\begin{tabular}{@{}l}edwr, tpep, habr, dhla \& ngar\\ IT-University of Copenhagen\end{tabular}}
-  - \fancyhead[C]{bdsa}
+  - \fancyhead[C]{BSANDSA1KU}
   - \fancyhead[R]{\today}
 ---
 
