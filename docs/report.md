@@ -23,7 +23,8 @@ Introduction???
 
 # 1. Introduction
 
-In this report we will briefly describe the project work and outcome of our social media application, Chirp.
+In this report we will briefly describe the project work and outcome of our social media application, Chirp. The project is developed for the course "Analysis, Design and Software Architecture (Autumn 2023)", taught by Helge Pfeiffer and Rasmus Lystrøm, at the IT University of Copenhagen. 
+
 
 # 2. Design and Architecture of Chirp!
 
