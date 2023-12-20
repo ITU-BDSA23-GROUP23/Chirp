@@ -170,7 +170,7 @@ The unit tests are testing the functionality of the isolated components in our a
 The integration tests are testing the interactions of different components in our application, that is testing when using logic from e.g. the infrastructure layer in our web components.
 The end-to-end tests...?
 
-The second test suite contains our UI tests. These are UI automation tests, using Playwright to simulate a users interactions with the user interface. These are implemented such that we can ensure that the UI behaves as expected, performing actions and receiving expected output, when doing all types of interactions with our application from the UI.
+The second test suite contains our UI tests. These are UI automation tests, using Playwright to simulate a users interactions with the user interface. These are implemented such that we can ensure that the UI behaves as expected, performing actions and receiving expected output, when doing all types of interactions with our application from the UI. Before be able to run the test the program has to be running on the same local machine.
 
 <!-- The Playwright tests are responsible for testing our razorpage functionality, as we don't have unit tests for the methods in the .cs files for the pages. -->
 
